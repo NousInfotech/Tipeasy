@@ -11,6 +11,10 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        lightText: "var(--lightText)",
+        primary: "var(--primary)",
+        accent1: "var(--accent1)",
+        accent2: "var(--accent2)",
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
@@ -28,6 +32,9 @@ export default {
       },
       fontStyle: {
         italic: 'italic',
+      },
+      animation: {
+        'spin-slow': 'spin 5s linear infinite', // Customize the duration to 5 seconds
       },
     },
   },

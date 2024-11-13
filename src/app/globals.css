@@ -13,12 +13,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #000000;
+    --lightText: #595959;
+    --primary: #98B03C;
+    --accent1: #CEDCB2;
+    --accent2: #E9F2EE;
+
+
+
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  padding: 1rem;
 }
