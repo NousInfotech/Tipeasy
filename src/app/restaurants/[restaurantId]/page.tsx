@@ -4,7 +4,7 @@ import RestaurantHeader from '@/components/RestaurantHeader/RestaurantHeader';
 import CTA from '@/components/CTA/CTA';
 
 interface Params {
-    params: { restaurantId: string };
+    params: Promise<{ restaurantId: string }>;
 }
 
 const RestaurantPage: React.FC<Params> = async ({ params }) => {
