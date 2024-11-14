@@ -16,7 +16,7 @@ const RestaurantHeader: React.FC<RestaurantHeaderProps> = ({ restaurantId }) => 
                 </div>
                 <p className='font-normal font-poppins text-xs text-lightText'>Treat yourself to yummy dishes</p>
             </div>
-            <div>
+            <div className='overflow-hidden'>
                 <Image className='animate-spin-slow transition' width={90} src={assets.birthday} alt="birthday" />
             </div>
         </header>

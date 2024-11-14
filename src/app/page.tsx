@@ -12,7 +12,7 @@ const Page: React.FC = () => {
       <h1>Restaurant List</h1>
       <div>
         {restaurants.map((restaurantId) => (
-          <Link key={restaurantId} href={`/restaurants/${restaurantId}`} passHref>
+          <Link key={restaurantId} href={`/restaurant/${restaurantId}`} passHref>
             <button style={{ margin: '10px', padding: '10px', fontSize: '16px' }}>
               Restaurant {restaurantId}
             </button>
