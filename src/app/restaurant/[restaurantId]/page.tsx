@@ -4,20 +4,18 @@ import RestaurantHeader from '@/components/RestaurantHeader/RestaurantHeader';
 import CTA from '@/components/CTA/CTA';
 import BannerWithProfile from '@/components/BannerWithProfile/BannerWithProfile';
 
-// Mock Data
-// import { mockRestaurantData, mockMenuItems } from '@/Mockdata/RestaurantData';
-// import { MenuItem } from '@/types';
+// Adjust the type to match Next.js' inferred types for dynamic routes
 interface Params {
     restaurantId: string;
 }
 
-const RestaurantPage: React.FC<{ params: Params }> = ({ params }) => {
-    const { restaurantId } = params; // Get restaurantId from params
-    // Get restaurantId from params
+// Use Async Page function with a dynamic route
+const RestaurantPage = async ({ params }: { params: Params }) => {
+    const { restaurantId } = params; // Extract restaurantId from params
 
-    // Mocked restaurant data
-    // const restaurant = mockRestaurantData;  // In reality, this would be fetched using the restaurantId
-    // const menuItems = mockMenuItems; // In reality, these items would be fetched for this specific restaurant
+    // Mocked restaurant data (replace with real API call as needed)
+    // const restaurant = await fetchRestaurantData(restaurantId);
+    // const menuItems = await fetchMenuItems(restaurantId);
 
     return (
         <section>
@@ -28,14 +26,14 @@ const RestaurantPage: React.FC<{ params: Params }> = ({ params }) => {
                     header="Explore Our Menu"
                     description="Tap QR Menu to explore our delicious dishes and order right from your phone!"
                     btnContent="Our Menu"
-                    restaurantId={restaurantId}  // Pass restaurantId to the client component
+                    restaurantId={restaurantId} // Pass restaurantId to the client component
                     isWaiter={false}
                 />
                 <CTA
                     header="Show Your Appreciation"
                     description="Enjoyed the service? Tap Pay Tip to show your thanks!"
                     btnContent="Pay tips"
-                    restaurantId={restaurantId}  // Pass restaurantId to the client component
+                    restaurantId={restaurantId} // Pass restaurantId to the client component
                     isWaiter={true}
                 />
             </div>
@@ -44,4 +42,3 @@ const RestaurantPage: React.FC<{ params: Params }> = ({ params }) => {
 };
 
 export default RestaurantPage;
-
