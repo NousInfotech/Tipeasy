@@ -7,14 +7,13 @@ import BannerWithProfile from '@/components/BannerWithProfile/BannerWithProfile'
 // Mock Data
 // import { mockRestaurantData, mockMenuItems } from '@/Mockdata/RestaurantData';
 // import { MenuItem } from '@/types';
-
 interface Params {
-    params: { restaurantId: string };
+    restaurantId: string;
 }
 
-const RestaurantPage: React.FC<Params> = async ({ params }) => {
-
-    const { restaurantId } = await params;  // Get restaurantId from params
+const RestaurantPage: React.FC<{ params: Params }> = ({ params }) => {
+    const { restaurantId } = params; // Get restaurantId from params
+    // Get restaurantId from params
 
     // Mocked restaurant data
     // const restaurant = mockRestaurantData;  // In reality, this would be fetched using the restaurantId
