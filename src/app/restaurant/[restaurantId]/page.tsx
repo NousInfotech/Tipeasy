@@ -4,18 +4,15 @@ import RestaurantHeader from '@/components/RestaurantHeader/RestaurantHeader';
 import CTA from '@/components/CTA/CTA';
 import BannerWithProfile from '@/components/BannerWithProfile/BannerWithProfile';
 
-// Adjust the type to match Next.js' inferred types for dynamic routes
+// Adjust the type to include async behavior of params
 interface Params {
     restaurantId: string;
 }
 
-// Use Async Page function with a dynamic route
-const RestaurantPage = async ({ params }: { params: Params }) => {
-    const { restaurantId } = params; // Extract restaurantId from params
-
-    // Mocked restaurant data (replace with real API call as needed)
-    // const restaurant = await fetchRestaurantData(restaurantId);
-    // const menuItems = await fetchMenuItems(restaurantId);
+// Updated Page function with correct typing for params
+const RestaurantPage = async ({ params }: { params: Promise<Params> }) => {
+    // Resolve params if it is asynchronous
+    const { restaurantId } = await params;
 
     return (
         <section>
