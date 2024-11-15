@@ -5,8 +5,8 @@ import CTA from '@/components/CTA/CTA';
 import BannerWithProfile from '@/components/BannerWithProfile/BannerWithProfile';
 
 // Mock Data
-import { mockRestaurantData, mockMenuItems } from '@/Mockdata/RestaurantData';
-import { MenuItem } from '@/types';
+// import { mockRestaurantData, mockMenuItems } from '@/Mockdata/RestaurantData';
+// import { MenuItem } from '@/types';
 
 interface Params {
     params: { restaurantId: string };
@@ -17,8 +17,8 @@ const RestaurantPage: React.FC<Params> = async ({ params }) => {
     const { restaurantId } = await params;  // Get restaurantId from params
 
     // Mocked restaurant data
-    const restaurant = mockRestaurantData;  // In reality, this would be fetched using the restaurantId
-    const menuItems = mockMenuItems; // In reality, these items would be fetched for this specific restaurant
+    // const restaurant = mockRestaurantData;  // In reality, this would be fetched using the restaurantId
+    // const menuItems = mockMenuItems; // In reality, these items would be fetched for this specific restaurant
 
     return (
         <section>

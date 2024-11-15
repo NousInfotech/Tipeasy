@@ -1,17 +1,16 @@
 // src/app/restaurants/[restaurantId]/menu/page.tsx
 import React from "react";
-import { mockMenuItems } from "@/Mockdata/RestaurantData";
-import { GetStaticProps, GetStaticPaths } from "next";
-import { MenuItem } from "@/types";
+// import { MenuItem } from "@/types";
 import HeaderwithBackButton from "@/components/HeaderwithBackButton/HeaderwithBackButton";
 import SearchBar from "@/components/SearchBar/SearchBar";
 
-interface MenuProps {
-  menuItems: MenuItem[];
-  restaurantId: string;
-}
+// interface MenuProps {
+//   menuItems: MenuItem[];
+//   restaurantId: string;
+// }
 
-const Menu: React.FC<MenuProps> = ({ menuItems, restaurantId }) => {
+// const Menu: React.FC<MenuProps> = ({ menuItems, restaurantId }) => {
+const Menu = () => {
   return (
     // <section>
     //   <h2 className="text-xl font-bold text-center mb-6">Menu</h2>
@@ -42,7 +41,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, restaurantId }) => {
     // </section>
     <section>
       <HeaderwithBackButton heading="menu items" />
-      <SearchBar/>
+      <SearchBar />
     </section>
   );
 };
