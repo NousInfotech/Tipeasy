@@ -22,12 +22,13 @@ export interface Waiter {
 // src/types/index.ts
 
 export interface MenuItem {
-    menuItemId: string;  // Unique ID for the menu item
-    restaurantId:string;
-    name: string;        // Name of the menu item
-    description: string; // Description of the menu item
-    category: string;    // E.g., "Appetizers", "Main Course", "Desserts"
-    price: number;       // Price of the item
-    image: string;       // URL to the image of the menu item
+    id: number;        // Unique ID for the menu item
+    restaurantId: string;
+    name: string;      // Name of the menu item
+    category: string;  // E.g., "Food", "Salads"
+    price: number;     // Price of the item
     availability: boolean; // Quantity available for this item
+    tag: 'veg' | 'non-veg' | 'egg'; // New tag for filtering items
+    // description and image yet to be added 
 }
+
