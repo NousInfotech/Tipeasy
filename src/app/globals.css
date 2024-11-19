@@ -16,16 +16,15 @@
     --background: #ffffff;
     --foreground: #000000;
     --lightText: #595959;
+    --secondary:#B3C677;
     --primary: #98B03C;
     --accent1: #CEDCB2;
     --accent2: #E9F2EE;
-
-
-
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: "Poppins", sans-serif ;
 }

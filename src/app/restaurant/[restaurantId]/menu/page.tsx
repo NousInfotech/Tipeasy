@@ -1,19 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MenuItem } from '@/types';
 import MenuList from '@/components/MenuList/MenuList';
 import SearchBar from '@/components/SearchBar/SearchBar';
-import MenuFilter from '@/components/MenuFilter/MenuFilter';
+import { MenuFilter, TagFilter } from '@/components/MenuFilter/MenuFilter';
+import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
+import { Filter } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { menuData } from '@/Mockdata/MenuData';
+import { MenuItem } from '@/types';
 
-const menuData: MenuItem[] = [
-  { id: 1, name: 'Pepperoni Pizza', category: 'Food', price: 10, restaurantId: "3", availability: true, tag: 'non-veg' },
-  { id: 2, name: 'Cheese Pizza', category: 'Food', price: 8, restaurantId: "3", availability: true, tag: 'veg' },
-  { id: 3, name: 'Veggie Pizza', category: 'Food', price: 9, restaurantId: "3", availability: true, tag: 'veg' },
-  { id: 4, name: 'Chicken Wings', category: 'Food', price: 5, restaurantId: "3", availability: true, tag: 'non-veg' },
-  { id: 5, name: 'Caesar Salad', category: 'Salads', price: 7, restaurantId: "3", availability: true, tag: 'veg' },
-  { id: 6, name: 'Greek Salad', category: 'Salads', price: 6, restaurantId: "3", availability: true, tag: 'veg' },
-];
 
 const MenuPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,6 +19,13 @@ const MenuPage: React.FC = () => {
   const [priceSort, setPriceSort] = useState<string | null>(null);
   const [flatView, setFlatView] = useState(false);
   const [showFilter, setShowFilter] = useState(true);
+
+
+  const params = useParams();
+
+  const restaurantId = params?.restaurantId;
+
+  console.log(activeTags);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -39,12 +43,15 @@ const MenuPage: React.FC = () => {
   };
 
   const handleTagToggle = (tag: string) => {
+    // Toggle tag in activeTags
     const updatedTags = activeTags.includes(tag)
-      ? activeTags.filter(t => t !== tag)
-      : [...activeTags, tag];
-    setActiveTags(updatedTags);
-    applyFilters(updatedTags, priceSort);
+      ? activeTags.filter(t => t !== tag) // Remove tag if it's active
+      : [...activeTags, tag]; // Add tag if it's not active
+
+    setActiveTags(updatedTags); // Update state
+    applyFilters(updatedTags, priceSort); // Reapply filters
   };
+
 
   const handlePriceSort = (sortOption: string | null) => {
     setPriceSort(sortOption);
@@ -54,10 +61,12 @@ const MenuPage: React.FC = () => {
   const applyFilters = (tags = activeTags, sortOption = priceSort) => {
     let updatedMenu = menuData;
 
-    // Filter by tags
+    // Filter by tags (show items matching active tags)
     if (tags.length > 0) {
       updatedMenu = updatedMenu.filter(item => tags.includes(item.tag));
       setFlatView(true); // Switch to flat view when filtering
+    } else {
+      setFlatView(false); // Reset to category view when no tags are selected
     }
 
     // Sort by price
@@ -67,7 +76,7 @@ const MenuPage: React.FC = () => {
       updatedMenu = updatedMenu.sort((a, b) => b.price - a.price);
     }
 
-    setFilteredMenu(updatedMenu);
+    setFilteredMenu(updatedMenu); // Update the filtered menu
   };
 
   const toggleFilter = () => {
@@ -83,21 +92,24 @@ const MenuPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4">
+      <HeaderwithBackButton heading='Menu Items' />
       {/* Search Bar */}
       <SearchBar onSearch={handleSearch} />
 
       {/* Show filter toggle button and filter only if no search query */}
       {!searchQuery && (
         <>
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold">Menu</h1>
+          <div className="flex items-center justify-between mb-4 gap-2">
             <button
               onClick={toggleFilter}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+              className="p-[.3rem] bg-accent2 text-xs rounded-2xl flex flex-row gap-1 flex-1 justify-around"
             >
-              {showFilter ? 'Hide Filter' : 'Show Filter'}
+              <Filter size={16} /><span>Filter</span><span>▼</span>
             </button>
+            <TagFilter tags={['veg', 'non-veg', 'egg']}
+              activeTags={activeTags}
+              onTagToggle={handleTagToggle} />
           </div>
 
           {showFilter && (
@@ -114,6 +126,13 @@ const MenuPage: React.FC = () => {
 
       {/* Menu List */}
       <MenuList menuItems={filteredMenu} categories={['Food', 'Salads']} flatView={flatView} />
+
+      <Link href={`/restaurant/${restaurantId}/checkout`}>
+        <button className='fixed w-11/12 bottom-3 p-3 rounded-lg text-xs bg-primary text-white'>
+          Checkout
+        </button>
+      </Link>
+
     </div>
   );
 };

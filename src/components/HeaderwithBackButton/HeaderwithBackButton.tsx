@@ -18,7 +18,7 @@ const HeaderwithBackButton: React.FC<HeaderProps> = ({ heading }) => {
     }
 
     return (
-        <div className='flex flex-row gap-6 p-4 items-center'>
+        <div className='flex flex-row gap-6 items-center my-4'>
             <ArrowLeft onClick={handleClick} size={28} color='#98B03C' />
             <h1 className='text-primary font-poppins font-semibold text-base capitalize'>{heading}</h1>
         </div>

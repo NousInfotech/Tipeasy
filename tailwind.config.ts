@@ -13,6 +13,7 @@ export default {
         foreground: "var(--foreground)",
         lightText: "var(--lightText)",
         primary: "var(--primary)",
+        secondary: "var(--secondary)",
         accent1: "var(--accent1)",
         accent2: "var(--accent2)",
       },

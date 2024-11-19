@@ -12,7 +12,7 @@ export interface Restaurant {
 
 export interface Waiter {
     waiterId: string;
-    restaurantId:string;
+    restaurantId: string;
     name: string;
     rating: number;   // Example: Waiter rating out of 5
     activeStatus: boolean;
@@ -20,6 +20,7 @@ export interface Waiter {
 
 
 // src/types/index.ts
+
 
 export interface MenuItem {
     id: number;        // Unique ID for the menu item
@@ -29,6 +30,7 @@ export interface MenuItem {
     price: number;     // Price of the item
     availability: boolean; // Quantity available for this item
     tag: 'veg' | 'non-veg' | 'egg'; // New tag for filtering items
+    imageSrc: string;
     // description and image yet to be added 
 }
 
