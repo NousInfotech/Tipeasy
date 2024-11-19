@@ -10,7 +10,7 @@ import GrandTotal from './GrandTotal';
 import PrimaryBtn from '../PrimaryBtn/PrimaryBtn';
 
 const Checkout = () => {
-    const { state, dispatch } = useCart(); // Assuming `state` contains cart items
+    const { state } = useCart(); // Assuming `state` contains cart items
     const [menuItemsWithQuantity, setMenuItemsWithQuantity] = useState<{ item: MenuItem; quantity: number }[]>([]);
 
     const handleOrderClick = () => {

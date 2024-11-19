@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import Image from 'next/image';
-import { Plus, Minus,Egg, } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 interface MenuListProps {
@@ -95,11 +95,6 @@ const MenuList: React.FC<MenuListProps> = ({ menuItems, categories, flatView }) 
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(() =>
     categories.reduce((acc, category) => ({ ...acc, [category]: true }), {})
   );
-
-  interface Items {
-    itemId: string,
-    quantity: number
-  }
 
   const toggleCategory = (category: string) => {
     setOpenCategories(prev => ({
