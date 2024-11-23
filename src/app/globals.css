@@ -28,3 +28,7 @@ body {
   background: var(--background);
   font-family: "Poppins", sans-serif ;
 }
+
+input.PhoneInputInput{
+  outline: none!important;
+}
