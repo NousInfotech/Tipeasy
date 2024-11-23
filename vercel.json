@@ -1,7 +1,0 @@
-{
-    "build": {
-      "buildCommand": "npm install --legacy-peer-deps && next build"
-    }
-  }
-  
-  
