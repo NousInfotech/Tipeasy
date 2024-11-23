@@ -1,6 +1,9 @@
 {
     "build": {
-      "command": "npm install --legacy-peer-deps && npm run build"
+      "env": {
+        "CI": "false"
+      },
+      "buildCommand": "npm install --legacy-peer-deps && npm run build"
     }
   }
   
