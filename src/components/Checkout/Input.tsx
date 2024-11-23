@@ -3,8 +3,6 @@ import { FieldError, Merge, FieldErrorsImpl, UseFormRegisterReturn } from 'react
 import PhoneInput, { Value } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
-type E164Number = string;
-
 interface InputProps {
     id: string;
     label: string;
