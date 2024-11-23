@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { menuData } from '@/Mockdata/MenuData';
 import { MenuItem } from '@/types';
-
+import { useCart } from '@/context/CartContext'; // Assuming CartContext manages cart state
 
 const MenuPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,9 +20,8 @@ const MenuPage: React.FC = () => {
   const [flatView, setFlatView] = useState(false);
   const [showFilter, setShowFilter] = useState(true);
 
-
+  const { state: cartState } = useCart(); // Access cart state
   const params = useParams();
-
   const restaurantId = params?.restaurantId;
 
   console.log(activeTags);
@@ -51,7 +50,6 @@ const MenuPage: React.FC = () => {
     setActiveTags(updatedTags); // Update state
     applyFilters(updatedTags, priceSort); // Reapply filters
   };
-
 
   const handlePriceSort = (sortOption: string | null) => {
     setPriceSort(sortOption);
@@ -91,9 +89,12 @@ const MenuPage: React.FC = () => {
     }
   };
 
+  // Check if cart is empty or if all item quantities are <= 0
+  const isCartDisabled = cartState.items.every(item => item.quantity <= 0);
+
   return (
     <div className="p-4">
-      <HeaderwithBackButton heading='Menu Items' />
+      <HeaderwithBackButton heading="Menu Items" />
       {/* Search Bar */}
       <SearchBar onSearch={handleSearch} />
 
@@ -105,11 +106,15 @@ const MenuPage: React.FC = () => {
               onClick={toggleFilter}
               className="p-[.3rem] bg-accent2 text-xs rounded-2xl flex flex-row gap-1 flex-1 justify-around"
             >
-              <Filter size={16} /><span>Filter</span><span>▼</span>
+              <Filter size={16} />
+              <span>Filter</span>
+              <span>▼</span>
             </button>
-            <TagFilter tags={['veg', 'non-veg', 'egg']}
+            <TagFilter
+              tags={['veg', 'non-veg', 'egg']}
               activeTags={activeTags}
-              onTagToggle={handleTagToggle} />
+              onTagToggle={handleTagToggle}
+            />
           </div>
 
           {showFilter && (
@@ -125,14 +130,26 @@ const MenuPage: React.FC = () => {
       )}
 
       {/* Menu List */}
-      <MenuList menuItems={filteredMenu} categories={['Food', 'Salads']} flatView={flatView} />
+      <MenuList
+        menuItems={filteredMenu}
+        categories={['Food', 'Salads']}
+        flatView={flatView}
+      />
 
-      <Link href={`/restaurant/${restaurantId}/checkout`}>
-        <button className='fixed w-11/12 bottom-3 p-3 rounded-lg text-xs bg-primary text-white'>
+      {isCartDisabled ? (
+        <button
+          disabled
+          className="fixed w-11/12 bottom-3 p-3 rounded-lg text-xs bg-gray-400 text-white cursor-not-allowed"
+        >
           Checkout
         </button>
-      </Link>
-
+      ) : (
+        <Link href={`/restaurant/${restaurantId}/cart`}>
+          <button className="fixed w-11/12 bottom-3 p-3 rounded-lg text-xs bg-primary text-white hover:bg-primary-dark">
+            Checkout
+          </button>
+        </Link>
+      )}
     </div>
   );
 };

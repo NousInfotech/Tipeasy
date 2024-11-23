@@ -12,10 +12,16 @@ const GrandTotal = ({ items, className }: GrandTotalProps) => {
     const total = items.reduce((sum, { item, quantity }) => sum + item.price * quantity, 0);
 
     return (
-        <div className={`mt-4 text-sm font-semibold flex flex-row justify-between items-center ${className ?? ''}`}>
-            <h1>Grand Total:</h1>
-            <h1>₹{total.toFixed(2)}</h1>
-        </div>
+        <>
+            <div className="h-[1px] bg-accent2 w-full"></div>
+            <div className={`mt-4 text-sm font-semibold flex flex-row justify-between items-center ${className ?? ''}`}>
+                <h1 className="flex flex-col">
+                    Grand Total:
+                    <span className="text-xs">(tax excluded)</span>
+                </h1>
+                <h1>₹{total.toFixed(2)}</h1>
+            </div>
+        </>
     );
 };
 

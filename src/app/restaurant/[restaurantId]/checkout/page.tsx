@@ -1,11 +1,11 @@
-import Checkout from '@/components/Checkout/Checkout'
 import React from 'react'
+import Checkout from '@/components/Checkout/Checkout'
 
 const page = () => {
-
-
     return (
-        <Checkout />
+        <section>
+            <Checkout />
+        </section>
     )
 }
 
