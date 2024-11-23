@@ -1,22 +1,22 @@
 import React from 'react';
-import { FieldError, Merge, FieldErrorsImpl, UseFormRegisterReturn } from 'react-hook-form';
+import { FieldError, Merge, FieldErrorsImpl, UseFormRegisterReturn, FieldValues } from 'react-hook-form';
 import PhoneInput, { Value } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
-interface InputProps {
+interface InputProps<TFieldValues extends FieldValues> {
     id: string;
     label: string;
     type?: string;
     placeholder?: string;
-    error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+    error?: FieldError | Merge<FieldError, FieldErrorsImpl<TFieldValues>>;
     required?: boolean;
     className?: string;
     register?: UseFormRegisterReturn;
-    phoneValue?: Value | undefined;
-    onPhoneChange?: (value?: Value) => void;
+    phoneValue?: Value | string | undefined; // Corrected type here
+    onPhoneChange?: (value?: Value) => void; // Corrected type here
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = <TFieldValues extends FieldValues>({
     id,
     label,
     type = 'text',
@@ -27,7 +27,7 @@ const Input: React.FC<InputProps> = ({
     register,
     phoneValue = '',
     onPhoneChange = () => { },
-}) => {
+}: InputProps<TFieldValues>) => {
     return (
         <div className={`mb-4 ${className}`}>
             <label htmlFor={id} className="block text-sm font-medium text-black">
@@ -45,9 +45,7 @@ const Input: React.FC<InputProps> = ({
                     defaultCountry="IN"
                     className={`w-full mt-2 p-2 text-xs border-b ${error ? 'border-b-red-500' : 'border-b-lightText'
                         } bg-transparent text-black focus:outline-none`}
-
                 />
-
             ) : (
                 <input
                     id={id}
