@@ -18,6 +18,13 @@ const PayTip = () => {
 
     const { waiter, fetchWaiterData } = useWaiter();
 
+    // Fetch waiter data if it's not available yet
+    useEffect(() => {
+        if (waiterId && !waiter) {
+            fetchWaiterData(waiterId);
+        }
+    }, [waiterId, waiter, fetchWaiterData]);  // Ensuring correct dependencies
+
     // If either restaurantId or waiterId is missing, show an error message
     if (!restaurantId || !waiterId) {
         return (
@@ -27,12 +34,7 @@ const PayTip = () => {
         );
     }
 
-    // Fetch waiter data if it's not available yet
-    useEffect(() => {
-        if (waiterId && !waiter) {
-            fetchWaiterData(waiterId);
-        }
-    }, [waiterId, waiter, fetchWaiterData]);  // Ensuring correct dependencies
+
 
     // Handle loading state and render loading message
     if (!waiter) {
