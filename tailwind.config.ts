@@ -16,6 +16,9 @@ export default {
         secondary: "var(--secondary)",
         accent1: "var(--accent1)",
         accent2: "var(--accent2)",
+        ratingYellow: "var(--ratingYellow)",
+        lightPrimary: "var(--lightPrimary)",
+        accent3:"var(--accent3)"
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

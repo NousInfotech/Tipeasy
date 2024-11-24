@@ -1,5 +1,7 @@
 // src/types/index.ts
 
+import { StaticImageData } from "next/image";
+
 export interface Restaurant {
     restaurantId: string;
     name: string;
@@ -14,6 +16,8 @@ export interface Waiter {
     waiterId: string;
     restaurantId: string;
     name: string;
+    // imageSrc: string;
+    imageSrc: StaticImageData;
     rating: number;   // Example: Waiter rating out of 5
     activeStatus: boolean;
 }

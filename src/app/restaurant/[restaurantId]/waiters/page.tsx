@@ -1,8 +1,9 @@
+import Waiters from '@/components/Waiters/Waiters'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <Waiters />
   )
 }
 

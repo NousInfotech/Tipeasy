@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { WaiterProvider } from "@/context/WaiterContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,9 @@ export default function RootLayout({
         className={`antialiased`}
       >
         <CartProvider>
-          {children}
+          <WaiterProvider>
+            {children}
+          </WaiterProvider>
         </CartProvider>
       </body>
     </html>
