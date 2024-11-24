@@ -18,7 +18,6 @@ const PayTipForm: React.FC<PayTipFormProps> = ({ restaurantId, waiterId }) => {
         register,
         handleSubmit,
         setValue,
-        trigger,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
