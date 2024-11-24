@@ -96,7 +96,7 @@ const MenuPage: React.FC = () => {
     <div className="p-4">
       <HeaderwithBackButton heading="Menu Items" />
       {/* Search Bar */}
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar placeHolder='Search a Food Item' onSearch={handleSearch} />
 
       {/* Show filter toggle button and filter only if no search query */}
       {!searchQuery && (

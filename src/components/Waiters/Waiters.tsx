@@ -26,7 +26,7 @@ const Waiters: React.FC = () => {
     return (
         <section className='p-4'>
             <HeaderwithBackButton heading="Pay Tips" />
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar placeHolder='Find your Waiter' onSearch={handleSearch} />
             <div className="grid grid-cols-3 gap-4 rounded">
                 {filteredWaiters.map(waiter => (
                     <WaiterComponent key={waiter.waiterId} waiter={waiter} />

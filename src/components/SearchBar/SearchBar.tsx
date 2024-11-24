@@ -6,9 +6,10 @@ import { Search } from 'lucide-react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  placeHolder: string
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeHolder, onSearch }) => {
   const [query, setQuery] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         type="text"
         value={query}
         onChange={handleChange}
-        placeholder="Search a food Item"
+        placeholder={placeHolder}
         className="w-full pl-10 p-3 font-normal text-xs border rounded-lg border-primary focus:outline-none"
       />
     </div>
