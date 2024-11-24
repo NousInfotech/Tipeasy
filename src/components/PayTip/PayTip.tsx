@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react';
 import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import PayTipForm from './PayTipForm';
@@ -30,9 +32,9 @@ const PayTip = () => {
         if (waiterId && !waiter) {
             fetchWaiterData(waiterId);
         }
-    }, [waiterId, waiter, fetchWaiterData]);  // Added fetchWaiterData as a dependency
+    }, [waiterId, waiter, fetchWaiterData]);  // Ensuring correct dependencies
 
-    // If waiter data is still not available after fetching, show a loading message
+    // Handle loading state and render loading message
     if (!waiter) {
         return (
             <div className="text-center mt-10">
