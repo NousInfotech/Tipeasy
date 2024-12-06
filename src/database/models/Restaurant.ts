@@ -20,9 +20,8 @@ const dietaryPreferencesSchema = new mongoose.Schema({
 // Main Schema
 const restaurantSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  menu: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }],
-  waiters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Waiter" }],
-  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+  menu: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }], // Keep for faster lookup
+  waiters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Waiter" }], // Keep for convenience
   categories: [{ type: String }],
   dietaryPreferences: { type: [dietaryPreferencesSchema], default: [] },
   googleLocation: { type: String },
@@ -32,9 +31,10 @@ const restaurantSchema = new mongoose.Schema({
   address: addressSchema,
   profileImage: { type: String },
   qrCodeUrl: { type: String },
-  tippings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tipping" }],
+  tippings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tipping" }], // Optional
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
 
 export const Restaurant = mongoose.model("Restaurant", restaurantSchema);

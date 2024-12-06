@@ -11,10 +11,14 @@
     "seed": "node --loader ts-node/esm src/database/seed.ts"
   },
   "dependencies": {
+    "cloudinary": "^2.5.1",
     "dotenv": "^16.4.5",
+    "firebase": "^11.0.2",
+    "firebase-admin": "^13.0.1",
     "lucide-react": "^0.456.0",
     "mongoose": "^8.8.3",
     "next": "15.0.3",
+    "razorpay": "^2.9.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.53.2",
