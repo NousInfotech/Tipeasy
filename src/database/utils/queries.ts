@@ -88,14 +88,22 @@ export const createWaiter = async (waiterData: any) => {
 
 // Get Waiter by ID
 export const getWaiterById = async (waiterId: string) => {
-    const waiter = await Waiter.findById(waiterId).populate("restaurant tippings");
+    const waiter = await Waiter.findById(waiterId).select("-bankDetails");
     if (!waiter) throw new Error("Waiter not found");
     return waiter;
 };
 
+// Get Waiters by RestaurantId 
+export const getWaiterByRestaurantId = async (restaurantId: string) => {
+    const waiters = await Waiter.find({ restaurantId }).select("-bankDetails");
+    if (!waiters || waiters.length === 0) throw new Error("No waiters found for the specified restaurant");
+    return waiters;
+};
+
+
 // Update Waiter
 export const updateWaiter = async (waiterId: string, updatedData: any) => {
-    const waiter = await Waiter.findByIdAndUpdate(waiterId, updatedData, { new: true }).populate("restaurant tippings");
+    const waiter = await Waiter.findByIdAndUpdate(waiterId, updatedData, { new: true });
     if (!waiter) throw new Error("Waiter not found");
     return waiter;
 };

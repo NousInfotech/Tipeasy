@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "cloudinary": "^2.5.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "firebase": "^11.0.2",
     "firebase-admin": "^13.0.1",

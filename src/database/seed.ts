@@ -97,19 +97,18 @@ const seedDatabase = async () => {
 
     // Seed Waiters
     const waiter = new Waiter({
-      name: "John Doe",
-      phoneNumber: "9876543211",
-      restaurantId: restaurant._id, // Use the correct field name from the schema
-      ratings: 4.5,
-      firebaseId: "firebase-waiter-id",
-      imgSrc: "/path/to/waiter-image.jpg",
-      bankDetails: {
-        ifsc: "HDFC0001234",
-        accountName: "John Doe",
-        accountNumber: "123456789",
-        razorpayFundAccountId: "fund-razorpay-id", // Optional, so this is fine
-      },
-    });
+      "name": "John Doe",
+      "phoneNumber": "1234567890",
+      "restaurantId": "64b1f8c2e4d2ab0012345678",
+      "firebaseId": "someFirebaseUserId",
+      "imgSrc": "https://example.com/waiter-image.jpg",
+      "bankDetails": {
+        "ifsc": "ABCD0123456",
+        "accountName": "John Doe",
+        "accountNumber": "123456789012"
+      }
+    }
+    );
 
     const createdWaiter = await waiter.save();
     console.log("Waiter seeded");
