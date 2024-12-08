@@ -49,6 +49,13 @@ export const createMenuItem = async (menuData: any) => {
     return menu;
 };
 
+// Update Menu Item
+export const getMenusByRestaurantId = async (restaurantId: string) => {
+    const menus = await Menu.find({ restaurantId });
+    if (!menus || menus.length === 0) throw new Error("No menu items found for this restaurant");
+    return menus;
+};
+
 // Get Menu by ID
 export const getMenuById = async (menuId: string) => {
     const menu = await Menu.findById(menuId);
