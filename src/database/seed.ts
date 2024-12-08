@@ -92,7 +92,7 @@ const seedDatabase = async () => {
       },
     ];
 
-    await Menu.insertMany(menuItems);
+    const createdMenus = await Menu.insertMany(menuItems);
     console.log("Menu items seeded.");
 
     // Seed Waiters
@@ -111,8 +111,14 @@ const seedDatabase = async () => {
       },
     });
 
-    await waiter.save();
+    const createdWaiter = await waiter.save();
     console.log("Waiter seeded");
+
+    // Update Restaurant with menu and waiter references
+    restaurant.menu = createdMenus.map((menu) => menu._id);
+    restaurant.waiters = [createdWaiter._id]; // Assuming the restaurant can have multiple waiters
+    await restaurant.save();
+    console.log("Restaurant updated with menu and waiter references");
 
     // Exit process
     process.exit(0);

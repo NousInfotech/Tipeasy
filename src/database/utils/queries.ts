@@ -13,7 +13,15 @@ export const createRestaurant = async (restaurantData: any) => {
 
 // Get Restaurant by ID
 export const getRestaurantById = async (restaurantId: string) => {
-    const restaurant = await Restaurant.findById(restaurantId).populate("menu waiters orders tippings");
+    console.log(restaurantId)
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) throw new Error("Restaurant not found");
+    return restaurant;
+};
+// Get Restaurants
+export const getRestaurants = async () => {
+    const restaurant = await Restaurant.find();
     if (!restaurant) throw new Error("Restaurant not found");
     return restaurant;
 };

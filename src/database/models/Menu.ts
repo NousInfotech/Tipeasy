@@ -11,4 +11,4 @@ const menuSchema = new mongoose.Schema({
   restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant", required: true },
 });
 
-export const Menu = mongoose.model("Menu", menuSchema);
+export const Menu = mongoose.models.Menu || mongoose.model("Menu", menuSchema);

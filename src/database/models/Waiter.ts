@@ -22,4 +22,4 @@ const waiterSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export const Waiter = mongoose.model("Waiter", waiterSchema);
+export const Waiter = mongoose.models.Waiter || mongoose.model("Waiter", waiterSchema);

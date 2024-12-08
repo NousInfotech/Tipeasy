@@ -31,10 +31,10 @@ const restaurantSchema = new mongoose.Schema({
   address: addressSchema,
   profileImage: { type: String },
   qrCodeUrl: { type: String },
-  tippings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tipping" }], // Optional
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
 
-export const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+export const Restaurant = mongoose.models.Restaurant || mongoose.model("Restaurant", restaurantSchema);
+
