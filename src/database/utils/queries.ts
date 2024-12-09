@@ -1,6 +1,8 @@
 import { Restaurant } from "../models/Restaurant";
 import { Menu } from "../models/Menu";
 import { Waiter } from "../models/Waiter";
+import { Order } from "../models/Order";
+import { Tipping } from "../models/Tipping";
 
 // CRUD Functions for Restaurant
 
@@ -114,3 +116,25 @@ export const deleteWaiter = async (waiterId: string) => {
     if (!waiter) throw new Error("Waiter not found");
     return { message: "Waiter deleted successfully" };
 };
+
+// Create an order
+export const createOrder = async (orderData: any) => {
+    const newOrder = new Order(orderData);
+    await newOrder.save();
+    return newOrder;
+};
+
+// Get orders by restaurantId
+export const getOrdersByRestaurantId = async (restaurantId: string) => {
+    const orders = await Order.find({ restaurantId })
+        .populate("menuItems.menuId", "title price")
+        .sort({ dateTime: -1 });
+    return orders;
+};
+
+// Get an order by orderId
+export const getOrderById = async (orderId: string) => {
+    const order = await Order.findById(orderId).populate("menuItems.menuId", "title price");
+    return order;
+};
+
