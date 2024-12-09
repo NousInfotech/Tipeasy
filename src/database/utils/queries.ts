@@ -138,3 +138,27 @@ export const getOrderById = async (orderId: string) => {
     return order;
 };
 
+
+
+export async function createTipping(tippingData: any) {
+    const tipping = new Tipping(tippingData);
+    await tipping.save();
+    return tipping;
+}
+
+
+export async function getTippingsByRestaurantId(restaurantId: string) {
+    const tippings = await Tipping.find({ restaurantId }).populate("waiterId", "name phoneNumber");
+    return tippings;
+}
+
+export async function getTippingsByWaiterId(waiterId: string) {
+    const tippings = await Tipping.find({ waiterId }).populate("restaurantId", "title phoneNumber");
+    return tippings;
+}
+
+
+export async function getTippingById(tippingId: string) {
+    const tipping = await Tipping.findById(tippingId).populate("restaurantId", "title").populate("waiterId", "name");
+    return tipping;
+}
