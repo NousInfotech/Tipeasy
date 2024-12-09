@@ -13,7 +13,6 @@ const waiterSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant", required: true },
-  tippings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tipping" }],
   ratings: { type: Number, default: 0 },
   firebaseId: { type: String, required: true },
   imgSrc: { type: String, required: false },

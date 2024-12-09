@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
 import connectDB from "./connection.ts";
 import { User } from "./models/User.ts";
 import { Restaurant } from "./models/Restaurant.ts";
 import { Menu } from "./models/Menu.ts";
 import { Waiter } from "./models/Waiter.ts";
+import { Order } from "./models/Order.ts";
+import { Tipping } from "./models/Tipping.ts";
 
 const seedDatabase = async () => {
   try {
@@ -16,6 +17,8 @@ const seedDatabase = async () => {
     await Restaurant.deleteMany({});
     await Menu.deleteMany({});
     await Waiter.deleteMany({});
+    await Order.deleteMany({});
+    await Tipping.deleteMany({});
     console.log("Existing data cleared");
 
     // Seed SuperAdmin
@@ -90,34 +93,129 @@ const seedDatabase = async () => {
         dietaryPreference: "non-veg",
         restaurantId: restaurant._id,
       },
+      {
+        title: "Tandoori Roti",
+        description: "Soft and fresh tandoori bread.",
+        imgSrc: "/path/to/roti-image.jpg",
+        price: 50,
+        category: "Bread",
+        availability: "available",
+        dietaryPreference: "veg",
+        restaurantId: restaurant._id,
+      },
+      {
+        title: "Butter Chicken",
+        description: "Classic butter chicken curry.",
+        imgSrc: "/path/to/butter-chicken-image.jpg",
+        price: 400,
+        category: "Main Course",
+        availability: "available",
+        dietaryPreference: "non-veg",
+        restaurantId: restaurant._id,
+      },
+      {
+        title: "Gulab Jamun",
+        description: "Sweet dessert balls in syrup.",
+        imgSrc: "/path/to/gulab-jamun-image.jpg",
+        price: 150,
+        category: "Dessert",
+        availability: "available",
+        dietaryPreference: "veg",
+        restaurantId: restaurant._id,
+      },
+      {
+        title: "Veg Fried Rice",
+        description: "Delicious fried rice with vegetables.",
+        imgSrc: "/path/to/fried-rice-image.jpg",
+        price: 200,
+        category: "Rice",
+        availability: "available",
+        dietaryPreference: "veg",
+        restaurantId: restaurant._id,
+      },
     ];
 
     const createdMenus = await Menu.insertMany(menuItems);
     console.log("Menu items seeded.");
 
     // Seed Waiters
-    const waiter = new Waiter({
-      "name": "John Doe",
-      "phoneNumber": "1234567890",
-      "restaurantId": "64b1f8c2e4d2ab0012345678",
-      "firebaseId": "someFirebaseUserId",
-      "imgSrc": "https://example.com/waiter-image.jpg",
-      "bankDetails": {
-        "ifsc": "ABCD0123456",
-        "accountName": "John Doe",
-        "accountNumber": "123456789012"
-      }
-    }
-    );
+    const waiters = [
+      {
+        name: "John Doe",
+        phoneNumber: "1234567890",
+        restaurantId: restaurant._id,
+        firebaseId: "firebase-john-id",
+        imgSrc: "https://example.com/john-image.jpg",
+        bankDetails: {
+          ifsc: "ABCD0123456",
+          accountName: "John Doe",
+          accountNumber: "123456789012",
+        },
+      },
+      {
+        name: "Jane Smith",
+        phoneNumber: "0987654321",
+        restaurantId: restaurant._id,
+        firebaseId: "firebase-jane-id",
+        imgSrc: "https://example.com/jane-image.jpg",
+        bankDetails: {
+          ifsc: "EFGH0987654",
+          accountName: "Jane Smith",
+          accountNumber: "987654321098",
+        },
+      },
+      {
+        name: "Alice Johnson",
+        phoneNumber: "1122334455",
+        restaurantId: restaurant._id,
+        firebaseId: "firebase-alice-id",
+        imgSrc: "https://example.com/alice-image.jpg",
+        bankDetails: {
+          ifsc: "IJKL1234567",
+          accountName: "Alice Johnson",
+          accountNumber: "567890123456",
+        },
+      },
+    ];
 
-    const createdWaiter = await waiter.save();
-    console.log("Waiter seeded");
+    const createdWaiters = await Waiter.insertMany(waiters);
+    console.log("Waiters seeded");
 
     // Update Restaurant with menu and waiter references
     restaurant.menu = createdMenus.map((menu) => menu._id);
-    restaurant.waiters = [createdWaiter._id]; // Assuming the restaurant can have multiple waiters
+    restaurant.waiters = createdWaiters.map((waiter) => waiter._id);
     await restaurant.save();
     console.log("Restaurant updated with menu and waiter references");
+
+    // Seed Orders
+    const order = new Order({
+      menuItems: [
+        { menuId: createdMenus[0]._id, quantity: 2 }, // Paneer Butter Masala
+        { menuId: createdMenus[1]._id, quantity: 1 }, // Chicken Curry
+      ],
+      restaurantId: restaurant._id,
+      tableNo: "A1",
+      customerName: "Customer One",
+      totalAmount: 850, // Total price calculated manually for now
+      status: "pending",
+    });
+    await order.save();
+    console.log("Order seeded");
+
+
+    // Seed Tipping
+    const tipping = new Tipping({
+      waiterId: createdWaiters[0]._id,
+      restaurantId: restaurant._id,
+      tipAmount: 100,
+      rating: 5,
+      experience: "very_happy",
+      paymentStatus: "received_master",
+      paymentId: "payment_12345",
+      fundTransactionId: "fund_12345",
+    });
+    await tipping.save();
+    console.log("Tipping seeded");
 
     // Exit process
     process.exit(0);
