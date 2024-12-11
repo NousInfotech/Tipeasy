@@ -59,24 +59,14 @@ function DemoPageContent({ pathname }: { pathname: string }) {
     );
 }
 
-interface DemoProps {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * Remove this when copying and pasting into your project.
-     */
-    window?: () => Window;
-}
 
-export default function AppProviderBasic(props: DemoProps) {
+
+export default function AppProviderBasic({ props }: { props: { window: () => Window } }) {
     const { window } = props;
-
     const router = useDemoRouter('/page');
-
-    // Remove this const when copying and pasting into your project.
     const demoWindow = window !== undefined ? window() : undefined;
 
     return (
-        // preview-start
         <AppProvider
             navigation={NAVIGATION}
             router={router}
@@ -87,6 +77,5 @@ export default function AppProviderBasic(props: DemoProps) {
                 <DemoPageContent pathname={router.pathname} />
             </DashboardLayout>
         </AppProvider>
-        // preview-end
     );
 }
