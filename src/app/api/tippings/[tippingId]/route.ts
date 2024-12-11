@@ -17,6 +17,7 @@ export async function GET(req: Request, context: { params: Promise<{ tippingId: 
             return NextResponse.json({ error: "Missing tippingId parameter" }, { status: 400 });
         }
 
+        await connectDB();
         const tipping = await getTippingById(tippingId); // Calls the getTippingById DB function
         if (!tipping) {
             return NextResponse.json({ error: "Tipping not found" }, { status: 404 });

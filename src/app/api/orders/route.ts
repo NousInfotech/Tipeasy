@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { createOrder, getOrdersByRestaurantId } from "@/database/utils/queries";
 import connectDB from "@/database/connection";
 import { successResponse, errorResponse } from "@/utils/response";
-import { connect } from "http2";
 
 
 
