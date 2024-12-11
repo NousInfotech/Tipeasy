@@ -61,7 +61,7 @@ function DemoPageContent({ pathname }: { pathname: string }) {
 
 
 
-export default function AppProviderBasic({ props }: { props: { window: () => Window } }) {
+export default function AppProviderBasic(props: any) {
     const { window } = props;
     const router = useDemoRouter('/page');
     const demoWindow = window !== undefined ? window() : undefined;
