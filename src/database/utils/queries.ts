@@ -104,7 +104,7 @@ export const getWaiterByRestaurantId = async (restaurantId: string) => {
 
 
 // Update Waiter
-export const updateWaiter = async (waiterId: string, updatedData: Object) => {
+export const updateWaiter = async (waiterId: string, updatedData:object) => {
     const waiter = await Waiter.findByIdAndUpdate(waiterId, updatedData, { new: true });
     if (!waiter) throw new Error("Waiter not found");
     return waiter;
