@@ -11,6 +11,11 @@
     "seed": "node --loader ts-node/esm src/database/seed.ts"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.2.0",
+    "@toolpad/core": "^0.10.0",
     "cloudinary": "^2.5.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
