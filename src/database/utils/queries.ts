@@ -29,7 +29,7 @@ export const getRestaurants = async () => {
 };
 
 // Update Restaurant
-export const updateRestaurant = async (restaurantId: string, updatedData:Object) => {
+export const updateRestaurant = async (restaurantId: string, updatedData: object) => {
     const restaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedData, { new: true }).populate("menu waiters orders tippings");
     if (!restaurant) throw new Error("Restaurant not found");
     return restaurant;
@@ -66,7 +66,7 @@ export const getMenuById = async (menuId: string) => {
 };
 
 // Update Menu Item
-export const updateMenuItem = async (menuId: string, updatedData:Object) => {
+export const updateMenuItem = async (menuId: string, updatedData: object) => {
     const menu = await Menu.findByIdAndUpdate(menuId, updatedData, { new: true });
     if (!menu) throw new Error("Menu item not found");
     return menu;
@@ -104,7 +104,7 @@ export const getWaiterByRestaurantId = async (restaurantId: string) => {
 
 
 // Update Waiter
-export const updateWaiter = async (waiterId: string, updatedData:object) => {
+export const updateWaiter = async (waiterId: string, updatedData: object) => {
     const waiter = await Waiter.findByIdAndUpdate(waiterId, updatedData, { new: true });
     if (!waiter) throw new Error("Waiter not found");
     return waiter;
