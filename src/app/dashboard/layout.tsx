@@ -61,17 +61,13 @@ function DemoPageContent({ pathname }: { pathname: string }) {
 
 
 
-export default function AppProviderBasic(props: any) {
-    const { window } = props;
+export default function AppProviderBasic() {
     const router = useDemoRouter('/page');
-    const demoWindow = window !== undefined ? window() : undefined;
-
     return (
         <AppProvider
             navigation={NAVIGATION}
             router={router}
             theme={demoTheme}
-            window={demoWindow}
         >
             <DashboardLayout>
                 <DemoPageContent pathname={router.pathname} />
