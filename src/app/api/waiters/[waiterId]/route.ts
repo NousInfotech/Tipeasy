@@ -25,7 +25,7 @@ export async function GET(
         const waiter = await getWaiterById(waiterId);
         return NextResponse.json(successResponse("Waiter fetched successfully", waiter));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error.message), { status: 500 });
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
 }
 
@@ -52,7 +52,7 @@ export async function PUT(
         const updatedWaiter = await updateWaiter(waiterId, updatedData);
         return NextResponse.json(successResponse("Waiter updated successfully", updatedWaiter));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error.message), { status: 500 });
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
 }
 
@@ -78,7 +78,7 @@ export async function DELETE(
         const result = await deleteWaiter(waiterId);
         return NextResponse.json(successResponse(result.message, result));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error.message), { status: 500 });
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
 }
 
