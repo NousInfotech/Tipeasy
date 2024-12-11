@@ -18,7 +18,7 @@ interface FormattedError {
    * @param {any} error - The error object to format.
    * @returns {FormattedError} - The formatted error object.
    */
-  export const formatError = (error: any): FormattedError => {
+  export const formatError = (error: unknown): FormattedError => {
     // Assuming the error might have a 'message', 'code', and 'status' properties.
     return {
       success: false,  // success is always false for errors

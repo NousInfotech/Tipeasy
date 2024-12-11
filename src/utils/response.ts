@@ -3,7 +3,7 @@ import { formatError } from "./errorHandler";
 interface SuccessResponse {
   success: true;
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 interface ErrorResponse {
@@ -19,7 +19,7 @@ interface ErrorResponse {
  * @param {any} [data=null] - Optional data to include in the response.
  * @returns {SuccessResponse} - The formatted success response.
  */
-export const successResponse = (message: string, data: any = null): SuccessResponse => {
+export const successResponse = (message: string, data: unknown = null): SuccessResponse => {
   return {
     success: true,
     message,
@@ -32,7 +32,7 @@ export const successResponse = (message: string, data: any = null): SuccessRespo
  * @param {any} error - The error object to format.
  * @returns {ErrorResponse} - The formatted error response.
  */
-export const errorResponse = (error: any): ErrorResponse => {
+export const errorResponse = (error: unknown): ErrorResponse => {
   const formattedError = formatError(error);  // Ensure this returns { message, code, status, success: false }
   return {
     ...formattedError,

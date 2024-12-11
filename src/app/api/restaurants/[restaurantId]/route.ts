@@ -26,8 +26,8 @@ export async function GET(request: Request, context: { params: Promise<Params> }
         }
 
         return NextResponse.json(successResponse('Restaurant fetched successfully', restaurant));
-    } catch (error: any) {
-        return NextResponse.json(errorResponse(error.message), { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
 }
 // PUT: Update a specific restaurant by ID
@@ -43,7 +43,7 @@ export async function PUT(request: Request, context: { params: Promise<Params> }
         const updatedRestaurant = await updateRestaurant(restaurantId, updatedData);
 
         return NextResponse.json(successResponse('Restaurant updated successfully', updatedRestaurant));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error));
     }
 }
@@ -60,7 +60,7 @@ export async function DELETE(request: Request, context: { params: Promise<Params
         const result = await deleteRestaurant(restaurantId); // Delete from DB
 
         return NextResponse.json(successResponse(result.message, result));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error));
     }
 }

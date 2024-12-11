@@ -11,7 +11,7 @@ export async function GET() {
         await connectDB();
         const restaurants = await getRestaurants(); // Adjust based on your DB function
         return NextResponse.json(successResponse('Restaurants fetched successfully', restaurants));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error));
     }
 }
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         const restaurantData = await request.json();
         const newRestaurant = await createRestaurant(restaurantData);
         return NextResponse.json(successResponse('Restaurant created successfully', newRestaurant));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error));
     }
 }

@@ -47,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         const newWaiter = await createWaiter(waiterData);
         return NextResponse.json(successResponse("Waiter created successfully", newWaiter));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error.message), { status: 500 });
     }
 }
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
         await connectDB();
         const waiters = await getWaiterByRestaurantId(restaurantId);
         return NextResponse.json(successResponse("Waiters fetched successfully", waiters));
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json(errorResponse(error.message), { status: 500 });
     }
 }

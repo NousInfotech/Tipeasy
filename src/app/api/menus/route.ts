@@ -20,8 +20,12 @@ export async function GET(request: Request): Promise<NextResponse> {
         const menus = await getMenusByRestaurantId(restaurantId);
 
         return NextResponse.json({ success: true, message: "Menus fetched successfully", data: menus });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
+
     }
 }
 
@@ -42,8 +46,12 @@ export async function POST(request: Request): Promise<NextResponse> {
         const newMenu = await createMenuItem(menuData);
 
         return NextResponse.json({ success: true, message: "Menu item created successfully", data: newMenu });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
+
     }
 }
 

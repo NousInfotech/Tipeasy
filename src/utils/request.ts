@@ -12,7 +12,7 @@ import axiosInstance from './axiosInstance';
 export const request = async (
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    data: any = null,
+    data: unknown = null,
     options: AxiosRequestConfig = {}
 ): Promise<any> => {
     try {
@@ -25,7 +25,7 @@ export const request = async (
 
         const response = await axiosInstance(config);
         return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
         throw new Error(error.message);
     }
 };
@@ -47,7 +47,7 @@ export const get = async (url: string, options: AxiosRequestConfig = {}): Promis
  * @param {AxiosRequestConfig} [options] - Optional additional configuration.
  * @returns {Promise<any>} - The response data.
  */
-export const post = async (url: string, data: any, options: AxiosRequestConfig = {}): Promise<any> => {
+export const post = async (url: string, data: unknown, options: AxiosRequestConfig = {}): Promise<any> => {
     return request(url, 'POST', data, options);
 };
 
@@ -58,7 +58,7 @@ export const post = async (url: string, data: any, options: AxiosRequestConfig =
  * @param {AxiosRequestConfig} [options] - Optional additional configuration.
  * @returns {Promise<any>} - The response data.
  */
-export const put = async (url: string, data: any, options: AxiosRequestConfig = {}): Promise<any> => {
+export const put = async (url: string, data: unknown, options: AxiosRequestConfig = {}): Promise<any> => {
     return request(url, 'PUT', data, options);
 };
 

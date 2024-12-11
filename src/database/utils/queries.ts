@@ -7,7 +7,7 @@ import { Tipping } from "../models/Tipping";
 // CRUD Functions for Restaurant
 
 // Create Restaurant
-export const createRestaurant = async (restaurantData: any) => {
+export const createRestaurant = async (restaurantData: unknown) => {
     const restaurant = new Restaurant(restaurantData);
     await restaurant.save();
     return restaurant;
@@ -29,7 +29,7 @@ export const getRestaurants = async () => {
 };
 
 // Update Restaurant
-export const updateRestaurant = async (restaurantId: string, updatedData: any) => {
+export const updateRestaurant = async (restaurantId: string, updatedData: unknown) => {
     const restaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedData, { new: true }).populate("menu waiters orders tippings");
     if (!restaurant) throw new Error("Restaurant not found");
     return restaurant;
@@ -45,7 +45,7 @@ export const deleteRestaurant = async (restaurantId: string) => {
 // CRUD Functions for Menu
 
 // Create Menu Item
-export const createMenuItem = async (menuData: any) => {
+export const createMenuItem = async (menuData: unknown) => {
     const menu = new Menu(menuData);
     await menu.save();
     return menu;
@@ -66,7 +66,7 @@ export const getMenuById = async (menuId: string) => {
 };
 
 // Update Menu Item
-export const updateMenuItem = async (menuId: string, updatedData: any) => {
+export const updateMenuItem = async (menuId: string, updatedData: unknown) => {
     const menu = await Menu.findByIdAndUpdate(menuId, updatedData, { new: true });
     if (!menu) throw new Error("Menu item not found");
     return menu;
@@ -82,7 +82,7 @@ export const deleteMenuItem = async (menuId: string) => {
 // CRUD Functions for Waiter
 
 // Create Waiter
-export const createWaiter = async (waiterData: any) => {
+export const createWaiter = async (waiterData: unknown) => {
     const waiter = new Waiter(waiterData);
     await waiter.save();
     return waiter;
@@ -104,7 +104,7 @@ export const getWaiterByRestaurantId = async (restaurantId: string) => {
 
 
 // Update Waiter
-export const updateWaiter = async (waiterId: string, updatedData: any) => {
+export const updateWaiter = async (waiterId: string, updatedData: unknown) => {
     const waiter = await Waiter.findByIdAndUpdate(waiterId, updatedData, { new: true });
     if (!waiter) throw new Error("Waiter not found");
     return waiter;
@@ -118,7 +118,7 @@ export const deleteWaiter = async (waiterId: string) => {
 };
 
 // Create an order
-export const createOrder = async (orderData: any) => {
+export const createOrder = async (orderData: unknown) => {
     const newOrder = new Order(orderData);
     await newOrder.save();
     return newOrder;
@@ -140,7 +140,7 @@ export const getOrderById = async (orderId: string) => {
 
 
 
-export async function createTipping(tippingData: any) {
+export async function createTipping(tippingData: unknown) {
     const tipping = new Tipping(tippingData);
     await tipping.save();
     return tipping;

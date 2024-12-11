@@ -24,8 +24,11 @@ export async function GET(
         const menu = await getMenuById(menuId);
 
         return NextResponse.json({ success: true, message: "Menu item fetched successfully", data: menu });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
     }
 }
 
@@ -52,8 +55,11 @@ export async function PUT(
         const updatedMenu = await updateMenuItem(menuId, updatedData);
 
         return NextResponse.json({ success: true, message: "Menu item updated successfully", data: updatedMenu });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
     }
 }
 
@@ -79,7 +85,10 @@ export async function DELETE(
         const result = await deleteMenuItem(menuId);
 
         return NextResponse.json({ success: true, message: result.message });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
     }
 }
