@@ -38,3 +38,38 @@ export interface MenuItem {
     // description and image yet to be added 
 }
 
+// Type for a linked provider object
+export interface ProviderUserInfo {
+    providerId: string; // The ID of the provider (e.g., "password", "google.com")
+    displayName?: string; // The display name provided by the provider
+    photoUrl?: string; // The photo URL provided by the provider
+    federatedId?: string; // The federated ID for the provider
+    email?: string; // The email address from the provider
+    rawId?: string; // The raw ID from the provider
+    screenName?: string; // The screen name from the provider
+}
+
+// Type for a single user object
+export interface FirebaseUser {
+    uid: string,
+    localId: string; // The unique ID (UID) of the user
+    email?: string; // The email address of the user
+    emailVerified: boolean; // Whether the email is verified
+    displayName?: string; // The display name of the user
+    providerUserInfo?: ProviderUserInfo[]; // List of linked provider information
+    photoUrl?: string; // The photo URL of the user
+    passwordHash?: string; // The hashed password of the user
+    passwordUpdatedAt?: number; // Timestamp (in ms) when the password was last updated
+    validSince?: string; // Timestamp (in seconds) marking token revocation boundary
+    disabled?: boolean; // Whether the account is disabled
+    lastLoginAt?: string; // Timestamp (in ms) of the last login
+    createdAt?: string; // Timestamp (in ms) when the account was created
+    customAuth?: boolean; // Whether the account uses custom authentication
+}
+
+// Type for the entire Firebase API response
+export interface FirebaseResponse {
+    users: FirebaseUser[]; // Array of users associated with the provided ID token
+}
+
+

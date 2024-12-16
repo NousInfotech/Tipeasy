@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { createWaiter, getWaiterByRestaurantId } from "@/database/utils/queries";
 import { successResponse, errorResponse } from "@/utils/response";
 import connectDB from "@/database/connection";
-import { encryptData } from "./utils";
 import { registerUser } from "@/services/firebase/auth";
 
 export const runtime = 'nodejs';
@@ -24,8 +23,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 
         const firebaseId = await registerUser(email, password);
-        const encryptedAccountNumber = encryptData(bankDetails.accountNumber);
-        const encryptedIfsc = encryptData(bankDetails.ifsc);
 
         // Placeholder for Razorpay Fund Account ID
         const razorpayFundAccountId = "PLACEHOLDER_RPFUNDID";
@@ -37,13 +34,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             phoneNumber,
             restaurantId,
             firebaseId,
-            imgSrc,
-            bankDetails: {
-                accountNumber: encryptedAccountNumber,
-                ifsc: encryptedIfsc,
-                accountName: bankDetails.accountName,
-                razorpayFundAccountId,
-            },
+            
         };
 
         // Create waiter using the utility function

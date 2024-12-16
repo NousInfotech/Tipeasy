@@ -143,6 +143,7 @@ const seedDatabase = async () => {
       {
         name: "John Doe",
         phoneNumber: "1234567890",
+        email: "waiter12@gmail.com",
         restaurantId: restaurant._id,
         firebaseId: "firebase-john-id",
         imgSrc: "https://example.com/john-image.jpg",
@@ -155,6 +156,7 @@ const seedDatabase = async () => {
       {
         name: "Jane Smith",
         phoneNumber: "0987654321",
+        email: "waiter1@gmail.com",
         restaurantId: restaurant._id,
         firebaseId: "firebase-jane-id",
         imgSrc: "https://example.com/jane-image.jpg",
@@ -167,6 +169,7 @@ const seedDatabase = async () => {
       {
         name: "Alice Johnson",
         phoneNumber: "1122334455",
+        email: "waiter2@gmail.com",
         restaurantId: restaurant._id,
         firebaseId: "firebase-alice-id",
         imgSrc: "https://example.com/alice-image.jpg",

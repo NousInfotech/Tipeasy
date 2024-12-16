@@ -3,7 +3,6 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { WaiterProvider } from "@/context/WaiterContext";
 
-
 export const metadata: Metadata = {
   title: "Tip Easyy",
   description: "A QR-based tipping solution",

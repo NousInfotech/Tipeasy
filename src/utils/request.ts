@@ -16,11 +16,12 @@ export const request = async (
     options: AxiosRequestConfig = {}
 ): Promise<unknown> => {
     try {
+        // For GET requests, do not include 'data' as it is not needed in the body
         const config: AxiosRequestConfig = {
             ...options,
             method,
             url,
-            data,
+            ...(method !== 'GET' && { data }),  // Only add 'data' if method is not GET
         };
 
         const response = await axiosInstance(config);
@@ -41,6 +42,8 @@ export const request = async (
 export const get = async (url: string, options: AxiosRequestConfig = {}): Promise<unknown> => {
     return request(url, 'GET', null, options);
 };
+
+
 
 /**
  * Perform a POST request.

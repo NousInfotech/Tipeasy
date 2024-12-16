@@ -1,10 +1,12 @@
 import { Restaurant } from "../models/Restaurant";
 import { Menu } from "../models/Menu";
 import { Waiter } from "../models/Waiter";
+import { User } from "../models/User";
 import { Order } from "../models/Order";
 import { Tipping } from "../models/Tipping";
 
-// CRUD Functions for Restaurant
+// CRUD Functions for 
+
 
 // Create Restaurant
 export const createRestaurant = async (restaurantData: unknown) => {
@@ -162,3 +164,29 @@ export async function getTippingById(tippingId: string) {
     const tipping = await Tipping.findById(tippingId).populate("restaurantId", "title").populate("waiterId", "name");
     return tipping;
 }
+
+
+export async function fetchRoleById(firebaseId: string): Promise<string | null> {
+
+
+    const waiter = await Waiter.findOne({ "firebaseId": firebaseId });
+
+    if (waiter) {
+        return "waiter";
+    }
+
+    // If not a waiter, check User for roles
+    const user = await User.findOne({ firebaseId });
+    if (user) {
+        const role = user.role.toLowerCase(); // assuming `role` is a field in your User model
+        if (role === "admin") {
+            return "admin";
+        } else if (role === "superadmin") {
+            return "superadmin";
+        }
+    }
+
+    // If no role found, return null or handle accordingly
+    return null;
+}
+

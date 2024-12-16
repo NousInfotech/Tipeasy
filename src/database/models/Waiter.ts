@@ -12,6 +12,7 @@ const bankDetailsSchema = new mongoose.Schema({
 const waiterSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phoneNumber: { type: String, required: true },
+  email: { type: String, required: true },
   restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant", required: true },
   ratings: { type: Number, default: 0 },
   firebaseId: { type: String, required: true },

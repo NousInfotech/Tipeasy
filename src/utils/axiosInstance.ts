@@ -10,10 +10,11 @@ const axiosInstance = axios.create({
   headers: {
     // Add common headers if needed
     'Content-Type': 'application/json',
-    'api-key': process.env.API_KEY || '',
+    'api-key': process.env.NEXT_PUBLIC_API_KEY
     // Add Authorization header if you use JWT or Firebase tokens
     // 'Authorization': `Bearer ${token}`,
   },
 });
+
 
 export default axiosInstance;
