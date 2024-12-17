@@ -5,7 +5,7 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { NAVIGATION_BY_ROLE } from '@/utils/constants';
-import { createTheme, dividerClasses } from '@mui/material';
+import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
 import { usePathname } from 'next/navigation';
 

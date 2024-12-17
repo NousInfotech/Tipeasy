@@ -27,7 +27,6 @@ const fetchData = (): TableData[] => {
 
 const MyTable = () => {
     const [rows, setRows] = useState<TableData[]>([]); // Rows of the table
-    const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
     const [filteredRows, setFilteredRows] = useState<TableData[]>([]); // Filtered rows based on search
 
     useEffect(() => {
@@ -37,7 +36,6 @@ const MyTable = () => {
     }, []);
 
     const handleSearch = (query: string) => {
-        setSearchTerm(query);
 
         // Filter rows based on the search term
         const filteredData = rows.filter(row =>
