@@ -32,7 +32,7 @@ export const getRestaurants = async () => {
 
 // Update Restaurant
 export const updateRestaurant = async (restaurantId: string, updatedData: object) => {
-    const restaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedData, { new: true }).populate("menu waiters orders tippings");
+    const restaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedData, { new: true });
     if (!restaurant) throw new Error("Restaurant not found");
     return restaurant;
 };
@@ -142,31 +142,31 @@ export const getOrderById = async (orderId: string) => {
 
 
 
-export async function createTipping(tippingData: unknown) {
+const createTipping = async (tippingData: unknown) => {
     const tipping = new Tipping(tippingData);
     await tipping.save();
     return tipping;
 }
 
 
-export async function getTippingsByRestaurantId(restaurantId: string) {
+export const getTippingsByRestaurantId = async (restaurantId: string) => {
     const tippings = await Tipping.find({ restaurantId }).populate("waiterId", "name phoneNumber");
     return tippings;
 }
 
-export async function getTippingsByWaiterId(waiterId: string) {
+export const getTippingsByWaiterId = async (waiterId: string) => {
     const tippings = await Tipping.find({ waiterId }).populate("restaurantId", "title phoneNumber");
     return tippings;
 }
 
 
-export async function getTippingById(tippingId: string) {
+export const getTippingById = async (tippingId: string) => {
     const tipping = await Tipping.findById(tippingId).populate("restaurantId", "title").populate("waiterId", "name");
     return tipping;
 }
 
 
-export async function fetchRoleById(firebaseId: string): Promise<string | null> {
+export const fetchRoleById = async (firebaseId: string): Promise<string | null> => {
 
 
     const waiter = await Waiter.findOne({ "firebaseId": firebaseId });
@@ -189,4 +189,6 @@ export async function fetchRoleById(firebaseId: string): Promise<string | null> 
     // If no role found, return null or handle accordingly
     return null;
 }
+
+
 
