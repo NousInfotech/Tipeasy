@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Paper, TablePagination, Button } from '@mui/material';
 
 interface TableData {
-    [key: string]: any; // Any type for flexible data
+    [key: string]: string | number; // Any type for flexible data
 }
 
 interface CustomTableProps {

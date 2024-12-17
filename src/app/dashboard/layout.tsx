@@ -16,7 +16,6 @@ type Role = 'superadmin' | 'admin' | 'waiter';
 export default function DashboardPagesLayout(props: { children: React.ReactNode }) {
 
     const role = Cookie.get('userRole');
-    const pathname = usePathname();
 
     const theme = createTheme({
         palette: {

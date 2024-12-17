@@ -6,7 +6,7 @@ import SearchBar from '@/components/SearchBar/SearchBar'; // Import your SearchB
 
 // Simulate data fetching
 interface TableData {
-    [key: string]: any;
+    [key: string]: string | number;
 }
 
 const fetchData = (): TableData[] => {
