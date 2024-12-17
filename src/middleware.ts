@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { handleFirebaseResponse } from './services/firebase/auth';
 import { fetchRoleByFirebaseId } from './services/firebase/fetchUserById';
-import Cookie from 'cookie';
+import Cookie from 'cookie'
 
 
 
@@ -23,7 +23,12 @@ export async function middleware(req: NextRequest) {
 
   if (url.pathname.startsWith('/dashboard')) {
 
-    const cookies = Cookie.parse(req.headers.get('cookie') || '');
+    const cookieHeader = req.headers.get('cookie') || '';
+    const cookies = Object.fromEntries(
+      cookieHeader
+        .split(';')
+        .map(cookie => cookie.trim().split('=').map(decodeURIComponent))
+    );
 
     const token = cookies.authToken;
     const uid = cookies.userUID;

@@ -7,7 +7,6 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { NAVIGATION_BY_ROLE } from '@/utils/constants';
 import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
-import { usePathname } from 'next/navigation';
 
 
 
