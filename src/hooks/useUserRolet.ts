@@ -9,7 +9,6 @@ export const useUserRole = () => {
     const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        // Fetch data from cookies
         const userRole = Cookies.get('userRole');
         const userUID = Cookies.get('userUID');
         const authToken = Cookies.get('authToken');

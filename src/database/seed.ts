@@ -21,16 +21,16 @@ const seedDatabase = async () => {
     await Tipping.deleteMany({});
     console.log("Existing data cleared");
 
-    // Seed SuperAdmin
-    const superAdmin = new User({
+    // Seed superadmin
+    const superadmin = new User({
       username: "Super Admin",
       email: "superadmin@example.com",
       phoneNumber: "1234567890",
       firebaseId: "firebase-superadmin-id",
-      role: "superAdmin",
+      role: "superadmin",
     });
-    await superAdmin.save();
-    console.log("SuperAdmin seeded");
+    await superadmin.save();
+    console.log("superadmin seeded");
 
     // Seed Admin
     const admin = new User({

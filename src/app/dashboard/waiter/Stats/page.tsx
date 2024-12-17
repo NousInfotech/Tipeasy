@@ -5,6 +5,6 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 export default function BasicPageContainer() {
 
     return (
-        <PageContainer>folder title</PageContainer>
+        <PageContainer>stats title</PageContainer>
     );
 }

@@ -6,10 +6,12 @@ import nonVegIcon from './non-veg-icon.png';
 import vegIcon from './veg-icon.png'
 import waiter from './waiter.png'
 import ratingStart from './ratingStar.png'
+import logo from './logo.png'
 // Import other images as needed
 
 const assets: { [key: string]: StaticImageData } = {
     birthday,
+    logo,
     handwaveoff,
     eggIcon,
     nonVegIcon,

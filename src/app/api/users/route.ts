@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createWaiter, getWaiterByRestaurantId } from "@/database/utils/queries";
+import { createUser } from "@/database/utils/queries";
 import { successResponse, errorResponse } from "@/utils/response";
 import connectDB from "@/database/connection";
 import { registerUser } from "@/services/firebase/auth";
@@ -14,9 +14,15 @@ export const runtime = 'nodejs';
 export async function POST(request: Request): Promise<NextResponse> {
     try {
         const body = await request.json();
-        const { name, password, phoneNumber, email, restaurantId, imgSrc, bankDetails } = body;
+        const { username, email, password, phoneNumber, role, restaurantId } = body;
 
-        if (!name || !password || !email || !phoneNumber || !restaurantId || !bankDetails?.accountNumber || !bankDetails?.ifsc) {
+        if (!username || !password || !email || !phoneNumber || !role) {
+
+            if (role == "admin" && !restaurantId) {
+
+                return NextResponse.json(errorResponse("Missing required fields"), { status: 400 });
+            }
+
             return NextResponse.json(errorResponse("Missing required fields"), { status: 400 });
         }
 
@@ -24,45 +30,21 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         const firebaseId = await registerUser(email, password);
 
-        // Placeholder for Razorpay Fund Account ID
-        const razorpayFundAccountId = "PLACEHOLDER_RPFUNDID";
-
-        // Construct waiter data
-        const waiterData = {
-            name,
+        // Construct User data
+        const userData = {
+            username,
             email,
             phoneNumber,
             restaurantId,
             firebaseId,
-            
+            role,
         };
 
-        // Create waiter using the utility function
+        // Create User using the utility function
         await connectDB();
 
-        const newWaiter = await createWaiter(waiterData);
-        return NextResponse.json(successResponse("Waiter created successfully", newWaiter));
-    } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
-    }
-}
-/**
- * GET: Get waiters by restaurant ID
- * @param request - The incoming HTTP request.
- * @returns A JSON response with the list of waiters for the given restaurant.
- */
-export async function GET(request: Request) {
-    try {
-        const { searchParams } = new URL(request.url);
-        const restaurantId = searchParams.get("restaurantId");
-
-        if (!restaurantId) {
-            return NextResponse.json(errorResponse("Restaurant ID is required"), { status: 400 });
-        }
-
-        await connectDB();
-        const waiters = await getWaiterByRestaurantId(restaurantId);
-        return NextResponse.json(successResponse("Waiters fetched successfully", waiters));
+        const newUser = await createUser(userData);
+        return NextResponse.json(successResponse(role + " created successfully", newUser));
     } catch (error: unknown) {
         return NextResponse.json(errorResponse(error), { status: 500 });
     }

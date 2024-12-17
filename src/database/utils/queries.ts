@@ -142,7 +142,7 @@ export const getOrderById = async (orderId: string) => {
 
 
 
-const createTipping = async (tippingData: unknown) => {
+export const createTipping = async (tippingData: unknown) => {
     const tipping = new Tipping(tippingData);
     await tipping.save();
     return tipping;
@@ -189,6 +189,15 @@ export const fetchRoleById = async (firebaseId: string): Promise<string | null> 
     // If no role found, return null or handle accordingly
     return null;
 }
+
+// Users 
+
+export const createUser = async (userData: unknown) => {
+    const user = new User(userData);
+    await user.save();
+    return user;
+}
+
 
 
 

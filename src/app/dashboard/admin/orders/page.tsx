@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { PageContainer } from '@toolpad/core/PageContainer';
 
-
-export default function BasicPageContainer() {
-
+export default function FoodOrders() {
     return (
-        <PageContainer>folder title</PageContainer>
+        <PageContainer>FoodOrders Page</PageContainer>
     );
 }

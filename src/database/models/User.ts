@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   restaurantId: { type: String, required: true },
   role: {
     type: String,
-    enum: ["admin", "superAdmin"],
+    enum: ["admin", "superadmin"],
     required: true
   },
   createdAt: { type: Date, default: Date.now },
