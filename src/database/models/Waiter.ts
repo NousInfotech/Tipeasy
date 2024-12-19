@@ -18,8 +18,6 @@ const waiterSchema = new mongoose.Schema({
   firebaseId: { type: String, required: true },
   imgSrc: { type: String, required: false },
   bankDetails: bankDetailsSchema,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export const Waiter = mongoose.models.Waiter || mongoose.model("Waiter", waiterSchema);

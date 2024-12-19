@@ -1,96 +1,122 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { z } from 'zod';
 
-/**
- * Helper function to validate if a string is a valid email.
- * @param {string} email - The email to validate.
- * @returns {boolean} - True if the email is valid, false otherwise.
- */
-export const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
+// Validation for Address
+const addressSchema = z.object({
+  no: z.string().min(1, "Address number is required"),
+  street: z.string().min(1, "Street is required"),
+  area: z.string().optional(),
+  townCity: z.string().min(1, "Town/City is required"),
+  pinCode: z.string().min(1, "Pin code is required"),
+  district: z.string().min(1, "District is required"),
+  state: z.string().min(1, "State is required"),
+  country: z.string().default("India"), // Default value for country
+});
+
+// Validation for Dietary Preference
+const dietaryPreferenceSchema = z.object({
+  type: z.string().min(1, "Dietary type is required"),
+  description: z.string().optional(),
+});
+
+// Validation for Menu
+const menuSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  imgSrc: z.string().min(1, "Image source is required"),
+  price: z.number().positive("Price must be a positive number"),
+  category: z.string().min(1, "Category is required"),
+  availability: z.enum(["available", "out-of-stock"]),
+  dietaryPreference: z.string().min(1, "Dietary preference is required"),
+  restaurantId: z.string().min(1, "Restaurant ID is required"),
+});
+
+// Validation for Restaurant
+const restaurantSchema = z.object({
+  title: z.string().min(1, "Restaurant title is required"),
+  googleLocation: z.string().optional(),
+  email: z.string().email("Invalid email format").optional(),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  description: z.string().optional(),
+  address: addressSchema,
+  profileImage: z.string().optional(),
+  qrStatus: z.enum(["none", "generated", "sent"]),
+  qrCodeUrl: z.string().optional(),
+});
+
+// Validation for Order
+const orderSchema = z.object({
+  menuItems: z.array(
+    z.object({
+      menuId: z.string().min(1, "Menu ID is required"),
+      quantity: z.number().int().positive("Quantity must be a positive number"),
+    })
+  ),
+  restaurantId: z.string().min(1, "Restaurant ID is required"),
+  tableNo: z.string().min(1, "Table number is required"),
+  customerName: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  totalAmount: z.number().positive("Total amount must be a positive number"),
+  dateTime: z.date().optional(),
+  status: z.enum(["pending", "ongoing", "served"]),
+  notes: z.string().optional(),
+});
+
+// Validation for Tipping
+const tippingSchema = z.object({
+  waiterId: z.string().min(1, "Waiter ID is required"),
+  restaurantId: z.string().min(1, "Restaurant ID is required"),
+  tipAmount: z.number().positive("Tip amount must be a positive number"),
+  rating: z.number().min(1).max(5, "Rating must be between 1 and 5"),
+  experience: z.enum(["very_sad", "sad", "neutral", "happy", "very_happy"]),
+  paymentStatus: z.enum([
+    "pending",
+    "received_master",
+    "transferring",
+    "transferred_waiter",
+    "failed",
+    "refunded",
+  ]),
+  razorpayPaymentId: z.string().optional(),
+  razorpayFundId: z.string().optional(),
+  comments: z.string().optional(),
+  dateTime: z.date().optional(),
+});
+
+// Validation for Waiter
+const waiterSchema = z.object({
+  name: z.string().min(1, "Waiter name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email format"),
+  restaurantId: z.string().min(1, "Restaurant ID is required"),
+  ratings: z.number().min(0, "Ratings must be a positive number").optional(),
+  firebaseId: z.string().min(1, "Firebase ID is required"),
+  imgSrc: z.string().optional(),
+  bankDetails: z.object({
+    accountNumber: z.string().optional(),
+    ifscCode: z.string().optional(),
+    bankName: z.string().optional(),
+  }).optional(),
+  createdAt: z.date().optional(),  // Will be automatically handled by MongoDB
+  updatedAt: z.date().optional(),  // Will be automatically handled by MongoDB
+});
+
+const userSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Invalid email format").min(1, "Email is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  firebaseId: z.string().min(1, "Firebase ID is required"),
+  restaurantId: z.string().min(1, "Restaurant ID is required"),
+  role: z.enum(["admin", "superadmin"]),
+});
+
+// Export schemas for validation
+export {
+  addressSchema,
+  dietaryPreferenceSchema,
+  menuSchema,
+  restaurantSchema,
+  orderSchema,
+  tippingSchema,
+  waiterSchema,
+  userSchema
 };
-
-/**
- * Helper function to validate if a value is a non-empty string.
- * @param {string} value - The value to check.
- * @returns {boolean} - True if the value is a non-empty string, false otherwise.
- */
-export const isNonEmptyString = (value: string): boolean => {
-    if (value && value.trim() !== "") {
-        return true
-    }
-    return false;
-};
-
-/**
- * Validate incoming request body for restaurant data.
- * @param {NextApiRequest} req - The incoming request object.
- * @param {NextApiResponse} res - The response object.
- * @returns {boolean} - Returns true if the data is valid, otherwise sends an error response.
- */
-export const validateRestaurantData = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const { name, description, location } = req.body;
-
-    // Check if all required fields are present and valid
-    if (!isNonEmptyString(name)) {
-        res.status(400).json({ success: false, message: "Restaurant name is required" });
-        return false;
-    }
-    if (!isNonEmptyString(description)) {
-        res.status(400).json({ success: false, message: "Restaurant description is required" });
-        return false;
-    }
-    if (!isNonEmptyString(location)) {
-        res.status(400).json({ success: false, message: "Restaurant location is required" });
-        return false;
-    }
-
-    return true;
-};
-
-/**
- * Validate incoming request body for waiter data.
- * @param {NextApiRequest} req - The incoming request object.
- * @param {NextApiResponse} res - The response object.
- * @returns {boolean} - Returns true if the data is valid, otherwise sends an error response.
- */
-export const validateWaiterData = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const { name, email } = req.body;
-
-    if (!isNonEmptyString(name)) {
-        res.status(400).json({ success: false, message: "Waiter name is required" });
-        return false;
-    }
-    if (!isValidEmail(email)) {
-        res.status(400).json({ success: false, message: "Invalid email format" });
-        return false;
-    }
-
-    return true;
-};
-
-/**
- * Validate incoming request body for menu item data.
- * @param {NextApiRequest} req - The incoming request object.
- * @param {NextApiResponse} res - The response object.
- * @returns {boolean} - Returns true if the data is valid, otherwise sends an error response.
- */
-export const validateMenuItemData = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const { name, price, description } = req.body;
-
-    if (!isNonEmptyString(name)) {
-        res.status(400).json({ success: false, message: "Menu item name is required" });
-        return false;
-    }
-    if (typeof price !== "number" || price <= 0) {
-        res.status(400).json({ success: false, message: "Price must be a positive number" });
-        return false;
-    }
-    if (!isNonEmptyString(description)) {
-        res.status(400).json({ success: false, message: "Menu item description is required" });
-        return false;
-    }
-
-    return true;
-};
-

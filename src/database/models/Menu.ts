@@ -9,6 +9,6 @@ const menuSchema = new mongoose.Schema({
   availability: { type: String, enum: ["available", "out-of-stock"], required: true },
   dietaryPreference: { type: String, required: true }, // Added dietaryPreference
   restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant", required: true },
-});
+}, { timestamps: true });
 
 export const Menu = mongoose.models.Menu || mongoose.model("Menu", menuSchema);

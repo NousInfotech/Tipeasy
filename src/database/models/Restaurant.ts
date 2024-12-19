@@ -8,32 +8,30 @@ const addressSchema = new mongoose.Schema({
   townCity: { type: String, required: true },
   pinCode: { type: String, required: true },
   district: { type: String, required: true },
-  state: { type: String, default: "Telangana" },
+  state: { type: String, required: true },
   country: { type: String, default: "India" },
 });
 
-const dietaryPreferencesSchema = new mongoose.Schema({
-  type: { type: String, required: true },
-  description: { type: String, required: false },
-});
+
+const QrStatus = new mongoose.Schema({
+  type: 'string',
+  enum: ['none', 'generated', 'sent'],
+  default: 'none',
+  required: 'true'
+})
 
 // Main Schema
 const restaurantSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  menu: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }], // Keep for faster lookup
-  waiters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Waiter" }], // Keep for convenience
-  categories: [{ type: String }],
-  dietaryPreferences: { type: [dietaryPreferencesSchema], default: [] },
   googleLocation: { type: String },
   email: { type: String },
   phoneNumber: { type: String, required: true },
   description: { type: String },
   address: addressSchema,
   profileImage: { type: String },
+  qrStatus: { type: QrStatus, required: true },
   qrCodeUrl: { type: String },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 
 export const Restaurant = mongoose.models.Restaurant || mongoose.model("Restaurant", restaurantSchema);
