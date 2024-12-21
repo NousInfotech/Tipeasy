@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '../Checkout/Input';
 import { useForm } from 'react-hook-form';
 import FormBtn from '../Checkout/FormBtn';
+import { createMultipleTippings } from '@/scripts/createTipping';
 
 interface FormData {
     amount: number;
@@ -27,7 +28,7 @@ const PayTipForm: React.FC<PayTipFormProps> = ({ restaurantId, waiterId }) => {
     });
 
     // Handle form submission
-    const onSubmit = (data: FormData) => {
+    const onSubmit = async (data: FormData) => {
         const { amount, rating } = data;
 
         // Check if the amount is greater than zero and rating is provided
@@ -52,6 +53,8 @@ const PayTipForm: React.FC<PayTipFormProps> = ({ restaurantId, waiterId }) => {
 
         // Send the data to the API or handle accordingly
         console.log('Form Submitted:', payload);
+
+        await createMultipleTippings();
 
         // You can also trigger an API call here to send the data to the server
     };

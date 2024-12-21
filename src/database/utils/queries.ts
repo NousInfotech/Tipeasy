@@ -259,7 +259,6 @@ export const createTippingByWaiterId = async (
             tipAmount,
             rating,
             experience,
-            paymentStatus: "pending", // Default status
             comments,
             dateTime: new Date(),
         });

@@ -42,12 +42,14 @@ const createMenuData = (restaurantId: string, title: string, imgSrc: string, die
 // Main function to create restaurant, waiters, and menus
 const createRestaurantAndData = async () => {
 
-    console.log("HI")
+    console.log("HI");
+
     try {
         // Step 1: Create restaurant
         const restaurantData = {
             title: "Amazing Restaurant",
             phoneNumber: "+12345678901",
+            profileImage: 'https://res.cloudinary.com/dkeraxhjs/image/upload/v1734775767/restaurantCoverImages/soxrbowq6bj9bcecntau.jpg',
             address: {
                 no: "123",
                 street: "Main Street",

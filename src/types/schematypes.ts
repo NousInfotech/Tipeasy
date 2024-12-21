@@ -69,13 +69,12 @@ interface ITipping {
     waiterId: string;  // Changed to string
     restaurantId: string;  // Changed to string
     tipAmount: number;
-    rating: number;
-    experience: 'very_sad' | 'sad' | 'neutral' | 'happy' | 'very_happy';
-    paymentStatus: 'pending' | 'received_master' | 'transferring' | 'transferred_waiter' | 'failed' | 'refunded';
+    rating?: number;
+    experience?: 'very_sad' | 'sad' | 'neutral' | 'happy' | 'very_happy';
     razorpayPaymentId?: string;
     razorpayFundId?: string;
     comments?: string;
-    dateTime: Date;
+    dateTime?: Date;
 }
 
 
