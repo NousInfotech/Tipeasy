@@ -18,7 +18,7 @@ interface IDietaryPreference {
 
 // Menu Interface
 interface IMenu {
-    _id?:string;
+    _id?: string;
     title: string;
     description?: string;
     imgSrc: string;
@@ -32,7 +32,7 @@ interface IMenu {
 
 // Restaurant Interface
 interface IRestaurant {
-    _id?:string;
+    _id?: string;
     title: string;
     googleLocation?: string;
     email?: string;
@@ -46,7 +46,7 @@ interface IRestaurant {
 
 // Order Interface
 interface IOrder {
-    _id?:string;
+    _id?: string;
     menuItems: {
         menuId: string;  // Changed to string
         quantity: number;
@@ -65,7 +65,7 @@ interface IOrder {
 
 // Tipping Interface
 interface ITipping {
-    _id?:string;
+    _id?: string;
     waiterId: string;  // Changed to string
     restaurantId: string;  // Changed to string
     tipAmount: number;
@@ -88,10 +88,11 @@ interface IBankDetails {
 
 // Type for the Waiter Schema
 interface IWaiter {
-    _id?:string;
+    _id?: string;
     name: string;
     phoneNumber: string;
     email: string;
+    password?: string;
     restaurantId: string; // Using string as restaurantId is typically passed as a string
     ratings: number;
     firebaseId: string;
@@ -100,14 +101,35 @@ interface IWaiter {
 }
 
 interface IUser {
-    _id?:string;
+    _id?: string;
     username: string;
     email: string;
+    password?: string;
     phoneNumber: string;
     firebaseId: string;
     restaurantId: string;
     role: "admin" | "superadmin";
 }
 
+interface SuccessResponse {
+    success: true;
+    message: string;
+    data?: unknown;
+}
+
+interface ErrorResponse {
+    success: false;
+    message: string;
+    code: string;
+    status: number;
+    details?: unknown; // Optional field for additional error context
+}
+
+interface validateResponse {
+    success: boolean;
+    data: object;
+    message: string;
+}
+
 // Exporting the interfaces for use in models or other files
-export type { IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser };
+export type { IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse };

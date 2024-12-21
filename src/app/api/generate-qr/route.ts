@@ -23,7 +23,7 @@ export const POST = withDbConnection(async (req: NextRequest): Promise<Response>
     const qrCodeBase64 = await generateQRImage(restaurantId);
     const qrUrl = await uploadToCloudinary(qrCodeBase64, "qr", `qr-${restaurantId}`);
 
-    const isUpdated = await updateRestaurant(restaurantId, { qrCodeUrl: qrUrl });
+    const isUpdated = await updateRestaurant(restaurantId, { qrCodeUrl: qrUrl, qrStatus: "generated" });
 
     if (!isUpdated) {
       return new Response(

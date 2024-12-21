@@ -6,6 +6,7 @@ import Image from 'next/image';
 import assets from '../../../public/assets/assets';
 import { IWaiter } from '@/types/schematypes';
 import { useWaiter } from '@/app/context/WaiterContext';
+import { useRouter } from 'next/router';
 
 interface WaiterComponentProps {
     waiter: IWaiter;
@@ -14,9 +15,11 @@ interface WaiterComponentProps {
 const WaiterComponent: React.FC<WaiterComponentProps> = ({ waiter }) => {
 
     const { setWaiter } = useWaiter();
+    const router = useRouter();
 
     const handleClick = (waiter: IWaiter) => {
         setWaiter(waiter);
+        router.push(`/restaurant/${waiter.restaurantId}/paytip`)
     };
 
     return (

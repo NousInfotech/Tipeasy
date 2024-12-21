@@ -1,18 +1,5 @@
 import { formatError } from "./errorHandler";
-
-interface SuccessResponse {
-  success: true;
-  message: string;
-  data?: unknown;
-}
-
-interface ErrorResponse {
-  success: false;
-  message: string;
-  code: string;
-  status: number;
-  details?: unknown; // Optional field for additional error context
-}
+import { SuccessResponse, ErrorResponse } from "@/types/schematypes";
 
 /**
  * Generate a success response object.
