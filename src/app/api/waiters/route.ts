@@ -3,7 +3,7 @@ import { withDbConnection } from "@/database/utils/withDbConnection";
 import { createWaiter, getWaitersByRestaurantId } from "@/database/utils/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { waiterSchema } from "@/utils/validations"; // Assuming waiterSchema is defined
-import { validateSchema, validateWaiter } from "@/utils/validationUtils";
+import { validateSchema } from "@/utils/validationUtils";
 import { registerUser } from "@/services/firebase/auth"; // Firebase user registration function
 import { IWaiter } from "@/types/schematypes";
 import { validateRestaurant } from "@/utils/validationUtils";
