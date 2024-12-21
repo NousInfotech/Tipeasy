@@ -1,4 +1,4 @@
-import { z, ZodType, ZodTypeDef, ZodObject, ZodRawShape, ZodError } from "zod";
+import { ZodType, ZodTypeDef, ZodObject, ZodError } from "zod";
 
 
 import { validateRestaurantId, validateMenuId, validateWaiterId } from '@/database/utils/queries';
