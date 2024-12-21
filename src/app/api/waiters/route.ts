@@ -18,7 +18,7 @@ import { encryptData } from "@/utils/encryptDataByCrypto";
  * @returns {NextResponse} - A response containing the status of the waiter creation.
  */
 
-export const GET = withDbConnection(async (request: NextRequest, response: NextResponse) => {
+export const GET = withDbConnection(async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const restaurantId = searchParams.get("restaurantId");
 

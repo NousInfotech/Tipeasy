@@ -1,6 +1,6 @@
 import { successResponse, errorResponse } from "@/utils/response";
 import { withDbConnection } from "@/database/utils/withDbConnection";
-import { getOrdersByRestaurantId, createOrderByMenuIds, validateRestaurantId } from "@/database/utils/queries";
+import { getOrdersByRestaurantId, createOrderByMenuIds } from "@/database/utils/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { orderSchema } from "@/utils/validations"; // Assuming orderSchema is defined
 import { validateMenu, validateSchema } from "@/utils/validationUtils";

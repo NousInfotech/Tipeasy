@@ -17,10 +17,13 @@ interface ErrorResponse {
 /**
  * Generate a success response object.
  * @param {string} message - A message describing the success.
- * @param {any} [data=null] - Optional data to include in the response.
+ * @param {unknown} [data=null] - Optional data to include in the response.
  * @returns {SuccessResponse} - The formatted success response.
  */
-export const successResponse = (message: string, data: unknown = null): SuccessResponse => ({
+export const successResponse = (
+  message: string,
+  data: unknown = null
+): SuccessResponse => ({
   success: true,
   message,
   data,
@@ -28,17 +31,19 @@ export const successResponse = (message: string, data: unknown = null): SuccessR
 
 /**
  * Generate an error response object.
- * @param {any} error - The error object to format.
+ * @param {unknown} error - The error object to format.
  * @returns {ErrorResponse} - The formatted error response.
  */
 export const errorResponse = (error: unknown): ErrorResponse => {
   const formattedError = formatError(error);
 
-  // Include additional details if available (e.g., validation errors)
-  const details = (error as any)?.details;
+  // Check for additional details field in the error object
+  let details: unknown;
+  if (typeof error === "object" && error !== null && "details" in error) {
+    details = (error as { details?: unknown }).details;
+  }
 
-  return {
-    ...formattedError,
-    ...(details && { details }), // Conditionally add details
-  };
+  return details
+    ? { ...formattedError, details }
+    : formattedError;
 };

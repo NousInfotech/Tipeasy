@@ -1,12 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import SearchBar from '../SearchBar/SearchBar';
-import { Waiter } from '@/types';
-import waitersMockData from '@/Mockdata/WaiterData';
 import WaiterComponent from './Waiter';
-import CTA from '../CTA/CTA';
 
 interface WaiterList {
     id: string;

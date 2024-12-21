@@ -4,10 +4,8 @@ import React from 'react';
 import { Star } from 'lucide-react'; // For the rating star icon
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Waiter } from '@/types';
 import Image from 'next/image';
 import assets from '../../../public/assets/assets';
-import { useWaiter } from '@/app/context/WaiterContext';
 
 // Assuming Waiter interface is imported
 

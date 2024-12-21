@@ -1,4 +1,5 @@
-import { z, ZodObject, ZodRawShape, ZodType } from 'zod';
+import { z, ZodType, ZodTypeDef, ZodObject, ZodRawShape, ZodError } from "zod";
+
 
 import { validateRestaurantId, validateMenuId, validateWaiterId } from '@/database/utils/queries';
 
@@ -62,40 +63,41 @@ export const validateWaiter = async (waiterId: string): Promise<boolean> => {
     return true;
 };
 
+
 /**
  * Validate data against a Zod schema with an option for partial validation.
  * 
- * @param {ZodType<T, any, T>} schema - The Zod schema to validate against.
+ * @param {ZodType<T>} schema - The Zod schema to validate against.
  * @param {unknown} data - The data to validate.
  * @param {boolean} partial - Whether to apply partial validation (default is false).
  * @returns {T} - The validated data.
  * @throws {Error} - Throws a validation error with details if validation fails.
  */
-export const validateSchema = <T extends ZodRawShape | any>(
-    schema: ZodType<T, any, T>,
+export const validateSchema = <T>(
+    schema: ZodType<T, ZodTypeDef, T>,
     data: unknown,
     partial: boolean = false
 ): T => {
     try {
         // Apply .partial() if schema is an object and partial is true
-        const schemaToValidate = partial && schema instanceof ZodObject
-            ? (schema.partial())  // Ensure partial schema is correctly cast
-            : schema;
+        const schemaToValidate =
+            partial && schema instanceof ZodObject
+                ? (schema.partial() as unknown as ZodType<T, ZodTypeDef, T>)
+                : schema;
 
         // Validate the data against the (possibly partial) schema
-        return schemaToValidate.parse(data) as T;
+        return schemaToValidate.parse(data);
     } catch (error) {
-        if (error instanceof z.ZodError) {
+        if (error instanceof ZodError) {
             // Attach error details for better context
             const details = error.errors.map((e) => ({
-                path: e.path.join('.'),
+                path: e.path.join("."),
                 message: e.message,
             }));
-            const validationError = new Error('Validation failed');
-            (validationError as any).details = details;
+            const validationError = new Error("Validation failed");
+            (validationError as { details?: { path: string; message: string }[] }).details = details;
             throw validationError;
         }
         throw error; // Re-throw unexpected errors
     }
 };
-
