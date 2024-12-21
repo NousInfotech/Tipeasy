@@ -1,54 +1,69 @@
-// app/api/orders/route.ts
-
-import { NextResponse } from "next/server";
-import { createOrder, getOrdersByRestaurantId } from "@/database/utils/queries";
-import connectDB from "@/database/connection";
 import { successResponse, errorResponse } from "@/utils/response";
+import { withDbConnection } from "@/database/utils/withDbConnection";
+import { getOrdersByRestaurantId, createOrderByMenuIds, validateRestaurantId } from "@/database/utils/queries";
+import { NextRequest, NextResponse } from "next/server";
+import { orderSchema } from "@/utils/validations"; // Assuming orderSchema is defined
+import { validateMenu, validateSchema } from "@/utils/validationUtils";
+import { validateRestaurant } from "@/utils/validationUtils";
 
-
-
-// Get orders by restaurantId
-export async function GET(req: Request) {
+/**
+ * GET API Route handler to fetch all orders for a given restaurant from the database.
+ * 
+ * @returns {NextResponse} - A response containing the list of orders.
+ */
+export const GET = withDbConnection(async (request: NextRequest): Promise<NextResponse> => {
     try {
-        const { searchParams } = new URL(req.url);
+        const { searchParams } = new URL(request.url);
         const restaurantId = searchParams.get("restaurantId");
 
-        if (!restaurantId) {
-            return NextResponse.json(errorResponse({ message: "Missing restaurantId parameter", code: "MISSING_RESTAURANTID", status: 400 }), { status: 400 });
-        }
+        // Validate restaurantId
+        await validateRestaurant(restaurantId as string);
 
-        await connectDB();
-
-        const orders = await getOrdersByRestaurantId(restaurantId);
-
-        if (orders.length === 0) {
-            return NextResponse.json(errorResponse({ message: "No orders found for this restaurant", code: "NO_ORDERS_FOUND", status: 404 }), { status: 404 });
-        }
-
-        return NextResponse.json(successResponse("Orders fetched successfully", orders), { status: 200 });
-    } catch (error) {
-        console.error("Error fetching orders:", error);
-        return NextResponse.json(errorResponse(error), { status: 500 });
+        // Fetch orders for the restaurant
+        const orders = await getOrdersByRestaurantId(restaurantId as string);
+        return NextResponse.json(successResponse('Orders fetched successfully', orders));
+    } catch (error: unknown) {
+        return NextResponse.json(errorResponse(error));
     }
-}
+});
 
-// Create a new order
-export async function POST(request: Request): Promise<NextResponse> {
+/**
+ * POST API Route handler to create a new order in the database.
+ * Validates the request body using Zod schema before creating the order.
+ *
+ * @param {Request} request - The incoming HTTP request object containing order data in the body.
+ * 
+ * @returns {NextResponse} - A response containing the status of the order creation.
+ */
+export const POST = withDbConnection(async (request: Request): Promise<NextResponse> => {
     try {
-        const data = await request.json();
+        // Parse and validate the order data using Zod schema
+        const orderData = await request.json();
 
-        if (!data.restaurantId || !data.tableNo || !data.menuItems || !data.totalAmount) {
-            return NextResponse.json(errorResponse({ message: "Missing required fields", code: "MISSING_FIELDS", status: 400 }), { status: 400 });
-        }
+        await validateRestaurant(orderData.restaurantId); // Validate restaurant ID
 
-        await connectDB();
+        const validatedOrderData = validateSchema(orderSchema, orderData);
 
-        const order = await createOrder(data);  // Assuming createOrder will handle the actual order creation
+        await Promise.all(
+            validatedOrderData.menuItems.map(async (item) => {
+                // Validate each menuId
+                await validateMenu(item.menuId);
+                // You can add more validation here for other fields if needed
+            })
+        );
+        // Validate the order data
 
-        return NextResponse.json(successResponse("Order created successfully", order), { status: 201 });
-    } catch (error) {
-        console.error("Error creating order:", error);
-        return NextResponse.json(errorResponse(error), { status: 500 });
+        // Call the function to create a new order
+        const newOrder = await createOrderByMenuIds(
+            validatedOrderData.restaurantId,
+            validatedOrderData.menuItems,
+            validatedOrderData.tableNo,
+            validatedOrderData.customerName,
+            validatedOrderData.phoneNumber
+        );
+
+        return NextResponse.json(successResponse('Order created successfully', newOrder));
+    } catch (error: unknown) {
+        return NextResponse.json(errorResponse(error));
     }
-}
-
+});

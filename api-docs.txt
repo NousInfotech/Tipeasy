@@ -1,0 +1,23 @@
+data to be send from backend
+
+app/resataurant/[restaurantId] :
+
+restaurantId : validation only 
+waiters : id , name , ratings , imgSrc , restaurantId
+Menus : 
+    MenuList : id , title , category , price , dietaryPreference
+
+app/dashboard
+
+/admin : 
+    /orders : id , arrayOfMenuId's[ populated , quantity ] ,price, customerName , table no , phoneno, status , notes?
+    /qr-Menu : id, title , description? , imgSrc, price, cateogory , availability, dietaryPreference,restaurantId
+    /waiters : id , name , email , restaurantId , ratings, imgSrc, bankDetails  
+    /stats : ((time,day),(ordersCount , OrdersPricing, categorytotalpricing))
+/waiters : 
+    /tippings : resataurantId , waiterId , tipAmount , paymentStatus, razorpayPaymentId, razorpayFundId
+    /notification : id , message , tippingId 
+/superadmin : 
+    /restaurants : id, title,googleLocation,email,phoneNumber,description?,address,qrCodeURl,qrStatus 
+    /qr-restaurants : same as above add qrCodeURl , qrCodeStatus 
+    /tippings : id , waitername , experience, paymentStatus,razorpayFundId,razorpayPaymentId,ratings,tipAmount,resataurantId,restaruantName

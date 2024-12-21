@@ -1,10 +1,16 @@
-// src/app/restaurants/[restaurantId]/page.tsx
 import React from 'react';
-import RestaurantHeader from '@/components/RestaurantHeader/RestaurantHeader';
-import CTA from '@/components/CTA/CTA';
-import BannerWithProfile from '@/components/BannerWithProfile/BannerWithProfile';
+import Waiters from '@/components/Waiters/Waiters';
+import { getWaitersByRestaurantId, validateRestaurant } from '@/api/restaurantApi';
 
-// Adjust the type to include async behavior of params
+interface WaiterList {
+    id: string;
+    name: string;
+    resataurantId: string;
+    ratings: number;
+    imgSrc: string;
+}
+
+
 interface Params {
     restaurantId: string;
 }
@@ -13,27 +19,25 @@ interface Params {
 const RestaurantPage = async ({ params }: { params: Promise<Params> }) => {
     // Resolve params if it is asynchronous
     const { restaurantId } = await params;
+    if (!restaurantId) {
+        throw new Error('RestaurantId is missing');
+    }
+
+    const validateRestaurantId = await validateRestaurant(restaurantId);
+
+    if (!validateRestaurantId) {
+        throw new Error('RestaurantId is not in database');
+    }
+
+    const waiters = (await getWaitersByRestaurantId(restaurantId)) as WaiterList[];
+
+    if (!waiters) {
+        throw new Error('Waiters are not on this list');
+    }
 
     return (
         <section>
-            <BannerWithProfile />
-            <div className='p-4'>
-                <RestaurantHeader restaurantId={restaurantId} />
-                <CTA
-                    header="Explore Our Menu"
-                    description="Tap QR Menu to explore our delicious dishes and order right from your phone!"
-                    btnContent="Our Menu"
-                    restaurantId={restaurantId} // Pass restaurantId to the client component
-                    isWaiter={false}
-                />
-                <CTA
-                    header="Show Your Appreciation"
-                    description="Enjoyed the service? Tap Pay Tip to show your thanks!"
-                    btnContent="Pay tips"
-                    restaurantId={restaurantId} // Pass restaurantId to the client component
-                    isWaiter={true}
-                />
-            </div>
+            <Waiters waiterList={waiters} />
         </section>
     );
 };

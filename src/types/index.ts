@@ -16,8 +16,7 @@ export interface Waiter {
     waiterId: string;
     restaurantId: string;
     name: string;
-    // imageSrc: string;
-    imageSrc: StaticImageData;
+    imgSrc: StaticImageData;
     rating: number;   // Example: Waiter rating out of 5
     activeStatus: boolean;
 }
@@ -72,4 +71,21 @@ export interface FirebaseResponse {
     users: FirebaseUser[]; // Array of users associated with the provided ID token
 }
 
+
+
+
+export interface CustomError extends Error {
+    status?: number;
+    code?: string;
+}
+
+// Format error messages for API responses
+
+
+export interface FormattedError {
+    message: string;
+    code: string;
+    status: number;
+    success: false;
+}
 

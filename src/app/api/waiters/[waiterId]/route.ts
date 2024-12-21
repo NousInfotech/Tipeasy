@@ -1,84 +1,75 @@
-import { NextResponse } from "next/server";
-import { getWaiterById, updateWaiter, deleteWaiter } from "@/database/utils/queries";
-import { successResponse, errorResponse } from "@/utils/response";
-import connectDB from "@/database/connection";
+// app/api/waiter/[waiterId]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { successResponse, errorResponse } from '@/utils/response';
+import { getWaiterById, updateWaiter, deleteWaiter } from '@/database/utils/queries'; // Import database query functions
+import { withDbConnection } from '@/database/utils/withDbConnection'; // Assuming this is your DB connection handler
+import { validateSchema, validateWaiter } from '@/utils/validationUtils';
+import { waiterSchema } from '@/utils/validations';
+import { IWaiter } from '@/types/schematypes';
 
-/**
- * GET: Get a waiter by their unique ID
- * @param request - The incoming HTTP request.
- * @param context - The context containing route parameters.
- * @returns A JSON response with the waiter details.
- */
-export async function GET(
-    request: Request,
-    context: { params: Promise<{ waiterId: string }> }
-) {
-    try {
-        const { waiterId } = await context.params; // Await context.params
-
-        if (!waiterId) {
-            return NextResponse.json(errorResponse("Waiter ID is required"), { status: 400 });
-        }
-
-        await connectDB();
-
-        const waiter = await getWaiterById(waiterId);
-        return NextResponse.json(successResponse("Waiter fetched successfully", waiter));
-    } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
-    }
+interface Params {
+    waiterId: string;
 }
 
-/**
- * PUT: Update a waiter by their unique ID
- * @param request - The incoming HTTP request containing updated waiter data in the body.
- * @param context - The context containing route parameters.
- * @returns A JSON response with the updated waiter details.
- */
-export async function PUT(
-    request: Request,
-    context: { params: Promise<{ waiterId: string }> }
-) {
-    try {
-        const { waiterId } = await context.params; // Await context.params
-        const updatedData = await request.json();
+// GET: Fetch a specific waiter by ID
+export const GET = withDbConnection(async (req: NextRequest, context: { params: Promise<Params> }): Promise<NextResponse> => {
+    const { waiterId } = await context.params; // Access waiterId from context.params
 
-        if (!waiterId) {
-            return NextResponse.json(errorResponse("Waiter ID is required"), { status: 400 });
+    try {
+
+        await validateWaiter(waiterId);
+
+        const waiter = await getWaiterById(waiterId); // Fetch waiter from DB
+
+        if (!waiter) {
+            return NextResponse.json(errorResponse({ message: 'Waiter not found', code: 'NOT_FOUND', status: 404 }));
         }
 
-        await connectDB();
-
-        const updatedWaiter = await updateWaiter(waiterId, updatedData);
-        return NextResponse.json(successResponse("Waiter updated successfully", updatedWaiter));
+        return NextResponse.json(successResponse('Waiter fetched successfully', waiter));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
+        return NextResponse.json(errorResponse(error));
     }
-}
+});
 
-/**
- * DELETE: Delete a waiter by their unique ID
- * @param request - The incoming HTTP request.
- * @param context - The context containing route parameters.
- * @returns A JSON response confirming deletion of the waiter.
- */
-export async function DELETE(
-    request: Request,
-    context: { params: Promise<{ waiterId: string }> }
-) {
+// PUT: Update a specific waiter by ID
+export const PUT = withDbConnection(async (req: NextRequest, context: { params: Promise<Params> }): Promise<NextResponse> => {
+    const { waiterId } = await context.params; // Access waiterId from context.params
+
     try {
-        const { waiterId } = await context.params; // Await context.params
 
-        if (!waiterId) {
-            return NextResponse.json(errorResponse("Waiter ID is required"), { status: 400 });
+        await validateWaiter(waiterId)
+
+        const updatedData = await req.json(); // Get the updated data from the request body
+
+        const validatedWaiter = validateSchema(waiterSchema, updatedData, true) as IWaiter
+
+        const updatedWaiter = await updateWaiter(waiterId, validatedWaiter);
+
+        if (!updatedWaiter) {
+            return NextResponse.json(errorResponse({ message: 'Failed to update waiter', code: 'DB_UPDATE_ERROR', status: 500 }));
         }
 
-        await connectDB();
-
-        const result = await deleteWaiter(waiterId);
-        return NextResponse.json(successResponse(result.message, result));
+        return NextResponse.json(successResponse('Waiter updated successfully', updatedWaiter));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
+        return NextResponse.json(errorResponse(error));
     }
-}
+});
 
+// DELETE: Delete a specific waiter by ID
+export const DELETE = withDbConnection(async (req: NextRequest, context: { params: Promise<Params> }): Promise<NextResponse> => {
+    const { waiterId } = await context.params; // Access waiterId from context.params
+
+    try {
+        await validateWaiter(waiterId)
+
+        const result = await deleteWaiter(waiterId); // Delete waiter from DB
+
+        if (!result) {
+            return NextResponse.json(errorResponse({ message: 'Failed to delete waiter', code: 'DB_DELETE_ERROR', status: 500 }));
+        }
+
+        return NextResponse.json(successResponse('Waiter deleted successfully', result));
+    } catch (error: unknown) {
+        return NextResponse.json(errorResponse(error));
+    }
+});

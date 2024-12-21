@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import Image from 'next/image';
 import { Plus, Minus } from 'lucide-react';
-import { useCart } from '@/context/CartContext';
+import { useCart } from '@/app/context/CartContext';
 
 interface MenuListProps {
   menuItems: MenuItem[];

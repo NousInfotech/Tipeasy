@@ -6,30 +6,42 @@ import SearchBar from '../SearchBar/SearchBar';
 import { Waiter } from '@/types';
 import waitersMockData from '@/Mockdata/WaiterData';
 import WaiterComponent from './Waiter';
+import CTA from '../CTA/CTA';
 
-const Waiters: React.FC = () => {
-    const [filteredWaiters, setFilteredWaiters] = useState<Waiter[]>(waitersMockData);
+interface WaiterList {
+    id: string;
+    name: string;
+    resataurantId: string,
+    ratings: number,
+    imgSrc: string
+}
+
+interface WaiterProps {
+    waiterList: WaiterList[]
+}
+
+const Waiters: React.FC<WaiterProps> = ({ waiterList }) => {
+    const [filteredWaiters, setFilteredWaiters] = useState<WaiterList[]>(waiterList);
 
     const handleSearch = (query: string) => {
         if (!query) {
-            setFilteredWaiters(waitersMockData);
+            setFilteredWaiters(waiterList);
         } else {
             setFilteredWaiters(
-                waitersMockData.filter(waiter =>
+                waiterList.filter(waiter =>
                     waiter.name.toLowerCase().includes(query.toLowerCase())
                 )
             );
         }
     };
 
-
     return (
         <section className='p-4'>
-            <HeaderwithBackButton heading="Pay Tips" />
+            {/* <CTA btnContent='Explore Our Menu' isWaiter={false} description='just a menu button' restaurantId={restaurantId} /> */}
             <SearchBar placeHolder='Find your Waiter' onSearch={handleSearch} />
             <div className="grid grid-cols-3 gap-4 rounded">
-                {filteredWaiters.map(waiter => (
-                    <WaiterComponent key={waiter.waiterId} waiter={waiter} />
+                {filteredWaiters?.map((waiter, index) => (
+                    <WaiterComponent key={index} waiter={waiter} />
                 ))}
             </div>
         </section>

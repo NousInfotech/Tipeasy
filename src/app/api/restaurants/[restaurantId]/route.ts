@@ -1,25 +1,31 @@
-// app/api/restaurants/[restaurantId]/route.ts
-
 import { NextResponse } from 'next/server';
 import { getRestaurantById, updateRestaurant, deleteRestaurant } from '@/database/utils/queries'; // Import DB functions
 import { successResponse, errorResponse } from '@/utils/response'; // Reuse response functions
-import connectDB from '@/database/connection';
+import { withDbConnection } from '@/database/utils/withDbConnection'; // Import the DB connection middleware
+import { IRestaurant } from '@/types/schematypes'; // Assuming IRestaurant is defined
+import { restaurantSchema } from '@/utils/validations'; // Assuming you have this validation schema
+import { validateSchema } from '@/utils/validationUtils'; // Utility function to validate using Zod
 
 interface Params {
     restaurantId: string;
 }
 
-// PUT: Get a specific restaurant by ID
-export async function GET(request: Request, context: { params: Promise<Params> }) {
-    const { restaurantId } = await context.params; // Access restaurantId from context.params
-
+/**
+ * GET API Route handler to fetch a specific restaurant by ID from the database.
+ * 
+ * @param {Request} request - The incoming HTTP request object.
+ * @param {object} context - The context object containing URL parameters.
+ * @returns {NextResponse} - A response containing the status of the fetch operation.
+ */
+export const GET = withDbConnection(async (request: Request, context: { params: Promise<Params> }): Promise<NextResponse> => {
     try {
+        const { restaurantId } = await context.params;
+
         if (!restaurantId) {
             return NextResponse.json(errorResponse('Restaurant ID is missing'), { status: 400 });
         }
 
-        await connectDB();
-        const restaurant = await getRestaurantById(restaurantId); // Fetch restaurant from DB
+        const restaurant = await getRestaurantById(restaurantId);
 
         if (!restaurant) {
             return NextResponse.json(errorResponse('Restaurant not found'), { status: 404 });
@@ -29,38 +35,54 @@ export async function GET(request: Request, context: { params: Promise<Params> }
     } catch (error: unknown) {
         return NextResponse.json(errorResponse(error), { status: 500 });
     }
-}
-// PUT: Update a specific restaurant by ID
-export async function PUT(request: Request, context: { params: Promise<Params> }) {
-    try {
-        await connectDB();
-        const updatedData = await request.json(); // Get the updated data from the request body
+});
 
-        // Await the params to resolve the restaurantId
+/**
+ * PUT API Route handler to update a specific restaurant by ID.
+ * 
+ * @param {Request} request - The incoming HTTP request object containing updated restaurant data in the body.
+ * @param {object} context - The context object containing URL parameters.
+ * @returns {NextResponse} - A response containing the status of the update operation.
+ */
+export const PUT = withDbConnection(async (request: Request, context: { params: Promise<Params> }): Promise<NextResponse> => {
+    try {
         const { restaurantId } = await context.params;
 
-        // Call your update function with restaurantId and updated data
-        const updatedRestaurant = await updateRestaurant(restaurantId, updatedData);
+        if (!restaurantId) {
+            return NextResponse.json(errorResponse('Restaurant ID is missing'), { status: 400 });
+        }
+
+        const updatedData = await request.json();
+        // Validate the updated data with the restaurant schema
+        const validatedData = validateSchema(restaurantSchema, updatedData, true);
+
+        const updatedRestaurant = await updateRestaurant(restaurantId, validatedData as IRestaurant);
 
         return NextResponse.json(successResponse('Restaurant updated successfully', updatedRestaurant));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error));
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
-}
+});
 
-// DELETE: Delete a specific restaurant by ID
-export async function DELETE(request: Request, context: { params: Promise<Params> }) {
+/**
+ * DELETE API Route handler to delete a specific restaurant by ID.
+ * 
+ * @param {Request} request - The incoming HTTP request object.
+ * @param {object} context - The context object containing URL parameters.
+ * @returns {NextResponse} - A response containing the status of the delete operation.
+ */
+export const DELETE = withDbConnection(async (request: Request, context: { params: Promise<Params> }): Promise<NextResponse> => {
     try {
-        await connectDB();
-
-        // Await the params to resolve the restaurantId
         const { restaurantId } = await context.params;
 
-        // Call your delete function with restaurantId
-        const result = await deleteRestaurant(restaurantId); // Delete from DB
+        if (!restaurantId) {
+            return NextResponse.json(errorResponse('Restaurant ID is missing'), { status: 400 });
+        }
 
-        return NextResponse.json(successResponse(result.message, result));
+        const result = await deleteRestaurant(restaurantId);
+
+        return NextResponse.json(successResponse('Restaurant deleted successfully', result));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error));
+        return NextResponse.json(errorResponse(error), { status: 500 });
     }
-}
+});

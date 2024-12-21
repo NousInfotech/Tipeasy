@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { menuData } from '@/Mockdata/MenuData';
 import { MenuItem } from '@/types';
-import { useCart } from '@/context/CartContext'; // Assuming CartContext manages cart state
+import { useCart } from '@/app/context/CartContext'; // Assuming CartContext manages cart state
 
 const MenuPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');

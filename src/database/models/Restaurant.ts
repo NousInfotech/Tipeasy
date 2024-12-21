@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { unique } from "next/dist/build/utils";
 
 // Subschemas
 const addressSchema = new mongoose.Schema({
@@ -12,27 +13,22 @@ const addressSchema = new mongoose.Schema({
   country: { type: String, default: "India" },
 });
 
-
-const QrStatus = new mongoose.Schema({
-  type: 'string',
-  enum: ['none', 'generated', 'sent'],
-  default: 'none',
-  required: 'true'
-})
-
 // Main Schema
 const restaurantSchema = new mongoose.Schema({
   title: { type: String, required: true },
   googleLocation: { type: String },
-  email: { type: String },
-  phoneNumber: { type: String, required: true },
+  email: { type: String, unique: true },
+  phoneNumber: { type: String, required: true, unique: true },
   description: { type: String },
   address: addressSchema,
   profileImage: { type: String },
-  qrStatus: { type: QrStatus, required: true },
+  qrStatus: {
+    type: String,
+    enum: ['none', 'generated', 'sent'],
+    default: 'none',
+    required: true
+  },
   qrCodeUrl: { type: String },
 }, { timestamps: true });
 
-
 export const Restaurant = mongoose.models.Restaurant || mongoose.model("Restaurant", restaurantSchema);
-

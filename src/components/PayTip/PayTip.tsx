@@ -5,12 +5,13 @@ import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import PayTipForm from './PayTipForm';
 import { useParams, useSearchParams } from 'next/navigation';
 import WaiterComponent from '../Waiters/Waiter';
-import { useWaiter } from '@/context/WaiterContext';
+import { useWaiter } from '@/app/context/WaiterContext';
 
 const PayTip = () => {
     // Using useParams to get restaurantId (which could be undefined)
     const params = useParams();
-    const restaurantId = Array.isArray(params?.restaurantId) ? params.restaurantId[0] : params?.restaurantId ?? '';
+
+    const { restaurantId } = params;
 
     // Using useSearchParams to get waiterId (which can be null)
     const searchParams = useSearchParams();

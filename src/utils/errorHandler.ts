@@ -1,17 +1,8 @@
 import { ERROR_CODES, ERROR_MESSAGES } from "./constants";
+import { MongoError } from "mongodb"; // For MongoDB-specific error handling
+import { FormattedError, CustomError } from "@/types";
 
-interface CustomError extends Error {
-  status?: number;
-  code?: string;
-}
 
-// Format error messages for API responses
-interface FormattedError {
-  message: string;
-  code: string;
-  status: number;
-  success: false;  // success should always be false in errors
-}
 
 /**
  * Format an error for the error response.
@@ -20,10 +11,34 @@ interface FormattedError {
  */
 export const formatError = (error: unknown): FormattedError => {
   if (error instanceof Error) {
-    // Use ERROR_CODES and ERROR_MESSAGES to provide default error code and message
-    const message = ERROR_MESSAGES[error.message as keyof typeof ERROR_MESSAGES] || error.message || "Something went wrong";
-    const code = ERROR_CODES[error.message as keyof typeof ERROR_CODES] || "UNKNOWN_ERROR";
-    const status = (error as CustomError).status || 500; // Default to 500 if no status is provided
+    const customError = error as CustomError;
+
+    // Check for Mongoose Validation Error
+    if (customError.name === "ValidationError") {
+      const validationErrors = Object.values((customError as any).errors).map((err: any) => err.message);
+      return {
+        success: false,
+        message: validationErrors.join(", "),
+        code: "VALIDATION_ERROR",
+        status: 400,
+      };
+    }
+
+    // Handle MongoDB Duplicate Key Error
+    if ((error as MongoError).code === 11000) {
+      const key = Object.keys((error as any).keyValue)[0];
+      return {
+        success: false,
+        message: `The ${key} already exists.`,
+        code: "DUPLICATE_KEY_ERROR",
+        status: 409,
+      };
+    }
+
+    // General error handling using predefined constants
+    const message = ERROR_MESSAGES[customError.message as keyof typeof ERROR_MESSAGES] || customError.message || "Something went wrong";
+    const code = ERROR_CODES[customError.message as keyof typeof ERROR_CODES] || "UNKNOWN_ERROR";
+    const status = customError.status || 500;
 
     return {
       success: false,
@@ -42,7 +57,10 @@ export const formatError = (error: unknown): FormattedError => {
   };
 };
 
-// Example: Logging error (can be extended for different environments)
+/**
+ * Log error for debugging purposes.
+ * @param {CustomError} error - The error object to log.
+ */
 export const logError = (error: CustomError) => {
   const code = error.code || "SERVER_ERROR";
   const message = error.message || "No error message provided";

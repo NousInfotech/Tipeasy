@@ -1,57 +1,56 @@
-import connectDb from "@/database/connection";
-import { getMenusByRestaurantId, createMenuItem } from "@/database/utils/queries";
-import { NextResponse } from "next/server";
+import { successResponse, errorResponse } from "@/utils/response";
+import { withDbConnection } from "@/database/utils/withDbConnection";
+import { getMenusByRestaurantId, createMenu } from "@/database/utils/queries";
+import { NextRequest, NextResponse } from "next/server";
+import { menuSchema } from "@/utils/validations"; // Assuming menuSchema is defined
+import { IMenu } from "@/types/schematypes";
+import { validateSchema } from "@/utils/validationUtils";
+import { validateRestaurant } from "@/utils/validationUtils";
 
 /**
- * Fetch menus by restaurant ID.
- * @param {Request} request - The request object containing query parameters.
- * @returns {Promise<NextResponse>} - A response containing menu items or an error message.
+ * GET API Route handler to fetch all menus for a given restaurant from the database.
+ * 
+ * @returns {NextResponse} - A response containing the list of menus.
  */
-export async function GET(request: Request): Promise<NextResponse> {
+export const GET = withDbConnection(async (request: NextRequest): Promise<NextResponse> => {
     try {
         const { searchParams } = new URL(request.url);
         const restaurantId = searchParams.get("restaurantId");
 
-        if (!restaurantId) {
-            return NextResponse.json({ success: false, message: "Restaurant ID is required" }, { status: 400 });
-        }
+        // Validate restaurantId
+        await validateRestaurant(restaurantId as string);
 
-        await connectDb();
-        const menus = await getMenusByRestaurantId(restaurantId);
-
-        return NextResponse.json({ success: true, message: "Menus fetched successfully", data: menus });
+        // Fetch menus for the restaurant
+        const menus = await getMenusByRestaurantId(restaurantId as string);
+        return NextResponse.json(successResponse('Menus fetched successfully', menus));
     } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
-        }
-        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
-
+        return NextResponse.json(errorResponse(error));
     }
-}
+});
 
 /**
- * Create a new menu item.
- * @param {Request} request - The request object containing the menu data in JSON format.
- * @returns {Promise<NextResponse>} - A response containing the created menu item or an error message.
+ * POST API Route handler to create a new menu in the database.
+ * Validates the request body using Zod schema before creating the menu.
+ *
+ * @param {Request} request - The incoming HTTP request object containing menu data in the body.
+ * 
+ * @returns {NextResponse} - A response containing the status of the menu creation.
  */
-export async function POST(request: Request): Promise<NextResponse> {
+export const POST = withDbConnection(async (request: Request): Promise<NextResponse> => {
     try {
-        await connectDb();
+        // Parse and validate the menu data using Zod schema
         const menuData = await request.json();
 
-        if (!menuData.restaurantId) {
-            return NextResponse.json({ success: false, message: "Restaurant ID is required" }, { status: 400 });
-        }
+        await validateRestaurant(menuData.restaurantId)
 
-        const newMenu = await createMenuItem(menuData);
+        // Validate the menu data
+        const validatedMenuData = validateSchema(menuSchema, menuData);
 
-        return NextResponse.json({ success: true, message: "Menu item created successfully", data: newMenu });
+        // Call the function to create a new menu
+        const newMenu = await createMenu(validatedMenuData as IMenu);
+
+        return NextResponse.json(successResponse('Menu created successfully', newMenu));
     } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
-        }
-        return NextResponse.json({ success: false, message: 'An unknown error occurred' }, { status: 500 });
-
+        return NextResponse.json(errorResponse(error));
     }
-}
-
+});

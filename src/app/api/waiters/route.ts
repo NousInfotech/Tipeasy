@@ -1,78 +1,81 @@
-import { NextResponse } from "next/server";
-import { createWaiter, getWaiterByRestaurantId } from "@/database/utils/queries";
 import { successResponse, errorResponse } from "@/utils/response";
-import connectDB from "@/database/connection";
-import { encryptData } from "./utils";
-import { registerUser } from "@/services/firebase/auth";
-
-export const runtime = 'nodejs';
+import { withDbConnection } from "@/database/utils/withDbConnection";
+import { createWaiter, getWaitersByRestaurantId } from "@/database/utils/queries";
+import { NextRequest, NextResponse } from "next/server";
+import { waiterSchema } from "@/utils/validations"; // Assuming waiterSchema is defined
+import { validateSchema } from "@/utils/validationUtils";
+import { registerUser } from "@/services/firebase/auth"; // Firebase user registration function
+import { IWaiter } from "@/types/schematypes";
+import { validateRestaurant } from "@/utils/validationUtils";
+import { encryptData } from "@/utils/encryptDataByCrypto";
 
 /**
- * Fetch menus by restaurant ID.
- * @param {Request} request - The request object containing query parameters.
- * @returns {Promise<NextResponse>} - A response containing menu items or an error message.
+ * POST API Route handler to create a new waiter in the database.
+ * Validates the request body using Zod schema and generates Firebase ID.
+ * 
+ * @param {Request} request - The incoming HTTP request object containing waiter data in the body.
+ * 
+ * @returns {NextResponse} - A response containing the status of the waiter creation.
  */
-export async function POST(request: Request): Promise<NextResponse> {
-    try {
-        const body = await request.json();
-        const { name, password, phoneNumber, email, restaurantId, imgSrc, bankDetails } = body;
 
-        if (!name || !password || !email || !phoneNumber || !restaurantId || !bankDetails?.accountNumber || !bankDetails?.ifsc) {
-            return NextResponse.json(errorResponse("Missing required fields"), { status: 400 });
+export const GET = withDbConnection(async (request: NextRequest, response: NextResponse) => {
+    const { searchParams } = new URL(request.url);
+    const restaurantId = searchParams.get("restaurantId");
+
+    // Validate restaurantId
+    await validateRestaurant(restaurantId as string);
+
+    // Fetch menus for the restaurant
+    const waiters = await getWaitersByRestaurantId(restaurantId as string);
+    return NextResponse.json(successResponse('Waiters fetched successfully', waiters));
+})
+
+
+export const POST = withDbConnection(async (request: NextRequest): Promise<NextResponse> => {
+    try {
+        // Parse the waiter data from the request
+        const waiterData = await request.json();
+
+        // Destructure required fields for Firebase registration
+        const { email, password, bankDetails, name, restaurantId } = waiterData;
+
+        // Validate email and password presence
+        if (!email || !password) {
+            throw new Error("Email and password are required for Firebase registration.");
         }
 
+        // Validate restaurant ID
+        await validateRestaurant(restaurantId);
+
+        const firebaseId = await registerUser(email, password) as string;
+
+        waiterData.firebaseId = firebaseId
+
+        // Validate the waiter data using Zod schema before encryption
+        const validatedWaiterData = validateSchema(waiterSchema, waiterData) as IWaiter;
 
 
-        const firebaseId = await registerUser(email, password);
+
+        // Encrypt bank details after validation
         const encryptedAccountNumber = encryptData(bankDetails.accountNumber);
         const encryptedIfsc = encryptData(bankDetails.ifsc);
 
         // Placeholder for Razorpay Fund Account ID
         const razorpayFundAccountId = "PLACEHOLDER_RPFUNDID";
 
-        // Construct waiter data
-        const waiterData = {
-            name,
-            email,
-            phoneNumber,
-            restaurantId,
-            firebaseId,
-            imgSrc,
-            bankDetails: {
-                accountNumber: encryptedAccountNumber,
-                ifsc: encryptedIfsc,
-                accountName: bankDetails.accountName,
-                razorpayFundAccountId,
-            },
+        // Update validated waiter data with Firebase ID and encrypted bank details
+        validatedWaiterData.bankDetails = {
+            accountNumber: encryptedAccountNumber,
+            ifsc: encryptedIfsc,
+            accountName: name,
+            razorpayFundAccountId,
         };
 
-        // Create waiter using the utility function
-        await connectDB();
+        // Create the waiter record in the database
+        const newWaiter = await createWaiter(validatedWaiterData as IWaiter);
 
-        const newWaiter = await createWaiter(waiterData);
         return NextResponse.json(successResponse("Waiter created successfully", newWaiter));
     } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
+        return NextResponse.json(errorResponse(error));
     }
-}
-/**
- * GET: Get waiters by restaurant ID
- * @param request - The incoming HTTP request.
- * @returns A JSON response with the list of waiters for the given restaurant.
- */
-export async function GET(request: Request) {
-    try {
-        const { searchParams } = new URL(request.url);
-        const restaurantId = searchParams.get("restaurantId");
-
-        if (!restaurantId) {
-            return NextResponse.json(errorResponse("Restaurant ID is required"), { status: 400 });
-        }
-
-        await connectDB();
-        const waiters = await getWaiterByRestaurantId(restaurantId);
-        return NextResponse.json(successResponse("Waiters fetched successfully", waiters));
-    } catch (error: unknown) {
-        return NextResponse.json(errorResponse(error), { status: 500 });
-    }
-}
+});

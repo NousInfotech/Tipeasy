@@ -6,10 +6,10 @@ const addressSchema = z.object({
   street: z.string().min(1, "Street is required"),
   area: z.string().optional(),
   townCity: z.string().min(1, "Town/City is required"),
-  pinCode: z.string().min(1, "Pin code is required"),
+  pinCode: z.string().regex(/^\d{5,6}$/, "Invalid pin code format"),
   district: z.string().min(1, "District is required"),
   state: z.string().min(1, "State is required"),
-  country: z.string().default("India"), // Default value for country
+  country: z.string().default("India"),
 });
 
 // Validation for Dietary Preference
@@ -22,7 +22,7 @@ const dietaryPreferenceSchema = z.object({
 const menuSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  imgSrc: z.string().min(1, "Image source is required"),
+  imgSrc: z.string().url("Invalid image URL").optional(),
   price: z.number().positive("Price must be a positive number"),
   category: z.string().min(1, "Category is required"),
   availability: z.enum(["available", "out-of-stock"]),
@@ -33,14 +33,16 @@ const menuSchema = z.object({
 // Validation for Restaurant
 const restaurantSchema = z.object({
   title: z.string().min(1, "Restaurant title is required"),
-  googleLocation: z.string().optional(),
+  googleLocation: z.string().url("Invalid URL format").optional(),
   email: z.string().email("Invalid email format").optional(),
-  phoneNumber: z.string().min(1, "Phone number is required"),
+  phoneNumber: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
   description: z.string().optional(),
   address: addressSchema,
-  profileImage: z.string().optional(),
+  profileImage: z.string().url("Invalid image URL").optional(),
   qrStatus: z.enum(["none", "generated", "sent"]),
-  qrCodeUrl: z.string().optional(),
+  qrCodeUrl: z.string().url("Invalid QR code URL").optional(),
 });
 
 // Validation for Order
@@ -48,13 +50,16 @@ const orderSchema = z.object({
   menuItems: z.array(
     z.object({
       menuId: z.string().min(1, "Menu ID is required"),
-      quantity: z.number().int().positive("Quantity must be a positive number"),
+      quantity: z.number().int().positive("Quantity must be a positive integer"),
     })
   ),
   restaurantId: z.string().min(1, "Restaurant ID is required"),
   tableNo: z.string().min(1, "Table number is required"),
   customerName: z.string().optional(),
-  phoneNumber: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format")
+    .optional(),
   totalAmount: z.number().positive("Total amount must be a positive number"),
   dateTime: z.date().optional(),
   status: z.enum(["pending", "ongoing", "served"]),
@@ -85,25 +90,31 @@ const tippingSchema = z.object({
 // Validation for Waiter
 const waiterSchema = z.object({
   name: z.string().min(1, "Waiter name is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
+  phoneNumber: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
   email: z.string().email("Invalid email format"),
   restaurantId: z.string().min(1, "Restaurant ID is required"),
   ratings: z.number().min(0, "Ratings must be a positive number").optional(),
   firebaseId: z.string().min(1, "Firebase ID is required"),
-  imgSrc: z.string().optional(),
+  imgSrc: z.string().url("Invalid image URL").optional(),
   bankDetails: z.object({
-    accountNumber: z.string().optional(),
-    ifscCode: z.string().optional(),
+    accountNumber: z.string().regex(/^\d{9,18}$/, "Invalid account number").optional(),
+    ifsc: z.string().regex(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC code").optional(),
     bankName: z.string().optional(),
+    razorpayFundAccountId: z.string().optional()
   }).optional(),
-  createdAt: z.date().optional(),  // Will be automatically handled by MongoDB
-  updatedAt: z.date().optional(),  // Will be automatically handled by MongoDB
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
 
+// Validation for User
 const userSchema = z.object({
   username: z.string().min(1, "Username is required"),
-  email: z.string().email("Invalid email format").min(1, "Email is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email format"),
+  phoneNumber: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
   firebaseId: z.string().min(1, "Firebase ID is required"),
   restaurantId: z.string().min(1, "Restaurant ID is required"),
   role: z.enum(["admin", "superadmin"]),
@@ -118,5 +129,5 @@ export {
   orderSchema,
   tippingSchema,
   waiterSchema,
-  userSchema
+  userSchema,
 };

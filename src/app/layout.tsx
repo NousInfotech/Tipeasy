@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
-import { WaiterProvider } from "@/context/WaiterContext";
+import { CartProvider } from "@/app/context/CartContext";
+import { WaiterProvider } from "@/app/context/WaiterContext";
 
 export const metadata: Metadata = {
   title: "Tip Easyy",

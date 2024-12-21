@@ -1,51 +1,68 @@
 import { NextResponse } from "next/server";
 import { createUser } from "@/database/utils/queries";
 import { successResponse, errorResponse } from "@/utils/response";
-import connectDB from "@/database/connection";
+import { validateRestaurant } from "@/utils/validationUtils";
+import { validateSchema } from "@/utils/validationUtils";
+import { userSchema } from "@/utils/validations";
 import { registerUser } from "@/services/firebase/auth";
-
-export const runtime = 'nodejs';
+import { IUser } from "@/types/schematypes";
+import { withDbConnection } from "@/database/utils/withDbConnection";
 
 /**
- * Fetch menus by restaurant ID.
- * @param {Request} request - The request object containing query parameters.
- * @returns {Promise<NextResponse>} - A response containing menu items or an error message.
+ * POST API to create a new user.
+ *
+ * @param {Request} request - The incoming HTTP request.
+ * @returns {Promise<NextResponse>} - A JSON response indicating success or failure.
  */
-export async function POST(request: Request): Promise<NextResponse> {
+export const POST = withDbConnection(async (request: Request): Promise<NextResponse> => {
     try {
         const body = await request.json();
+
         const { username, email, password, phoneNumber, role, restaurantId } = body;
 
+        // Check for missing fields
         if (!username || !password || !email || !phoneNumber || !role) {
-
-            if (role == "admin" && !restaurantId) {
-
-                return NextResponse.json(errorResponse("Missing required fields"), { status: 400 });
-            }
-
-            return NextResponse.json(errorResponse("Missing required fields"), { status: 400 });
+            return NextResponse.json(
+                errorResponse("Missing required fields"),
+                { status: 400 }
+            );
         }
 
+        // Validate restaurantId if the role is admin
+        if (role === "admin") {
+            if (!restaurantId) {
+                return NextResponse.json(
+                    errorResponse("Restaurant ID is required for admin role"),
+                    { status: 400 }
+                );
+            }
+            await validateRestaurant(restaurantId); // Ensure restaurant exists
+        }
 
-
+        // Register user in Firebase
         const firebaseId = await registerUser(email, password);
 
-        // Construct User data
+        // Construct user data for validation
         const userData = {
             username,
             email,
             phoneNumber,
-            restaurantId,
+            restaurantId: restaurantId || null, // Optional for non-admins
             firebaseId,
             role,
         };
 
-        // Create User using the utility function
-        await connectDB();
+        // Validate user data using Zod schema
+        const validatedUser = validateSchema(userSchema, userData) as IUser;
 
-        const newUser = await createUser(userData);
-        return NextResponse.json(successResponse(role + " created successfully", newUser));
+        // Save user to database
+        const newUser = await createUser(validatedUser);
+
+        return NextResponse.json(
+            successResponse(`${role} created successfully`, newUser)
+        );
     } catch (error: unknown) {
+        console.error("Error creating user:", error);
         return NextResponse.json(errorResponse(error), { status: 500 });
     }
-}
+})

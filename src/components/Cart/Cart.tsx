@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import MenuList from '../MenuList/MenuList';
-import { useCart } from '@/context/CartContext';
+import { useCart } from '@/app/context/CartContext';
 import { MenuItem } from '@/types';
 import { menuData } from '@/Mockdata/MenuData';
 import GrandTotal from './GrandTotal';
