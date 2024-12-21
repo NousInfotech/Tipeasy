@@ -41,3 +41,7 @@ next-env.d.ts
 
 #config
 tipeasy_firebase_config.json
+
+#scripts
+
+/src/scripts/createRestaurant.ts

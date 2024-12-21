@@ -35,8 +35,8 @@ export const createRestaurant = async (restaurantData: IRestaurant, options = {}
 
 // Generate Restaurant QR
 export const generateRestaurantQr = async (restaurantId: string, options = {}) => {
-    const url = '/api/generate-qr';
-    const response = await post(url, restaurantId, options) as validateResponse;
+    const url = '/api/generate-qr?restaurantId=' + restaurantId;
+    const response = await post(url, options) as validateResponse;
     return checkResponse(response)
 }
 

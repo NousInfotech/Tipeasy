@@ -3,7 +3,7 @@ import { withDbConnection } from "@/database/utils/withDbConnection";
 import { createWaiter, getWaitersByRestaurantId } from "@/database/utils/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { waiterSchema } from "@/utils/validations"; // Assuming waiterSchema is defined
-import { validateSchema } from "@/utils/validationUtils";
+import { validateSchema, validateWaiter } from "@/utils/validationUtils";
 import { registerUser } from "@/services/firebase/auth"; // Firebase user registration function
 import { IWaiter } from "@/types/schematypes";
 import { validateRestaurant } from "@/utils/validationUtils";
@@ -53,8 +53,6 @@ export const POST = withDbConnection(async (request: NextRequest): Promise<NextR
 
         // Validate the waiter data using Zod schema before encryption
         const validatedWaiterData = validateSchema(waiterSchema, waiterData) as IWaiter;
-
-
 
         // Encrypt bank details after validation
         const encryptedAccountNumber = encryptData(bankDetails.accountNumber);

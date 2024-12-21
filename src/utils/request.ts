@@ -24,8 +24,6 @@ export const request = async (
         // Fetch the data using fetchApiInstance
         const response = await fetchApiInstance(url, fetchOptions);
 
-        if (!response.success) throw new Error("Error Fetching the Data");
-
         return response; // Return the API response
     } catch (error) {
         // Handle errors

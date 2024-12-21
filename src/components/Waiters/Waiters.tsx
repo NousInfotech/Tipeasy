@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import WaiterComponent from './Waiter';
 import { IWaiter } from '@/types/schematypes';
+import { createRestaurantAndData } from '@/scripts/createRestaurant';
 
 
 interface WaiterProps {
