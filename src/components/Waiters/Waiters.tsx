@@ -3,21 +3,15 @@
 import React, { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import WaiterComponent from './Waiter';
+import { IWaiter } from '@/types/schematypes';
 
-interface WaiterList {
-    id: string;
-    name: string;
-    resataurantId: string,
-    ratings: number,
-    imgSrc: string
-}
 
 interface WaiterProps {
-    waiterList: WaiterList[]
+    waiterList: IWaiter[]
 }
 
 const Waiters: React.FC<WaiterProps> = ({ waiterList }) => {
-    const [filteredWaiters, setFilteredWaiters] = useState<WaiterList[]>(waiterList);
+    const [filteredWaiters, setFilteredWaiters] = useState<IWaiter[]>(waiterList);
 
     const handleSearch = (query: string) => {
         if (!query) {
@@ -37,7 +31,7 @@ const Waiters: React.FC<WaiterProps> = ({ waiterList }) => {
             <SearchBar placeHolder='Find your Waiter' onSearch={handleSearch} />
             <div className="grid grid-cols-3 gap-4 rounded">
                 {filteredWaiters?.map((waiter, index) => (
-                    <WaiterComponent key={index} waiter={waiter} />
+                    <WaiterComponent key={index} waiter={waiter as IWaiter} />
                 ))}
             </div>
         </section>

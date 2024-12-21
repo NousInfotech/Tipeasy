@@ -1,14 +1,7 @@
 import React from 'react';
 import Waiters from '@/components/Waiters/Waiters';
 import { getWaitersByRestaurantId, validateRestaurant } from '@/api/restaurantApi';
-
-interface WaiterList {
-    id: string;
-    name: string;
-    resataurantId: string;
-    ratings: number;
-    imgSrc: string;
-}
+import { IWaiter } from '@/types/schematypes';
 
 
 interface Params {
@@ -29,7 +22,7 @@ const RestaurantPage = async ({ params }: { params: Promise<Params> }) => {
         throw new Error('RestaurantId is not in database');
     }
 
-    const waiters = (await getWaitersByRestaurantId(restaurantId)) as WaiterList[];
+    const waiters = (await getWaitersByRestaurantId(restaurantId)) as IWaiter[];
 
     if (!waiters) {
         throw new Error('Waiters are not on this list');

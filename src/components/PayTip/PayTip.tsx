@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import PayTipForm from './PayTipForm';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import WaiterComponent from '../Waiters/Waiter';
 import { useWaiter } from '@/app/context/WaiterContext';
 
@@ -13,29 +13,7 @@ const PayTip = () => {
 
     const { restaurantId } = params;
 
-    // Using useSearchParams to get waiterId (which can be null)
-    const searchParams = useSearchParams();
-    const waiterId = searchParams.get('waiterId') ?? ''; // Fallback to empty string if null
-
-    const { waiter, fetchWaiterData } = useWaiter();
-
-    // Fetch waiter data if it's not available yet
-    useEffect(() => {
-        if (waiterId && !waiter) {
-            fetchWaiterData(waiterId);
-        }
-    }, [waiterId, waiter, fetchWaiterData]);  // Ensuring correct dependencies
-
-    // If either restaurantId or waiterId is missing, show an error message
-    if (!restaurantId || !waiterId) {
-        return (
-            <div className="text-center mt-10">
-                <h2 className="text-red-500">Missing Restaurant or Waiter ID</h2>
-            </div>
-        );
-    }
-
-
+    const { waiter } = useWaiter();
 
     // Handle loading state and render loading message
     if (!waiter) {
@@ -52,7 +30,7 @@ const PayTip = () => {
             <div className="w-1/2 has-[425px]:w-1/3 sm:w-3/12 md:w-1/6 mx-auto">
                 <WaiterComponent waiter={waiter} />
             </div>
-            <PayTipForm waiterId={waiterId} restaurantId={restaurantId} />
+            <PayTipForm waiterId={waiter._id as string} restaurantId={restaurantId as string} />
         </section>
     );
 };
