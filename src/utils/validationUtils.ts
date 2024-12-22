@@ -96,6 +96,7 @@ export const validateSchema = <T>(
             }));
             const validationError = new Error("Validation failed");
             (validationError as { details?: { path: string; message: string }[] }).details = details;
+            console.log(details)
             throw validationError;
         }
         throw error; // Re-throw unexpected errors

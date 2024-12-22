@@ -70,7 +70,7 @@ interface ITipping {
     restaurantId: string;  // Changed to string
     tipAmount: number;
     rating?: number;
-    experience?: 'very_sad' | 'sad' | 'neutral' | 'happy' | 'very_happy';
+    experience?: 'very_sad' | 'sad' | 'neutral' | 'happy' | 'very_happy' | 'no_experience';
     razorpayPaymentId?: string;
     razorpayFundId?: string;
     comments?: string;
@@ -130,5 +130,15 @@ interface validateResponse {
     message: string;
 }
 
+interface RazorpayResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+}
+
+
+
+
+
 // Exporting the interfaces for use in models or other files
-export type { IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse };
+export type { IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse };

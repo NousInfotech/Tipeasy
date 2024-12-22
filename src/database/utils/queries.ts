@@ -247,9 +247,7 @@ export const createTippingByWaiterId = async (
     waiterId: string,
     restaurantId: string,
     tipAmount: number,
-    rating: number,
-    experience: "very_sad" | "sad" | "neutral" | "happy" | "very_happy",
-    comments?: string
+    razorpayPaymentId: string,
 ): Promise<ITipping> => {
 
     try {
@@ -257,9 +255,7 @@ export const createTippingByWaiterId = async (
             waiterId,
             restaurantId,
             tipAmount,
-            rating,
-            experience,
-            comments,
+            razorpayPaymentId,
             dateTime: new Date(),
         });
 
@@ -455,6 +451,7 @@ export const updateMenu = async (
     }
 };
 
+
 /**
  * Delete a menu by its ID.
  *
@@ -472,5 +469,25 @@ export const deleteMenu = async (menuId: string): Promise<boolean> => {
 };
 
 
-
-
+/**
+ * Update a tipping by its ID.
+ *
+ * @param {string} tippingId - The ID of the tipping to update.
+ * @param {Partial<ITipping>} updateData - The fields to update in the tipping document.
+ * @returns {Promise<ITipping | null>} - The updated tipping document if successful, null if not found.
+ */
+export const updateTipping = async (
+    tippingId: string,
+    updateData: Partial<ITipping>
+): Promise<ITipping | null> => {
+    try {
+        const updatedTipping = await Tipping.findByIdAndUpdate(tippingId, updateData, {
+            new: true, // Return the updated document
+            runValidators: true, // Ensure validations run on update
+        }).exec();
+        return updatedTipping;
+    } catch (error) {
+        console.error('Error updating tipping:', error);
+        throw new Error('Database update failed');
+    }
+};
