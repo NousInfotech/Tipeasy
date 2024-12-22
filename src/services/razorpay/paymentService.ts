@@ -1,4 +1,5 @@
-/* eslint-disable no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable */
+
 
 import { razorpayInstance, rp_id } from "@/config/razorpay";
 import { razorpayHandlerResponse } from "@/types/schematypes";
