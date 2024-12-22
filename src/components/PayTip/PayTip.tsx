@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TipPayment from './TipPayment'; // Import TipPayment
 import RatingAndExperience from './RatingAndExperience';
 import CommentOnWaiter from './CommentOnWaiter';
@@ -20,7 +20,6 @@ enum Experience {
     NoExperience = "no_experience"
 }
 
-
 const PayTip: React.FC = () => {
     const params = useParams();
     const { restaurantId } = params;
@@ -34,13 +33,24 @@ const PayTip: React.FC = () => {
     const [experience, setExperience] = useState<Experience | 'no_experience'>('no_experience');
     const [comment, setComment] = useState<string>('no_comment');
 
+    const [countdown, setCountdown] = useState(10); // Countdown state
+
     const handleNextStep = () => setStep((prev) => prev + 1);
 
-    const handleThankYouRedirect = () => {
-        setTimeout(() => {
-            router.push(`/restaurant/${restaurantId}`);
-        }, 10000);
-    };
+    // Countdown timer effect
+    useEffect(() => {
+        if (step === 4 && countdown > 0) {
+            const timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+
+            return () => clearInterval(timer); // Cleanup timer on unmount or countdown end
+        }
+
+        if (countdown === 0) {
+            router.push(`/restaurant/${restaurantId}`); // Redirect after countdown
+        }
+    }, [step, countdown, restaurantId, router]);
 
     // Payment Success Handler
     const handlePaymentSuccess = async (response: razorpayHandlerResponse) => {
@@ -64,6 +74,7 @@ const PayTip: React.FC = () => {
             console.error('Error processing payment response:', error);
         }
     };
+
     // Validate using the enum
     const handleRatingExperienceSubmit = (ratingValue: number, experienceValue: string) => {
         setRating(ratingValue);
@@ -88,12 +99,6 @@ const PayTip: React.FC = () => {
                 experience: experience || "no_experience", // Default to "no_experience" if skipped
                 comments: comment || "no_comment",
             });
-
-            console.log({
-                rating: rating || 0, // Default to 0 if no rating was provided
-                experience: experience || "no_experience", // Default to "no_experience" if skipped
-                comments: comment || "no_comment",
-            })
         }
 
         handleNextStep();
@@ -128,11 +133,10 @@ const PayTip: React.FC = () => {
     }
 
     if (step === 4) {
-        handleThankYouRedirect();
         return (
             <div className="flex flex-col items-center justify-center h-screen space-y-5">
                 <h1 className="text-3xl font-bold">Thank You!</h1>
-                <p>Redirecting you in 10 seconds...</p>
+                <p>Redirecting in {countdown}...</p> {/* Show countdown */}
             </div>
         );
     }

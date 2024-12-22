@@ -36,7 +36,6 @@ export const initializeRazorpayPayment = async (
     onPaymentSuccess: (response: razorpayHandlerResponse) => void
 ) => {
     try {
-        console.log(orderId)
         const options = {
             key: rp_id, // Replace with your Razorpay key
             order_id: orderId,

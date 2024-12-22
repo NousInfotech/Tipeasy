@@ -1,7 +1,6 @@
-// WaiterContext.tsx
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { IWaiter } from '@/types/schematypes'; // Import the IWaiter type
 
 // Define the context type
@@ -15,7 +14,20 @@ const WaiterContext = createContext<WaiterContextType | undefined>(undefined);
 
 // WaiterProvider component to wrap the app and provide context
 export const WaiterProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [waiter, setWaiter] = useState<IWaiter | null>(null);
+    // Try to retrieve the waiter data from localStorage on initial load
+    const storedWaiter = typeof window !== 'undefined' ? localStorage.getItem('waiter') : null;
+    const initialWaiter = storedWaiter ? JSON.parse(storedWaiter) : null;
+
+    const [waiter, setWaiter] = useState<IWaiter | null>(initialWaiter);
+
+    useEffect(() => {
+        // Update localStorage whenever the waiter state changes
+        if (waiter !== null) {
+            localStorage.setItem('waiter', JSON.stringify(waiter));
+        } else {
+            localStorage.removeItem('waiter');
+        }
+    }, [waiter]);
 
     return (
         <WaiterContext.Provider value={{ waiter, setWaiter }}>
