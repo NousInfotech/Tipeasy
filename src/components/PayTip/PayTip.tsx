@@ -8,7 +8,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useWaiter } from '@/app/context/WaiterContext';
 import { updateTipping } from '@/api/tippingsApi'; // Your tipping update API
 import { verifyPayment } from '@/api/tippingsApi';
-import { ITipping } from '@/types/schematypes';
+import { ITipping, razorpayHandlerResponse } from '@/types/schematypes';
 
 // Define the Experience enum
 enum Experience {
@@ -43,7 +43,7 @@ const PayTip: React.FC = () => {
     };
 
     // Payment Success Handler
-    const handlePaymentSuccess = async (response: any) => {
+    const handlePaymentSuccess = async (response: razorpayHandlerResponse) => {
         try {
             // Send the payment response to backend for verification
             const paymentDetails = {

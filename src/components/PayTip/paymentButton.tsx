@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { initializeRazorpayPayment } from '@/services/razorpay/paymentService';
 import { createOrder } from '@/api/razorpayOrderCreation';
+import { razorpayHandlerResponse } from '@/types/schematypes';
 
 interface PaymentButtonProps {
     restaurantId: string;
     waiterId: string;
     tipAmount: number;
-    onSuccess: (response: any) => void; // Add onSuccess callback to handle successful payment
+    onSuccess: (response: razorpayHandlerResponse) => void; // Add onSuccess callback to handle successful payment
 }
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({

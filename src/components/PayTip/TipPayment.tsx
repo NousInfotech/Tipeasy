@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import PaymentButton from './paymentButton';
+import { razorpayHandlerResponse } from '@/types/schematypes';
 
 interface TipPaymentProps {
     waiterId: string;
     restaurantId: string;
     tipAmount: number;
-    onPaymentSuccess: (response: any) => void;  // Callback after payment success
+    onPaymentSuccess: (response: razorpayHandlerResponse) => void;  // Callback after payment success
     setTipAmount: React.Dispatch<React.SetStateAction<number>>; // Set Tipping ID in parent
 }
 
