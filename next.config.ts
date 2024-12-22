@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: 'dummyimage.com',
         pathname: '/**',  // Allows all paths under this hostname
       },
+      {
+        protocol: "https",
+        hostname: 'res.cloudinary.com',
+        pathname: '/**'
+      }
     ],
   },
   transpilePackages: ['lucide-react'],

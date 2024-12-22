@@ -18,6 +18,9 @@ const Page = async () => {
               src={restaurant.profileImage as string}
               alt={restaurant.title}
               className="w-full h-48 object-cover"
+              width={417}
+              height={278}
+              quality={100}
             />
 
             <div className="p-4">
@@ -50,7 +53,7 @@ const Page = async () => {
               {/* QR Code and Status */}
               <div className="mt-4 flex items-center space-x-2">
                 <a href={restaurant.qrCodeUrl} target="_blank" rel="noopener noreferrer">
-                  <Image src={restaurant.qrCodeUrl as string} alt="QR Code" className="w-12 h-12" />
+                  <Image width={100} height={100} src={restaurant.qrCodeUrl as string} alt="QR Code" className="w-12 h-12" />
                 </a>
                 <span
                   className={`text-sm ${restaurant.qrStatus === 'sent' ? 'text-green-500' : 'text-red-500'}`}
