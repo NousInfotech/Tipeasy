@@ -2,6 +2,7 @@ import React from 'react';
 import { getRestaurants } from '@/api/restaurantApi'; // Adjust import as necessary
 import { IRestaurant } from '@/types/schematypes';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Page = async () => {
   const restaurants = await getRestaurants() as IRestaurant[]; // Fetch data at runtime
@@ -13,8 +14,8 @@ const Page = async () => {
         {restaurants?.map((restaurant) => (
           <div key={restaurant._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Profile Image */}
-            <img
-              src={restaurant.profileImage}
+            <Image
+              src={restaurant.profileImage as string}
               alt={restaurant.title}
               className="w-full h-48 object-cover"
             />
@@ -49,7 +50,7 @@ const Page = async () => {
               {/* QR Code and Status */}
               <div className="mt-4 flex items-center space-x-2">
                 <a href={restaurant.qrCodeUrl} target="_blank" rel="noopener noreferrer">
-                  <img src={restaurant.qrCodeUrl} alt="QR Code" className="w-12 h-12" />
+                  <Image src={restaurant.qrCodeUrl as string} alt="QR Code" className="w-12 h-12" />
                 </a>
                 <span
                   className={`text-sm ${restaurant.qrStatus === 'sent' ? 'text-green-500' : 'text-red-500'}`}

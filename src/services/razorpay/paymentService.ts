@@ -1,16 +1,11 @@
-import { razorpayInstance, rp_id } from "@/config/razorpay";
-import { ConnectionStates } from "mongoose";
+/* eslint-disable no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
-// Define types for the service props
-interface PaymentServiceProps {
-    amount: number;
-    notes: {
-        restaurantId: string;
-        waiterId: string;
-        tipAmount: number;
-    };
-    onPaymentSuccess: (response: { razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string }) => void;
-}
+import { razorpayInstance, rp_id } from "@/config/razorpay";
+import { razorpayHandlerResponse } from "@/types/schematypes";
+
+
+
+
 
 export const createRazorpayOrder = async (amount: number, notes: any) => {
     try {
@@ -18,8 +13,8 @@ export const createRazorpayOrder = async (amount: number, notes: any) => {
         const data = {
             amount: amount * 100,  // Razorpay expects the amount in paise (1 INR = 100 paise)
             currency: 'INR',
-            receipt: `receipt_${Math.random().toString(36).substring(2, 10)}`, // Unique receipt ID
             notes: notes,  // Notes containing restaurantId, waiterId, and tipAmount
+            receipt: `receipt_${Math.random().toString(36).substring(2, 10)}`, // Unique receipt ID
         };
         // Create the Razorpay order
 
@@ -37,7 +32,7 @@ export const initializeRazorpayPayment = async (
     orderId: string,
     tipAmount: number,
     notes: { restaurantId: string, waiterId: string },
-    onPaymentSuccess: (response: { razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string }) => void
+    onPaymentSuccess: (response: razorpayHandlerResponse) => void
 ) => {
     try {
         console.log(orderId)
@@ -46,7 +41,7 @@ export const initializeRazorpayPayment = async (
             order_id: orderId,
             name: "Tip Easyy", // Replace with your business name
             amount: tipAmount * 100, // Razorpay expects amount in paise
-            handler: (response: { razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string }) => {
+            handler: (response: razorpayHandlerResponse) => {
                 onPaymentSuccess(response); // Handle payment success
             },
             notes: notes,

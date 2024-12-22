@@ -28,7 +28,7 @@ const PayTip: React.FC = () => {
 
     const router = useRouter();
     const [step, setStep] = useState(1);
-    const [tipAmount, setTipAmount] = useState<number | null>(null);
+    const [tipAmount, setTipAmount] = useState<number>(0);
     const [tippingId, setTippingId] = useState<string | null>(null);
     const [rating, setRating] = useState<number | 0>(0);
     const [experience, setExperience] = useState<Experience | 'no_experience'>('no_experience');
@@ -112,9 +112,9 @@ const PayTip: React.FC = () => {
             <TipPayment
                 waiterId={waiter._id as string}
                 restaurantId={restaurantId as string}
-                initialTipAmount={tipAmount || 0}
+                tipAmount={tipAmount || 0}
                 onPaymentSuccess={handlePaymentSuccess} // Pass handler to TipPayment
-                setTippingId={setTippingId} // Pass setTippingId to TipPayment
+                setTipAmount={setTipAmount}
             />
         );
     }

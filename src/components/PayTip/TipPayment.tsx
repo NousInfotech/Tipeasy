@@ -6,13 +6,12 @@ import PaymentButton from './paymentButton';
 interface TipPaymentProps {
     waiterId: string;
     restaurantId: string;
-    initialTipAmount: number;
+    tipAmount: number;
     onPaymentSuccess: (response: any) => void;  // Callback after payment success
-    setTippingId: React.Dispatch<React.SetStateAction<string | null>>; // Set Tipping ID in parent
+    setTipAmount: React.Dispatch<React.SetStateAction<number>>; // Set Tipping ID in parent
 }
 
-const TipPayment: React.FC<TipPaymentProps> = ({ waiterId, restaurantId, initialTipAmount, onPaymentSuccess, setTippingId }) => {
-    const [tipAmount, setTipAmount] = useState<number>(initialTipAmount);
+const TipPayment: React.FC<TipPaymentProps> = ({ waiterId, restaurantId, tipAmount, onPaymentSuccess, setTipAmount }) => {
 
     const handleTipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value);

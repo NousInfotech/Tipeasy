@@ -4,8 +4,7 @@ import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils"
 /**
  * Verifies the Razorpay payment using the `validatePaymentVerification` utility
  * and extracts relevant data from Razorpay's payment notes.
- *
- * @param {object} paymentData - The payment details received from the client.
+ * @param {object} razorpay_order_id - The payment details received from the client.
  * @returns {Promise<object>} - A Promise resolving to the validated payment data (e.g., waiterId, restaurantId, tippingAmount).
  * @throws {Error} - Throws an error if payment verification fails.
  */

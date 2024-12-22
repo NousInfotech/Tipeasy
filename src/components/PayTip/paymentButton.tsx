@@ -9,10 +9,6 @@ interface PaymentButtonProps {
     onSuccess: (response: any) => void; // Add onSuccess callback to handle successful payment
 }
 
-interface razorpayOrder {
-    id: string
-}
-
 const PaymentButton: React.FC<PaymentButtonProps> = ({
     restaurantId,
     waiterId,

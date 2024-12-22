@@ -137,8 +137,18 @@ interface RazorpayResponse {
 }
 
 
+interface razorpayHandlerResponse {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string
+}
 
+interface razorpayNotes {
+    restaurantId: string,
+    waiterId: string,
+    tipAmount: string
+}
 
 
 // Exporting the interfaces for use in models or other files
-export type { IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse };
+export type {razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };

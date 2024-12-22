@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/app/context/CartContext";
 import { WaiterProvider } from "@/app/context/WaiterContext";
-import Head from "next/head";  // Import Next.js Head component
 
 export const metadata: Metadata = {
   title: "Tip Easyy",
@@ -18,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Add the Razorpay Checkout script */}
-        <script src="https://checkout.razorpay.com/v1/checkout.js" />
+        <script src="https://checkout.razorpay.com/v1/checkout.js" async />
       </head>
       <body className="antialiased">
         <CartProvider>
