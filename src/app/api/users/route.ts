@@ -47,13 +47,15 @@ export const POST = withDbConnection(async (request: Request): Promise<NextRespo
             username,
             email,
             phoneNumber,
-            restaurantId: restaurantId || null, // Optional for non-admins
+            restaurantId: restaurantId,
             firebaseId,
             role,
         };
 
+
         // Validate user data using Zod schema
         const validatedUser = validateSchema(userSchema, userData) as IUser;
+
 
         // Save user to database
         const newUser = await createUser(validatedUser);

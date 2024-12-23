@@ -72,11 +72,9 @@ export const createUser = async (
     userData: IUser
 ): Promise<IUser> => {
     try {
-        const newUser = new User({
-            userData
-        });
-
-        return await newUser.save();
+        const newUser = new User(userData);
+        const user = await newUser.save();
+        return user;
     } catch (error) {
         return handleMongoError(error)
     }

@@ -9,6 +9,15 @@ const corsOptions = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+// Utility function to parse cookies
+const parseCookies = (cookieHeader: string) => {
+  return Object.fromEntries(
+    cookieHeader
+      .split(';')
+      .map(cookie => cookie.trim().split('=').map(decodeURIComponent))
+  );
+};
+
 // Middleware function to handle both CORS and authentication logic
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl;
@@ -26,9 +35,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.json({}, { headers: preflightHeaders });
   }
 
-  // Handle simple requests and add CORS headers if the origin is allowed
   const response = NextResponse.next();
-
   if (isAllowedOrigin) {
     response.headers.set('Access-Control-Allow-Origin', origin);
   }
@@ -46,17 +53,13 @@ export async function middleware(req: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-    return response; // Proceed to the next middleware if API key is valid
+    return NextResponse.next(); // Proceed to the next middleware if API key is valid
   }
 
   // Dashboard Authentication for /dashboard routes
   if (url.pathname.startsWith('/dashboard')) {
     const cookieHeader = req.headers.get('cookie') || '';
-    const cookies = Object.fromEntries(
-      cookieHeader
-        .split(';')
-        .map(cookie => cookie.trim().split('=').map(decodeURIComponent))
-    );
+    const cookies = parseCookies(cookieHeader);
 
     const token = cookies.authToken;
     const uid = cookies.userUID;
@@ -76,7 +79,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/login', req.url));
       }
 
-      // Fetch the actual role from the database (or logic to determine the role)
+      // Fetch the actual role from the database
       const actualRole = await fetchRoleByFirebaseId(uid);
 
       // Check if provided role matches the actual role
@@ -86,15 +89,14 @@ export async function middleware(req: NextRequest) {
       }
 
       // Continue with the request if everything is valid
-      return response;
+      return NextResponse.next();
     } catch (error) {
       console.error('Middleware error:', error);
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
 
-  // Proceed with the next middleware if no special conditions match
-  return response;
+  return response; // Proceed with the request if no special conditions match
 }
 
 export const config = {

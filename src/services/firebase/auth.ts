@@ -48,18 +48,27 @@ export async function loginUser(email: string, password: string): Promise<LoginR
 }
 
 export async function handleFirebaseResponse(token: string): Promise<FirebaseUser> {
-    const response = await request(
+    const response = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`,
-        'POST',
-        { idToken: token }
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idToken: token }),
+        }
     );
 
-    const fbresponse = response as FirebaseResponse;
+    if (!response.ok) {
+        throw new Error(`Failed to verify token: ${response.statusText}`);
+    }
 
-    if (fbresponse.users.length === 0) {
+    const fbResponse: FirebaseResponse = await response.json();
+
+    if (fbResponse.users.length === 0) {
         throw new Error('No users found for the provided token');
     }
 
-    return fbresponse.users[0]; // Return the first user
+    return fbResponse.users[0]; // Return the first user
 }
 
