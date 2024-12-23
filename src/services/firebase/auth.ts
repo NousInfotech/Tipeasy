@@ -3,7 +3,6 @@
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { auth } from '@/config/firebase-client';
-import { request } from '@/utils/request'
 import { FirebaseUser, FirebaseResponse } from '@/types';
 
 // Define the return type explicitly to include `token`
