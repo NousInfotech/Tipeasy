@@ -14,6 +14,7 @@ type RoleChild = RoleSegment[]
 
 export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
   superadmin: [
+    { segment: 'dashboard/superadmin/', title: 'Dashboard', icon: <DashboardIcon /> },
     { segment: 'dashboard/superadmin/restaurants', title: 'Manage Restaurants', icon: <DashboardIcon /> },
     { segment: 'dashboard/superadmin/qr-based', title: 'QR-based Status', icon: <QrCodeIcon /> },
     { segment: 'dashboard/superadmin/tippings', title: 'Tipping Management', icon: <CurrencyIcon /> },

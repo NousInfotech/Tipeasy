@@ -36,3 +36,7 @@ body {
 input.PhoneInputInput{
   outline: none!important;
 }
+
+.ty-primary-gradient{
+  background: linear-gradient(180deg, #B3C677 0%, #98B03C 100%);
+}

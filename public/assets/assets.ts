@@ -6,6 +6,10 @@ import nonVegIcon from './non-veg-icon.png';
 import vegIcon from './veg-icon.png'
 import waiter from './waiter.png'
 import logo from './logo.png'
+import qrCodeScanning from './qr-code-scanning.png'
+import baristaCustomer from './barista-customer.png'
+import chefTasting from './chef-tasting.png'
+import primaryQrCode from './primary-qr-code.png'
 // Import other images as needed
 
 const assets: { [key: string]: StaticImageData } = {
@@ -15,7 +19,11 @@ const assets: { [key: string]: StaticImageData } = {
     eggIcon,
     nonVegIcon,
     vegIcon,
-    waiter
+    waiter,
+    qrCodeScanning,
+    baristaCustomer,
+    chefTasting,
+    primaryQrCode
 };
 
 export default assets;
