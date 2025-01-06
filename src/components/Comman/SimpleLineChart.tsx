@@ -42,7 +42,7 @@ const processData = (data: ChartData[], period: 'daily' | 'monthly' | 'yearly') 
             acc[dateKey] = 0;
         }
 
-        acc[dateKey] += 1; // Count each entry (for orders)
+        acc[dateKey] += amount; // Sum the amount (for tippings or orders)
         return acc;
     }, {} as Record<string, number>);
 };
@@ -87,10 +87,28 @@ export default function SimpleLineChart({
                         {
                             data: xLabels.map((label) => processedData[label] || 0),
                             label: isOrders ? 'Orders' : 'Tippings',
-                            color: "green",
+                            color: '#98b03c',
                         },
                     ]}
                     xAxis={[{ scaleType: 'point', data: xLabels }]}
+                    yAxis={[
+                        {
+                            label: 'Amount', // Label for the Y-axis
+                            min: 0, // Ensuring the Y-axis starts from 0
+                        },
+                    ]}
+                    sx={{
+                        // bottomAxis Line Styles
+                        "& .MuiChartsAxis-bottom .MuiChartsAxis-line": {
+                            stroke: "#000000",
+                            strokeWidth: 1
+                        },
+                        // leftAxis Line Styles
+                        "& .MuiChartsAxis-left .MuiChartsAxis-line": {
+                            stroke: "#000000",
+                            strokeWidth: 1
+                        }
+                    }}
                 />
             </div>
         </ThemeProvider>
