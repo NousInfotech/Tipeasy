@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { PageContainer } from '@toolpad/core/PageContainer';
+import Statistics from '@/components/SuperAdmin/Stats/Statistics';
 
 export default function Stats() {
     return (
-        <PageContainer>Stats Page</PageContainer>
+        <Statistics />
     );
 }
+

@@ -149,6 +149,10 @@ interface razorpayNotes {
     tipAmount: string
 }
 
+interface TableData {
+    [key: string]: string | number;
+}
+
 
 // Exporting the interfaces for use in models or other files
-export type {razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
+export type { TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };

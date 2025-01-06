@@ -1,5 +1,5 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, HomeIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
+import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, HomeIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
 
 type Role = 'superadmin' | 'admin' | 'waiter';
 
@@ -15,8 +15,8 @@ type RoleChild = RoleSegment[]
 export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
   superadmin: [
     { segment: 'dashboard/superadmin/', title: 'Dashboard', icon: <DashboardIcon /> },
-    { segment: 'dashboard/superadmin/restaurants', title: 'Manage Restaurants', icon: <DashboardIcon /> },
-    { segment: 'dashboard/superadmin/qr-based', title: 'QR-based Status', icon: <QrCodeIcon /> },
+    { segment: 'dashboard/superadmin/restaurants', title: 'Manage Restaurants', icon: <HotelIcon /> },
+    { segment: 'dashboard/superadmin/qr-status', title: 'QR-based Status', icon: <QrCodeIcon /> },
     { segment: 'dashboard/superadmin/tippings', title: 'Tipping Management', icon: <CurrencyIcon /> },
     { segment: 'dashboard/superadmin/stats', title: 'Stats', icon: <BarChartIcon /> },
   ],

@@ -11,6 +11,8 @@ interface CustomTableProps {
         actionLabel: string;
         onClick: (row: TableData) => void;
         columnName: string; // Name of the column for this button
+        className?: string;
+        isQRButton?: boolean; // Flag to determine if the button uses qrStatus value
     }[];
 }
 
@@ -31,12 +33,11 @@ const CustomTable: React.FC<CustomTableProps> = ({ data, buttons }) => {
         <TableContainer component={Paper}>
             <Table>
                 <TableHead>
-                    <TableRow>
-                        <TableCell>#</TableCell>
+                    <TableRow className='capitalize text-primary'>
                         {data.length > 0 && Object.keys(data[0]).map((key, index) => (
-                            <TableCell key={index}>{key}</TableCell>
-                        ))}
-                        {/* Render dynamic button columns based on `buttons` prop */}
+                            // Skip the qrStatus column
+                            key !== 'qrStatus' && <TableCell key={index}>{key}</TableCell>
+                        ))}                        {/* Render dynamic button columns based on `buttons` prop */}
                         {buttons && buttons.map((button, index) => (
                             <TableCell key={`btn-col-${index}`}>{button.columnName}</TableCell>
                         ))}
@@ -45,21 +46,20 @@ const CustomTable: React.FC<CustomTableProps> = ({ data, buttons }) => {
                 <TableBody>
                     {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                         <TableRow key={index}>
-                            <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                            {Object.values(row).map((value, idx) => (
-                                <TableCell key={idx}>{value}</TableCell>
+                            {Object.entries(row).map(([key, value], idx) => (
+                                // Skip the qrStatus column
+                                key !== 'qrStatus' && <TableCell key={idx}>{value}</TableCell>
                             ))}
                             {/* Render action buttons for each row */}
                             {buttons && buttons.map((button, btnIndex) => (
                                 <TableCell key={`btn-${btnIndex}-${index}`}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        sx={{ backgroundColor: '#00796b', marginRight: '8px' }}
+                                    <button
+                                        className={`mr-2 ${button.className}`}
                                         onClick={() => button.onClick(row)} // Pass entire row as argument
                                     >
-                                        {button.actionLabel}
-                                    </Button>
+                                        {/* If isQRButton is true, show qrStatus; otherwise, show the action label */}
+                                        {button.isQRButton ? row.qrStatus : button.actionLabel}
+                                    </button>
                                 </TableCell>
                             ))}
                         </TableRow>
