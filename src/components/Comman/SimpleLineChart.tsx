@@ -1,116 +1,116 @@
 'use client'
 
-import * as React from 'react';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import React, { useEffect } from "react";
+import Chart from "chart.js";
 
-type ChartData = {
-    amount: number;
-    date: string; // ISO string or any date format
-    time?: string; // Optional: for hourly data
-};
 
-type SimpleLineChartProps = {
-    data: ChartData[]; // The data (either tippings or orders)
-    width?: number;
-    height?: number;
-    isOrders?: boolean; // Prop to decide whether to render the order chart
-    initialTimePeriod?: 'daily' | 'monthly' | 'yearly'; // Initial time period for grouping the data
-};
+interface SimpleLineChartProps {
+    chartId: string; // Unique ID for the canvas element
+    title: string; // Title of the chart
+    data: { amount: number; date: string }[]; // Array of objects with amount and date
+    borderColor: string; // Color for the line border
+    backgroundColor: string; // Background color for the line area
+}
 
-// Function to group data by the selected time period
-const processData = (data: ChartData[], period: 'daily' | 'monthly' | 'yearly') => {
-    return data.reduce((acc, { amount, date }) => {
-        const dateObj = new Date(date);
-        let dateKey: string;
-
-        switch (period) {
-            case 'daily':
-                dateKey = dateObj.toLocaleDateString(); // Group by day
-                break;
-            case 'monthly':
-                dateKey = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`; // Group by month
-                break;
-            case 'yearly':
-                dateKey = `${dateObj.getFullYear()}`; // Group by year
-                break;
-            default:
-                dateKey = dateObj.toLocaleDateString();
-        }
-
-        if (!acc[dateKey]) {
-            acc[dateKey] = 0;
-        }
-
-        acc[dateKey] += amount; // Sum the amount (for tippings or orders)
-        return acc;
-    }, {} as Record<string, number>);
-};
-
-// Create a light theme
-const theme = createTheme({
-    palette: {
-        mode: 'light',
-    },
-});
-
-export default function SimpleLineChart({
+const SimpleLineChart: React.FC<SimpleLineChartProps> = ({
+    chartId,
+    title,
     data,
-    width = 500,
-    height = 300,
-    isOrders = false,
-    initialTimePeriod = 'daily',
-}: SimpleLineChartProps) {
-    const [timePeriod, setTimePeriod] = React.useState(initialTimePeriod); // State to manage time period
+    borderColor,
+    backgroundColor,
+}) => {
+    useEffect(() => {
+        const ctx = document.getElementById(chartId) as HTMLCanvasElement;
+        if (!ctx) return;
 
-    const processedData = processData(data, timePeriod);
+        // Extract labels and amounts from the data
+        const labels = data.map((item) => item.date);
+        const amounts = data.map((item) => item.amount);
 
-    // Extract the X-axis labels (unique time periods: days, months, or years)
-    const xLabels = Object.keys(processedData).sort();
+        new Chart(ctx.getContext("2d") as CanvasRenderingContext2D, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: title,
+                        data: amounts,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        fill: false,
+                    },
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    labels: {
+                        fontColor: "#000000", // Black font color for legend
+                    },
+                    position: "bottom",
+                },
+                tooltips: {
+                    mode: "index",
+                    intersect: false,
+                    backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark tooltip background for contrast
+                    titleFontColor: "#ffffff", // White font for tooltip title
+                    bodyFontColor: "#ffffff", // White font for tooltip content
+                },
+                hover: {
+                    mode: "nearest",
+                    intersect: true,
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            ticks: {
+                                fontColor: "#000000", // Black font color for X-axis
+                            },
+                            gridLines: {
+                                display: false, // No grid lines for X-axis
+                                color: "rgba(33, 37, 41, 0.3)",
+                            },
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            ticks: {
+                                fontColor: "#000000", // Black font color for Y-axis
+                                padding: 10,
+                                stepSize: 10
+                            },
+                            gridLines: {
+                                drawBorder: true, // Black border for Y-axis grid lines
+                                color: "rgba(0, 0, 0, 0.1)", // Light black for Y-axis grid lines
+                            },
+                        },
+                    ],
+                },
+            },
+        });
+
+    }, [chartId, title, data, borderColor, backgroundColor]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <div>
-                {/* Time Period Toggle */}
-                <div>
-                    <button onClick={() => setTimePeriod('daily')}>Daily</button>
-                    <button onClick={() => setTimePeriod('monthly')}>Monthly</button>
-                    <button onClick={() => setTimePeriod('yearly')}>Yearly</button>
+        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
+            <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+                <div className="flex flex-wrap items-center">
+                    <div className="relative w-full max-w-full flex-grow flex-1">
+                        {/* <h6 className="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
+                            Overview
+                        </h6> */}
+                        <h2 className="text-primary text-xl font-semibold">{title}</h2>
+                    </div>
                 </div>
-
-                {/* Render either Tipping Chart or Order Chart based on isOrders prop */}
-                <h2>{isOrders ? 'Order Chart' : 'Tipping Chart'}</h2>
-                <LineChart
-                    width={width}
-                    height={height}
-                    series={[
-                        {
-                            data: xLabels.map((label) => processedData[label] || 0),
-                            label: isOrders ? 'Orders' : 'Tippings',
-                            color: '#98b03c',
-                        },
-                    ]}
-                    xAxis={[{ scaleType: 'point', data: xLabels }]}
-                    yAxis={[
-                        {
-                            label: 'Amount', // Label for the Y-axis
-                            min: 0, // Ensuring the Y-axis starts from 0
-                        },
-                    ]}
-                    sx={{
-                        // bottomAxis Line Styles
-                        "& .MuiChartsAxis-bottom .MuiChartsAxis-line": {
-                            stroke: "#000000",
-                            strokeWidth: 1
-                        },
-                        // leftAxis Line Styles
-                        "& .MuiChartsAxis-left .MuiChartsAxis-line": {
-                            stroke: "#000000",
-                            strokeWidth: 1
-                        }
-                    }}
-                />
             </div>
-        </ThemeProvider>
+            <div className="p-4 flex-auto">
+                <div className="relative h-[300px]">
+                    <canvas id={chartId}></canvas>
+                </div>
+            </div>
+        </div>
     );
-}
+};
+
+export default SimpleLineChart;
