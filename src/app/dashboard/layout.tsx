@@ -7,7 +7,7 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { NAVIGATION_BY_ROLE } from '@/utils/constants';
 import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import LoadingBar from 'react-top-loading-bar';
 
 type Role = 'superadmin' | 'admin' | 'waiter';
@@ -30,7 +30,9 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
     React.useEffect(() => {
         const handleRouteChange = () => {
             setProgress(40); // Start progress when route change starts
-        };
+        }
+
+        handleRouteChange();
 
         // Detecting pathname changes (use pathname to access current route)
         const currentPath = pathname;

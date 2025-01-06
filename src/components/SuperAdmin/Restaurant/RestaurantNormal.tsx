@@ -32,16 +32,6 @@ const RestaurantNormal = () => {
         setFilteredRows(filteredData);
     };
 
-    const handleGenerateQR = (row: TableData) => {
-        const { restaurantId } = row;
-        console.log(`Generating QR for restaurant ${restaurantId}`);
-    };
-
-    const handleSendQR = (row: TableData) => {
-        const { restaurantId } = row;
-        console.log(`Sending QR to client for restaurant ${restaurantId}`);
-    };
-
     const handleDeleteQR = (row: TableData) => {
         const { restaurantId } = row;
         console.log(`Deleting QR for restaurant ${restaurantId}`);
