@@ -50,6 +50,7 @@ const RestaurantForm = () => {
                 qrStatus: 'none',
                 profileImage: data.restaurant.profileImage, // Include the image URL here
             }) as unknown as IRestaurant; // Actual API call 
+            console.log(response)
             toast.success('Restaurant created successfully');
         } catch (error) {
             toast.error('Error in creating Restaurant');

@@ -1,5 +1,5 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, FormInputIcon, HomeIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
+import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, HomeIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
 
 type Role = 'superadmin' | 'admin' | 'waiter';
 

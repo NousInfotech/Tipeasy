@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import React, { useState } from 'react';
 import {
   FieldError,
@@ -10,6 +12,7 @@ import PhoneInput, { Value } from 'react-phone-number-input';
 import { Star, Eye, EyeOff } from 'lucide-react'; // Using Lucide for icons
 import 'react-phone-number-input/style.css';
 import { CldUploadWidget } from 'next-cloudinary';
+
 
 
 interface InputProps<TFieldValues extends FieldValues> {
