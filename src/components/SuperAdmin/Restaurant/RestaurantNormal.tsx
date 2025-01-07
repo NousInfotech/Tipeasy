@@ -50,7 +50,8 @@ const RestaurantNormal = () => {
 
                 </div>
                 <div className='w-full lg:w-1/5'>
-                    <button>
+                    <button className='px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out'
+                    >
                         Add Restaurant
                     </button>
                 </div>
@@ -62,13 +63,14 @@ const RestaurantNormal = () => {
                     {
                         actionLabel: "View",
                         onClick: handleDeleteQR,
-                        columnName: "View"
-
+                        columnName: "View",
+                        className: 'px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out'
                     },
                     {
                         actionLabel: "Delete",
                         onClick: handleDeleteQR,
-                        columnName: "Delete"
+                        columnName: "Delete",
+                        className: 'px-2 py-1 bg-red-600 text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-red-600 hover:bg-white hover:text-primary transition-all duration-300 ease-in-out'
                     },
                 ]}
             />

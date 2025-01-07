@@ -15,4 +15,42 @@ const restaurantMockData: TableData[] = [
 ];
 
 
-export { restaurantMockData }
+const TippingData: TableData[] = [
+    {
+        id: "1",
+        restaurantName: "Ocean Breeze Diner",
+        waiterName: "John Doe",
+        amount: 2500,
+        time: "2025-01-07 14:30",
+    },
+    {
+        id: "2",
+        restaurantName: "Mountain View Grill",
+        waiterName: "Jane Smith",
+        amount: 1800,
+        time: "2025-01-07 15:00",
+    },
+    {
+        id: "3",
+        restaurantName: "Sunset Cafe",
+        waiterName: "Michael Johnson",
+        amount: 3200,
+        time: "2025-01-07 16:15",
+    },
+    {
+        id: "4",
+        restaurantName: "Riverbank Bistro",
+        waiterName: "Emily Brown",
+        amount: 1500,
+        time: "2025-01-07 12:45",
+    },
+    {
+        id: "5",
+        restaurantName: "Lakeside Restaurant",
+        waiterName: "Chris Wilson",
+        amount: 2750,
+        time: "2025-01-07 13:30",
+    },
+];
+
+export { restaurantMockData, TippingData }
