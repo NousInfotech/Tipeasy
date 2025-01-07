@@ -104,8 +104,9 @@ interface IUser {
     username: string;
     email: string;
     password?: string;
+    confirmPassword?: string;
     phoneNumber: string;
-    firebaseId: string;
+    firebaseId?: string;
     restaurantId: string;
     role: "admin" | "superadmin";
 }

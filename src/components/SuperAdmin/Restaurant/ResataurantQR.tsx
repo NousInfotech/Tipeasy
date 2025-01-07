@@ -5,6 +5,7 @@ import SearchBar from '@/components/SearchBar/SearchBar'; // Import your SearchB
 import { restaurantMockData } from '@/Mockdata/RestaurantTableData';
 import { TableData } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
+import Link from 'next/link';
 
 const fetchData = (): TableData[] => {
     return restaurantMockData;
@@ -50,10 +51,12 @@ const RestaurantQR = () => {
 
                 </div>
                 <div className='w-full lg:w-1/5'>
-                    <button className='px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out'
-                    >
-                        Add Restaurant
-                    </button>
+                    <Link href={`create`} passHref>
+                        <button className='px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out'
+                        >
+                            Add Restaurant
+                        </button>
+                    </Link>
                 </div>
             </div>
 

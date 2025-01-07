@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/app/context/CartContext";
 import { WaiterProvider } from "@/app/context/WaiterContext";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Tip Easyy",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <script src="https://checkout.razorpay.com/v1/checkout.js" async />
       </head>
       <body className="antialiased">
+        <ToastContainer />
         <CartProvider>
           <WaiterProvider>
             {children}
