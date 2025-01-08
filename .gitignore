@@ -45,3 +45,5 @@ tipeasy_firebase_config.json
 #scripts
 
 /src/scripts/createRestaurant.ts
+
+api-docs.txt
