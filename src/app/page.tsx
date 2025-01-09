@@ -3,6 +3,7 @@ import { getRestaurants } from '@/api/restaurantApi'; // Adjust import as necess
 import { IRestaurant } from '@/types/schematypes';
 import Link from 'next/link';
 import Image from 'next/image';
+import assets from '../../public/assets/assets';
 
 const Page = async () => {
   const restaurants = await getRestaurants() as IRestaurant[]; // Fetch data at runtime
@@ -53,7 +54,7 @@ const Page = async () => {
               {/* QR Code and Status */}
               <div className="mt-4 flex items-center space-x-2">
                 <a href={restaurant.qrCodeUrl} target="_blank" rel="noopener noreferrer">
-                  <Image width={100} height={100} src={restaurant.qrCodeUrl as string} alt="QR Code" className="w-12 h-12" />
+                  <Image width={100} height={100} src={restaurant.qrCodeUrl ? restaurant.qrCodeUrl as string : assets.primaryQrCode} alt="QR Code" className="w-12 h-12" />
                 </a>
                 <span
                   className={`text-sm ${restaurant.qrStatus === 'sent' ? 'text-green-500' : 'text-red-500'}`}

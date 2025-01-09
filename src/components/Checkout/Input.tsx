@@ -28,7 +28,7 @@ interface InputProps<TFieldValues extends FieldValues> {
   onPhoneChange?: (value?: Value) => void;
   ratingValue?: number;
   onRatingChange?: (value: number) => void;
-  onImageChange?: (fileUrl: string | null) => void; // For handling image URL
+  onImageChange?: (fileUrl: string) => void; // For handling image URL
 }
 
 const Input = <TFieldValues extends FieldValues>({
@@ -100,7 +100,7 @@ const Input = <TFieldValues extends FieldValues>({
           {({ open }) => (
             <button
               type="button"
-              className="w-full mt-2 p-2 text-xs border-b bg-transparent text-black focus:outline-none"
+              className={`w-full mt-2 p-2 text-xs border-b bg-transparent text-black focus:outline-none ${className}`}
               onClick={() => open()}
             >
               Choose an Image

@@ -74,6 +74,6 @@ export const put = async (url: string, data: unknown, options: RequestInit = {})
  * @param {RequestInit} [options] - Optional additional configuration.
  * @returns {Promise<unknown>} - The response data.
  */
-export const del = async (url: string, options: RequestInit = {}): Promise<unknown> => {
-    return request(url, 'DELETE', null, options);
+export const del = async (url: string, data: unknown, options: RequestInit = {}): Promise<unknown> => {
+    return request(url, 'DELETE', data, options);
 };

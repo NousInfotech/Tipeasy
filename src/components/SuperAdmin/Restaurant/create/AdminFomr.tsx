@@ -6,14 +6,14 @@ import Input from '@/components/Checkout/Input';
 import { Value } from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { IUser } from '@/types/schematypes';
+import { IRestaurant, IUser } from '@/types/schematypes';
 import { createUser } from '@/api/userApi';
 
 interface AdminFormValues {
     admin: IUser;
 }
 
-const AdminForm = ({ restaurantId }: { restaurantId: string }) => {
+const AdminForm = ({ restaurant }: { restaurant: IRestaurant }) => {
     const { register, handleSubmit, formState: { errors }, watch, setValue, trigger } = useForm<AdminFormValues>();
     const [adminPhone, setAdminPhone] = useState<Value | undefined>(undefined);
     const router = useRouter();
@@ -27,7 +27,7 @@ const AdminForm = ({ restaurantId }: { restaurantId: string }) => {
 
     const createAdmin = async (data: AdminFormValues) => {
         try {
-            const adminData = { ...data.admin, restaurantId: restaurantId, role: "admin" };
+            const adminData = { ...data.admin, restaurantId: restaurant._id, role: "admin" };
             console.log(adminData)
             const response = await createUser(adminData as IUser); // Actual API call
             console.log(response);
@@ -50,7 +50,8 @@ const AdminForm = ({ restaurantId }: { restaurantId: string }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <h2 className="text-xl font-bold">Admin Form</h2>
+
+            <h2 className="text-xl font-bold">{`Admin Form: ${restaurant.title}`}</h2>
             <div className="grid lg:grid-cols-2 gap-4">
                 <Input
                     id="admin-username"

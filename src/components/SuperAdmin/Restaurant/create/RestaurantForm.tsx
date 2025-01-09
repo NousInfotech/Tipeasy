@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, { useState } from 'react';
@@ -36,7 +38,7 @@ const RestaurantForm = () => {
 
             // Include the image URL in the API call
             await createRestaurantByForm(data);
-
+            router.refresh();
             router.back(); // Redirect to the previous page
         } catch (error) {
             console.error('Error submitting restaurant form:', error);

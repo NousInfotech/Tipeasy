@@ -41,7 +41,7 @@ export const generateRestaurantQr = async (restaurantId: string, options = {}) =
 }
 
 // Update an existing restaurant by restaurantId
-export const updateRestaurant = async (restaurantId: string, restaurantData: IRestaurant, options = {}) => {
+export const updateRestaurant = async (restaurantId: string, restaurantData: Partial<IRestaurant>, options = {}) => {
     const url = `/api/restaurants/${restaurantId}`;
     const response = await put(url, restaurantData, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data

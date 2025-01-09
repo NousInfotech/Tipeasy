@@ -154,6 +154,15 @@ interface TableData {
     [key: string]: string | number;
 }
 
+interface IFormattedRestaurantData {
+    id: string; // Matches `_id` from the original data
+    title: string;
+    qrStatus: string; // Ensure this matches the type of `qrStatus` in the original data
+    email: string;
+    phone: string; // Ensure this matches the type of `phoneNumber` in the original data
+}
+
+
 
 // Exporting the interfaces for use in models or other files
-export type { TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
+export type { IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
