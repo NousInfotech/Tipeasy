@@ -6,7 +6,6 @@ import { IFormattedRestaurantData, IRestaurant } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
 import Link from 'next/link';
 import { formatRestaurantDataForTable } from '@/utils/formatData';
-import { useRouter } from 'next/navigation';
 import { generateRestaurantQr } from '@/api/restaurantApi';
 import { toast } from 'react-toastify';
 import QRPopup from './QRPopup';
