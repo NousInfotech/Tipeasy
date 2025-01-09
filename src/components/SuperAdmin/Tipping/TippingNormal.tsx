@@ -1,10 +1,10 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import CustomTable from '@/components/CustomTable/CustomTable';
 import SearchBar from '@/components/SearchBar/SearchBar'; // Import your SearchBar component
 import { TippingData } from '@/Mockdata/RestaurantTableData';
 import { TableData } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
+import CustomTable2 from '@/components/CustomTable/CustomTable2';
 
 const fetchData = (): TableData[] => {
     return TippingData;
@@ -45,7 +45,7 @@ const TippingNormal = () => {
                 onSearch={handleSearch}
             />
 
-            <CustomTable
+            <CustomTable2
                 data={filteredRows} // Pass filtered rows to the table
                 buttons={[
                     {
