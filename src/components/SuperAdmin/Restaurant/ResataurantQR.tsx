@@ -20,7 +20,6 @@ interface QRGenerationResponse {
 }
 
 const RestaurantQR: React.FC<RestaurantQRProps> = ({ restaurants }) => {
-    const router = useRouter();
 
     // Memoize formatted data to avoid unnecessary recalculations
     const formattedRestaurantData = useMemo(

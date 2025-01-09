@@ -21,3 +21,22 @@ app/dashboard
     /restaurants : id, title,googleLocation,email,phoneNumber,description?,address,qrCodeURl,qrStatus 
     /qr-restaurants : same as above add qrCodeURl , qrCodeStatus 
     /tippings : id , waitername , experience, paymentStatus,razorpayFundId,razorpayPaymentId,ratings,tipAmount,resataurantId,restaruantName
+
+
+
+
+
+
+
+    {
+    "username": "GrandIndianRestaurantAdmin",
+    "email": "grandindianadmin@gmail.com",
+    "phoneNumber": "+918438807389",
+    "firebaseId": "tvtlQ2DlXTfMSEbp9TNpkm13J1m1",
+    "restaurantId": "677d6f1c833c60c2b3be8f31",
+    "role": "admin",
+    "_id": "677ec8032bee60ef9bd4f394",
+    "createdAt": "2025-01-08T18:46:27.920Z",
+    "updatedAt": "2025-01-08T18:46:27.920Z",
+    "__v": 0
+}

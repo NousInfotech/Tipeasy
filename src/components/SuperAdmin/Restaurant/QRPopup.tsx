@@ -1,5 +1,8 @@
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import assets from '../../../../public/assets/assets';
+
 
 interface QRPopupProps {
     qrURL: string;
@@ -19,8 +22,10 @@ const QRPopup: React.FC<QRPopupProps> = ({ qrURL, onClose }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-4/5 max-w-md">
                 <h2 className="text-lg font-bold text-center mb-4">Scan the QR Code</h2>
-                <img
-                    src={qrURL}
+                <Image
+                    src={qrURL ? qrURL : assets.primaryQrCode}
+                    width={425}
+                    height={425}
                     alt="QR Code"
                     className="w-full h-auto object-contain mb-4"
                 />

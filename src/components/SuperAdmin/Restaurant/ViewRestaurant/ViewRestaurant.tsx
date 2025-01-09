@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 
 'use client';
 
@@ -6,11 +8,11 @@ import { useForm } from 'react-hook-form';
 import { IRestaurant } from '@/types/schematypes';
 import { PencilIcon } from 'lucide-react';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
-import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary';
+import { CldUploadWidget } from 'next-cloudinary';
 import { updateRestaurant } from '@/api/restaurantApi';
 import { deleteCloudinaryImageApi } from '@/api/cloudinaryApi';
 import { toast } from 'react-toastify';
-import Input from '@/components/Checkout/Input';
+import Image from 'next/image';
 
 interface ViewRestaurantProps {
     restaurant: IRestaurant;
@@ -54,7 +56,9 @@ const ViewRestaurant: React.FC<ViewRestaurantProps> = ({ restaurant }) => {
             <div className="p-4 space-y-4">
                 {/* Banner Image */}
                 <div className="relative">
-                    <img
+                    <Image
+                        width={949}
+                        height={192}
                         src={bannerImage || '/placeholder-banner.jpg'}
                         alt="Restaurant Banner"
                         className="w-full h-48 object-cover rounded-md"
