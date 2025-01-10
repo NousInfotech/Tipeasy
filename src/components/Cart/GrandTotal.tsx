@@ -1,8 +1,8 @@
-import { MenuItem } from "@/types";
+import { IMenu } from "@/types/schematypes";
 
 interface GrandTotalProps {
     items: {
-        item: MenuItem;
+        item: IMenu;
         quantity: number; // Changed `Number` to `number` for correct type casing
     }[];
     className?: string; // Make `className` optional

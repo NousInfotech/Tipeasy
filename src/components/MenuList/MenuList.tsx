@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MenuItem } from '@/types';
 import Image from 'next/image';
 import { Plus, Minus } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
+import { IMenu } from '@/types/schematypes';
 
 interface MenuListProps {
-  menuItems: MenuItem[];
+  menuItems: IMenu[];
   categories: string[];
   flatView: boolean; // Determines if the flat view (no categories) is active
 }
 
 interface MenuProductItemProps {
-  id: number;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -108,14 +108,14 @@ const MenuList: React.FC<MenuListProps> = ({ menuItems, categories, flatView }) 
       {flatView ? (
         // Render flat list when flatView is enabled (e.g., search or filter active)
         <ul className="space-y-2">
-          {menuItems.map(item => (
+          {menuItems.map((item: IMenu, index: number) => (
             <MenuProductItem
-              key={item.id}
-              id={item.id}
-              name={item.name}
+              key={index}
+              id={item._id as string}
+              name={item.title}
               category={item.category}
               price={item.price}
-              imageSrc={item.imageSrc}
+              imageSrc={item.imgSrc}
             />
           ))}
         </ul>
@@ -136,14 +136,14 @@ const MenuList: React.FC<MenuListProps> = ({ menuItems, categories, flatView }) 
                 <ul className="mt-2 space-y-2">
                   {menuItems
                     .filter(item => item.category === category)
-                    .map(item => (
+                    .map((item: IMenu, index: number) => (
                       <MenuProductItem
-                        key={item.id}
-                        id={item.id}
-                        name={item.name}
+                        key={index}
+                        id={item._id as string}
+                        name={item.title}
                         category={item.category}
                         price={item.price}
-                        imageSrc={item.imageSrc}
+                        imageSrc={item.imgSrc}
                       />
                     ))}
                 </ul>

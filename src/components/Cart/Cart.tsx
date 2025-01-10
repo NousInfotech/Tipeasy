@@ -4,15 +4,18 @@ import React, { useEffect, useState } from 'react';
 import HeaderwithBackButton from '../HeaderwithBackButton/HeaderwithBackButton';
 import MenuList from '../MenuList/MenuList';
 import { useCart } from '@/app/context/CartContext';
-import { MenuItem } from '@/types';
-import { menuData } from '@/Mockdata/MenuData';
 import GrandTotal from './GrandTotal';
 import PrimaryBtn from '../PrimaryBtn/PrimaryBtn';
 import { useParams, useRouter } from 'next/navigation';
+import { IMenu } from '@/types/schematypes';
 
-const Cart = () => {
+interface CartProps {
+    menuData: IMenu[];
+}
+
+const Cart: React.FC<CartProps> = ({ menuData }) => {
     const { state } = useCart(); // Assuming `state` contains cart items
-    const [menuItemsWithQuantity, setMenuItemsWithQuantity] = useState<{ item: MenuItem; quantity: number }[]>([]);
+    const [menuItemsWithQuantity, setMenuItemsWithQuantity] = useState<{ item: IMenu; quantity: number }[]>([]);
     const [isButtonEnabled, setIsButtonEnabled] = useState(false);
     const params = useParams();
     const router = useRouter(); // Move useRouter to the top level
@@ -21,7 +24,7 @@ const Cart = () => {
     const handleOrderClick = () => {
         const payload = {
             items: menuItemsWithQuantity.map(({ item, quantity }) => ({
-                id: item.id,
+                id: item._id,
                 quantity,
             })),
             total: menuItemsWithQuantity.reduce((acc, { item, quantity }) => acc + item.price * quantity, 0),
@@ -29,7 +32,6 @@ const Cart = () => {
 
         console.log('Order Payload:', payload);
 
-        // Navigate to the checkout page with the restaurantId
         if (restaurantId) {
             router.push(`/restaurant/${restaurantId}/checkout`);
         } else {
@@ -41,10 +43,10 @@ const Cart = () => {
         // Map cart items to include full menu item details with quantity
         const itemsWithQuantity = state.items
             .map(cartItem => {
-                const menuItem = menuData.find(item => item.id === cartItem.id);
+                const menuItem = menuData.find(item => item._id === cartItem.id);
                 return menuItem ? { item: menuItem, quantity: cartItem.quantity } : null;
             })
-            .filter(Boolean) as { item: MenuItem; quantity: number }[];
+            .filter(Boolean) as { item: IMenu; quantity: number }[];
 
         setMenuItemsWithQuantity(itemsWithQuantity);
 

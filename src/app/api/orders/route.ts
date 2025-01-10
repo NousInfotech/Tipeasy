@@ -1,31 +1,46 @@
 import { successResponse, errorResponse } from "@/utils/response";
 import { withDbConnection } from "@/database/utils/withDbConnection";
-import { getOrdersByRestaurantId, createOrderByMenuIds } from "@/database/utils/queries";
+import { getOrdersByRestaurantId, createOrderByMenuIds, getOrderById } from "@/database/utils/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { orderSchema } from "@/utils/validations"; // Assuming orderSchema is defined
 import { validateMenu, validateSchema } from "@/utils/validationUtils";
 import { validateRestaurant } from "@/utils/validationUtils";
+import { getMenuOrders } from "@/api/orderApi";
 
 /**
- * GET API Route handler to fetch all orders for a given restaurant from the database.
+ * GET API Route handler to fetch orders based on the provided query parameters.
+ * - If `restaurantId` is provided, it fetches orders for that restaurant.
+ * - If `orderId` is provided, it fetches the specific order by ID.
+ * - If no parameters are provided, it fetches all menu orders.
  * 
- * @returns {NextResponse} - A response containing the list of orders.
+ * @returns {NextResponse} - A response containing the appropriate list of orders.
  */
 export const GET = withDbConnection(async (request: NextRequest): Promise<NextResponse> => {
     try {
         const { searchParams } = new URL(request.url);
         const restaurantId = searchParams.get("restaurantId");
+        const orderId = searchParams.get("orderId");
 
-        // Validate restaurantId
-        await validateRestaurant(restaurantId as string);
+        let orders;
 
-        // Fetch orders for the restaurant
-        const orders = await getOrdersByRestaurantId(restaurantId as string);
+        if (orderId) {
+            // Fetch order by OrderId
+            orders = await getOrderById(orderId);
+        } else if (restaurantId) {
+            // Validate restaurantId and fetch orders for the restaurant
+            await validateRestaurant(restaurantId);
+            orders = await getOrdersByRestaurantId(restaurantId);
+        } else {
+            // Fetch all menu orders if no specific parameters
+            orders = await getMenuOrders();
+        }
+
         return NextResponse.json(successResponse('Orders fetched successfully', orders));
     } catch (error: unknown) {
         return NextResponse.json(errorResponse(error));
     }
 });
+
 
 /**
  * POST API Route handler to create a new order in the database.
@@ -42,7 +57,7 @@ export const POST = withDbConnection(async (request: Request): Promise<NextRespo
 
         await validateRestaurant(orderData.restaurantId); // Validate restaurant ID
 
-        const validatedOrderData = validateSchema(orderSchema, orderData);
+        const validatedOrderData = validateSchema(orderSchema, orderData, true);
 
         await Promise.all(
             validatedOrderData.menuItems.map(async (item) => {
@@ -59,7 +74,7 @@ export const POST = withDbConnection(async (request: Request): Promise<NextRespo
             validatedOrderData.menuItems,
             validatedOrderData.tableNo,
             validatedOrderData.customerName,
-            validatedOrderData.phoneNumber
+            validatedOrderData.phoneNumber,
         );
 
         return NextResponse.json(successResponse('Order created successfully', newOrder));

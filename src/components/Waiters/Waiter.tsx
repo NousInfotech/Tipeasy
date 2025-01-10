@@ -29,9 +29,9 @@ const WaiterComponent: React.FC<WaiterComponentProps> = ({ waiter }) => {
         >
             {/* Waiter Image */}
             <Image
-                src={assets.waiter}
+                src={waiter.imgSrc as string}
                 alt={waiter.name}
-                className="w-full h-48 object-contain rounded-t-lg"
+                className="w-full h-48 object-cover rounded-t-lg"
                 width={108}
                 height={118}
             />

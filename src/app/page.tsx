@@ -6,7 +6,7 @@ import Image from 'next/image';
 import assets from '../../public/assets/assets';
 
 const Page = async () => {
-  const restaurants = await getRestaurants() as IRestaurant[]; // Fetch data at runtime
+  const restaurants: IRestaurant[] = await getRestaurants() as IRestaurant[]; // Fetch data at runtime
 
   return (
     <div className="p-6">

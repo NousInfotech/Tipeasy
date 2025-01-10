@@ -57,7 +57,7 @@ interface IOrder {
     phoneNumber?: string;
     totalAmount: number;
     dateTime: Date;
-    status: 'pending' | 'ongoing' | 'served';
+    status?: 'pending' | 'ongoing' | 'served';
     notes?: string;
 }
 

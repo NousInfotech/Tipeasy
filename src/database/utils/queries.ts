@@ -224,7 +224,7 @@ export const createOrderByMenuIds = async (
             phoneNumber,
             totalAmount,
             status: "pending", // Default status
-            dateTime: new Date(),
+            dateTime: new Date() as Date,
         });
 
         return await order.save();
@@ -274,7 +274,32 @@ export const getOrdersByRestaurantId = async (restaurantId: string): Promise<IOr
     try {
         return await Order.find({ restaurantId });
     } catch (error) {
-        return handleMongoError(error)
+        return handleMongoError(error); // Handle any potential errors during the database query
+    }
+};
+
+/**
+ * Get a specific order by its ID.
+ * @param {string} orderId - The ID of the order.
+ * @returns {Promise<Order | null>} - Returns the order if found, otherwise null.
+ */
+export const getOrderById = async (orderId: string): Promise<IOrder | null> => {
+    try {
+        return await Order.findById(orderId); // Assuming `Order` has a `findById` method
+    } catch (error) {
+        return handleMongoError(error); // Handle any potential errors during the database query
+    }
+};
+
+/**
+ * Get all orders from the database.
+ * @returns {Promise<Order[]>} - Returns an array of all orders.
+ */
+export const getMenuOrders = async (): Promise<IOrder[]> => {
+    try {
+        return await Order.find(); // Fetches all orders without any filtering
+    } catch (error) {
+        return handleMongoError(error); // Handle any potential errors during the database query
     }
 };
 

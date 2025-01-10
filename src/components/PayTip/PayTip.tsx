@@ -139,7 +139,7 @@ const PayTip: React.FC = () => {
         return (
             <div className="flex flex-col items-center justify-center h-screen space-y-5 bg-primary">
                 <h1 className="text-3xl font-bold text-white">Thank You!</h1>
-                <p>Redirecting to Home Page {countdown}...</p> {/* Show countdown */}
+                <p className='text-white'>Redirecting to Home Page {countdown}...</p> {/* Show countdown */}
             </div>
         );
     }
