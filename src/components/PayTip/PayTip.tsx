@@ -137,9 +137,9 @@ const PayTip: React.FC = () => {
 
     if (step === 4) {
         return (
-            <div className="flex flex-col items-center justify-center h-screen space-y-5">
-                <h1 className="text-3xl font-bold">Thank You!</h1>
-                <p>Redirecting in {countdown}...</p> {/* Show countdown */}
+            <div className="flex flex-col items-center justify-center h-screen space-y-5 bg-primary">
+                <h1 className="text-3xl font-bold text-white">Thank You!</h1>
+                <p>Redirecting to Home Page {countdown}...</p> {/* Show countdown */}
             </div>
         );
     }
