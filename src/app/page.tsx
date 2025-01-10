@@ -57,9 +57,9 @@ const Page = async () => {
                   <Image width={100} height={100} src={restaurant.qrCodeUrl ? restaurant.qrCodeUrl as string : assets.primaryQrCode} alt="QR Code" className="w-12 h-12" />
                 </a>
                 <span
-                  className={`text-sm ${restaurant.qrStatus === 'sent' ? 'text-green-500' : 'text-red-500'}`}
+                  className={`text-sm ${restaurant.qrStatus === 'generated' ? 'text-green-500' : 'text-red-500'}`}
                 >
-                  {restaurant.qrStatus === 'sent' ? 'QR Sent' : 'QR Not Sent'}
+                  {restaurant.qrStatus === 'generated' ? 'QR Sent' : 'QR Not Sent'}
                 </span>
               </div>
 
