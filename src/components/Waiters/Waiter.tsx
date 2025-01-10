@@ -3,7 +3,6 @@
 import React from 'react';
 import { Star } from 'lucide-react'; // For the rating star icon
 import Image from 'next/image';
-import assets from '../../../public/assets/assets';
 import { IWaiter } from '@/types/schematypes';
 import { useWaiter } from '@/app/context/WaiterContext';
 import { useRouter } from 'next/navigation';

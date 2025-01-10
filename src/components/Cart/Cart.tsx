@@ -53,7 +53,7 @@ const Cart: React.FC<CartProps> = ({ menuData }) => {
         // Check if there's at least one item with quantity > 0
         const hasValidItems = itemsWithQuantity.some(({ quantity }) => quantity > 0);
         setIsButtonEnabled(hasValidItems);
-    }, [state.items]);
+    }, [state.items, menuData]);
 
     const categories = ['Food', 'Salads']; // You can dynamically generate categories if needed
 

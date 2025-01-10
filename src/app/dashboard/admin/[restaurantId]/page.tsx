@@ -1,7 +1,7 @@
-import { validateRestaurant } from '@/api/restaurantApi';
+import { getMenuOrdersByRestaurantId } from '@/api/orderApi';
+import { getRestaurantById, validateRestaurant } from '@/api/restaurantApi';
 import RestaurantAdmin from '@/components/RestaurantAdmin/RestaurantAdmin'
-import { getOrdersByRestaurantId } from '@/database/utils/queries';
-import { IOrder } from '@/types/schematypes';
+import { IOrder, IRestaurant } from '@/types/schematypes';
 import React from 'react'
 
 interface Params {
@@ -21,10 +21,12 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         throw new Error('RestaurantId is not in database');
     }
 
-    const orders = (await getOrdersByRestaurantId(restaurantId)) as IOrder[];
+    const restaurant = await getRestaurantById(restaurantId) as IRestaurant
+
+    const orders = await getMenuOrdersByRestaurantId(restaurantId) as IOrder[];
 
     return (
-        <RestaurantAdmin orders={orders} />
+        <RestaurantAdmin restaurant={restaurant} orders={orders} />
     )
 }
 
