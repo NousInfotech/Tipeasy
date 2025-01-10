@@ -21,7 +21,7 @@ interface WaiterFormProps {
 
 
 const EditWaiterForm: React.FC<WaiterFormProps> = ({ waiter }) => {
-    const { register, handleSubmit, setValue, formState: { errors }, watch } = useForm<IWaiter>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<IWaiter>({
         defaultValues: waiter,
     });
     const [isEditing, setIsEditing] = useState(false);

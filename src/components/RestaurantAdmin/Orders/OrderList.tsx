@@ -28,7 +28,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders }) => {
     // Initialize rows with order data
     useEffect(() => {
         setRows(orders);
-    }, []);
+    }, [orders]);
 
     // Handle search filter
     const handleSearch = (query: string) => {

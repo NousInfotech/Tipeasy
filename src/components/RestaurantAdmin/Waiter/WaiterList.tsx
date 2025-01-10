@@ -32,7 +32,7 @@ const WaiterList: React.FC<WaiterListProps> = ({ waiters }) => {
     useEffect(() => {
         // For demonstration, you could set rows manually or fetch from API
         setRows(waiters);
-    }, []);
+    }, [waiters]);
 
     // Handle search filter
     const handleSearch = (query: string) => {

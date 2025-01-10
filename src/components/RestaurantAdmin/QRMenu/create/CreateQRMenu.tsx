@@ -20,7 +20,7 @@ const QRMenuForm = () => {
     const params = useParams();
     const { restaurantId } = params;
 
-    const { register, handleSubmit, setValue, trigger, formState: { errors }, watch } = useForm<QRMenuFormValues>();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<QRMenuFormValues>();
     const [menuImage, setMenuImage] = useState<string | null>(null);
     const [availability, setAvailability] = useState<boolean>(true); // true = available
 

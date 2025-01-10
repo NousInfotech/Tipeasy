@@ -1,4 +1,4 @@
-import { getMenuByMenuId, getMenuByRestaurantId } from '@/api/restaurantApi'
+import { getMenuByMenuId } from '@/api/restaurantApi'
 import EditMenuForm from '@/components/RestaurantAdmin/QRMenu/EditMenuForm'
 import { IMenu } from '@/types/schematypes'
 import React from 'react'
@@ -6,7 +6,7 @@ import React from 'react'
 interface Params {
     menuId: string
 }
- 
+
 const page = async ({ params }: { params: Promise<Params> }) => {
 
     const { menuId } = await params
