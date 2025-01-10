@@ -8,8 +8,8 @@ interface Params {
     restaurantId: string;
 }
 
-const Page = async ({ params }: { params: Params }) => {
-    const { restaurantId } = params;
+const Page = async ({ params }: { params: Promise<Params> }) => {
+    const { restaurantId } = await params;
 
     if (!restaurantId) {
         throw new Error('RestaurantId is missing');
@@ -24,7 +24,7 @@ const Page = async ({ params }: { params: Params }) => {
     const orders = (await getOrdersByRestaurantId(restaurantId)) as IOrder[];
 
     return (
-        <RestaurantAdmin orders={orders}/>
+        <RestaurantAdmin orders={orders} />
     )
 }
 
