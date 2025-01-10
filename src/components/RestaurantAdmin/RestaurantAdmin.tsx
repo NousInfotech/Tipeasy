@@ -5,7 +5,6 @@ import { numberStat } from '@/Mockdata/AdminDashboardMockData'
 import CTABox from './CTABox'
 import { BarChart3, Pizza, UserPlus } from 'lucide-react'
 import { IOrder, IRestaurant } from '@/types/schematypes'
-import OrderList from './Orders/OrderList'
 import OrderListPage from './Orders/OrderListPage'
 
 interface RestaurantAdminProps {
