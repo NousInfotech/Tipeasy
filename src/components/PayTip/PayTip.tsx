@@ -114,13 +114,16 @@ const PayTip: React.FC = () => {
 
     if (step === 1) {
         return (
-            <TipPayment
-                waiterId={waiter._id as string}
-                restaurantId={restaurantId as string}
-                tipAmount={tipAmount || 0}
-                onPaymentSuccess={handlePaymentSuccess} // Pass handler to TipPayment
-                setTipAmount={setTipAmount}
-            />
+            <>
+                <TipPayment
+                    waiterId={waiter._id as string}
+                    waiterName={waiter.name as string}
+                    restaurantId={restaurantId as string}
+                    tipAmount={tipAmount || 0}
+                    onPaymentSuccess={handlePaymentSuccess} // Pass handler to TipPayment
+                    setTipAmount={setTipAmount}
+                />
+            </>
         );
     }
 
