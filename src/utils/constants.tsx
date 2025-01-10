@@ -29,11 +29,13 @@ export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
 };
 
 export function generateNavigation(role: Role, restaurantId?: string): RoleSegment[] {
-  const navigation = NAVIGATION_BY_ROLE[role].map((item) => {
+  // Check if the role exists in NAVIGATION_BY_ROLE
+  const navigation = NAVIGATION_BY_ROLE[role] || [];
+
+  return navigation.map((item) => {
     const segment = item.segment.replace('{restaurantId}', restaurantId || '');
-    return { ...item, segment }; // Replace placeholder with actual restaurantId
+    return { ...item, segment };
   });
-  return navigation;
 }
 
 export const ERROR_CODES = {
