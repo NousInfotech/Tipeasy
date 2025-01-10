@@ -22,6 +22,8 @@ export const createRestaurant = async (restaurantData: IRestaurant): Promise<IRe
     }
 };
 
+
+
 /**
  * Creates a new restaurant in the database.
  * 
@@ -367,6 +369,23 @@ export const getWaiterById = async (waiterId: string): Promise<IWaiter | null> =
         return waiter;
     } catch (error) {
         console.error('Error fetching waiter by ID:', error);
+        throw new Error('Database query failed');
+    }
+};
+
+/**
+ * Get a user by their email, filtering by "admin" role.
+ *
+ * @param {string} email - The email of the waiter to fetch.
+ * @returns {Promise<IUser | null>} - The user document if found with role "admin", null if not.
+ */
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+    try {
+        const user = await User.findOne({ email }).exec(); // Filter by email and role
+
+        return user;
+    } catch (error) {
+        console.error('Error fetching waiter by email:', error);
         throw new Error('Database query failed');
     }
 };

@@ -64,14 +64,23 @@ export const getWaitersByRestaurantId = async (restaurantId: string, options = {
 };
 
 // Create a new waiter
-export const createWaiter = async (waiterData: IWaiter, options = {}) => {
+export const createWaiter = async (waiterData: Partial<IWaiter>, options = {}) => {
     const url = '/api/waiters';
     const response = await post(url, waiterData, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data
 };
 
+// Get a Waiter by Id 
+
+export const getWaiterById = async (waiterId: string, options = {}) => {
+    const url = `/api/waiters/${waiterId}`;
+    const response = await get(url, options) as validateResponse;
+    return checkResponse(response);
+}
+
+
 // Update an existing waiter by waiterId
-export const updateWaiter = async (waiterId: string, waiterData: IWaiter, options = {}) => {
+export const updateWaiter = async (waiterId: string, waiterData: Partial<IWaiter>, options = {}) => {
     const url = `/api/waiters/${waiterId}`;
     const response = await put(url, waiterData, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data
@@ -93,6 +102,13 @@ export const getMenuByRestaurantId = async (restaurantId: string, options = {}) 
     return checkResponse(response); // Check if successful and return data
 };
 
+// Get menu by Id
+export const getMenuByMenuId = async (menuId: string, options = {}) => {
+    const url = `/api/menus/${menuId}`;
+    const response = await get(url, options) as validateResponse;
+    return checkResponse(response); // Check if successful and return data
+};
+
 // Create a new menu for a restaurant
 export const createMenu = async (menuData: IMenu, options = {}) => {
     const url = '/api/menus';
@@ -101,7 +117,7 @@ export const createMenu = async (menuData: IMenu, options = {}) => {
 };
 
 // Update an existing menu by menuId
-export const updateMenu = async (menuId: string, menuData: IMenu, options = {}) => {
+export const updateMenu = async (menuId: string, menuData: Partial<IMenu>, options = {}) => {
     const url = `/api/menus/${menuId}`;
     const response = await put(url, menuData, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data

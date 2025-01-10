@@ -38,8 +38,8 @@ const RestaurantForm = () => {
 
             // Include the image URL in the API call
             await createRestaurantByForm(data);
-            router.refresh();
             router.back(); // Redirect to the previous page
+            router.refresh();
         } catch (error) {
             console.error('Error submitting restaurant form:', error);
         }
@@ -167,6 +167,7 @@ const RestaurantForm = () => {
                 type="image"  // Set the input type to 'image' so it triggers the image upload flow
                 error={errors.restaurant?.profileImage}
                 onImageChange={onImageChange}  // Pass onImageChange to handle the image URL
+                folder='restaurantCoverImages' // Specify the folder for the image upload
             />
 
             <button

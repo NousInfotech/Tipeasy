@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '@/services/firebase/auth';
 import Cookie from 'js-cookie';
+import { getAdminIdByEmail } from '@/api/userApi';
+import { IUser } from '@/types/schematypes';
 
 
 const LoginPage = () => {
     const router = useRouter();
 
-    const [email, setEmail] = useState('');
+    const [formemail, setFormEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState<'admin' | 'superadmin' | 'waiter'>('admin');
     const [error, setError] = useState('');
@@ -20,8 +22,8 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await loginUser(email, password);
-            const { token, uid } = response;
+            const response = await loginUser(formemail, password);
+            const { token, uid, email } = response;
 
             // Set cookies for token, uid, and role
             Cookie.set('authToken', token, { expires: 7, secure: true, sameSite: 'Strict' });
@@ -33,7 +35,11 @@ const LoginPage = () => {
             if (role === 'waiter') {
                 router.push('/dashboard/waiter');
             } else if (role === 'admin') {
-                router.push('/dashboard/admin');
+                const admin = await getAdminIdByEmail(email as string) as IUser;
+                const { restaurantId } = admin;
+
+                Cookie.set('restaurantId', restaurantId, { expires: 7, secure: true, sameSite: 'Strict' });
+                router.push(`/dashboard/admin/${restaurantId}`);
             } else if (role === 'superadmin') {
                 router.push('/dashboard/superadmin');
             } else {
@@ -61,14 +67,14 @@ const LoginPage = () => {
                 )}
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                        Email
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="formemail">
+                        email
                     </label>
                     <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="formemail"
+                        type="formemail"
+                        value={formemail}
+                        onChange={(e) => setFormEmail(e.target.value)}
                         required
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />

@@ -54,6 +54,9 @@ export const POST = withDbConnection(async (request: NextRequest): Promise<NextR
         // Validate the waiter data using Zod schema before encryption
         const validatedWaiterData = validateSchema(waiterSchema, waiterData) as IWaiter;
 
+
+        // create an fund Account via razorpay route api
+
         // Encrypt bank details after validation
         const encryptedAccountNumber = encryptData(bankDetails.accountNumber);
         const encryptedIfsc = encryptData(bankDetails.ifsc);

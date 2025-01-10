@@ -25,7 +25,7 @@ const menuSchema = z.object({
   imgSrc: z.string().url("Invalid image URL").optional(),
   price: z.number().positive("Price must be a positive number"),
   category: z.string().min(1, "Category is required"),
-  availability: z.enum(["available", "out-of-stock"]),
+  availability: z.boolean(),
   dietaryPreference: z.string().min(1, "Dietary preference is required"),
   restaurantId: z.string().min(1, "Restaurant ID is required"),
 });
@@ -96,8 +96,6 @@ const waiterSchema = z.object({
     bankName: z.string().optional(),
     razorpayFundAccountId: z.string().optional()
   }).optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
 });
 
 // Validation for User

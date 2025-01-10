@@ -4,7 +4,7 @@ import * as React from 'react';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import { NAVIGATION_BY_ROLE } from '@/utils/constants';
+import { generateNavigation } from '@/utils/constants';
 import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
 import { usePathname } from 'next/navigation';
@@ -12,9 +12,14 @@ import LoadingBar from 'react-top-loading-bar';
 
 type Role = 'superadmin' | 'admin' | 'waiter';
 
+
+
 export default function DashboardPagesLayout(props: { children: React.ReactNode }) {
 
     const role = Cookie.get('userRole');
+    const restaurantId = Cookie.get('restaurantId') || '';
+
+
     const theme = createTheme({
         palette: {
             primary: {
@@ -48,7 +53,7 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [pathname]);
 
-    const NAVIGATION = NAVIGATION_BY_ROLE[role as Role];
+    const NAVIGATION = generateNavigation(role as Role, restaurantId as string);
 
     return (
         <AppProvider navigation={NAVIGATION} branding={{
@@ -58,7 +63,7 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
             theme={theme}
         >
             <div>
-                <DashboardLayout >
+                <DashboardLayout>
                     <LoadingBar
                         color="#000000"
                         progress={progress}

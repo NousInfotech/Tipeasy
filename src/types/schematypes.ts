@@ -24,7 +24,7 @@ interface IMenu {
     imgSrc: string;
     price: number;
     category: string;
-    availability: 'available' | 'out-of-stock';
+    availability: boolean;
     dietaryPreference: string;
     restaurantId: string;  // Changed to string
 }
@@ -91,6 +91,7 @@ interface IWaiter {
     name: string;
     phoneNumber: string;
     email: string;
+    confirmPassword?: string;
     password?: string;
     restaurantId: string; // Using string as restaurantId is typically passed as a string
     ratings: number;
@@ -162,7 +163,18 @@ interface IFormattedRestaurantData {
     phone: string; // Ensure this matches the type of `phoneNumber` in the original data
 }
 
+type Role = 'superadmin' | 'admin' | 'waiter';
+
+type RoleChild = RoleSegment[]
+
+interface RoleSegment {
+    segment: string;
+    title?: string;
+    icon?: React.JSX.Element
+    children?: RoleChild
+}
+
 
 
 // Exporting the interfaces for use in models or other files
-export type { IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
+export type { Role, RoleChild, RoleSegment, IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };

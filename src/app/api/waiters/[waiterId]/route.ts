@@ -6,6 +6,7 @@ import { withDbConnection } from '@/database/utils/withDbConnection'; // Assumin
 import { validateSchema, validateWaiter } from '@/utils/validationUtils';
 import { waiterSchema } from '@/utils/validations';
 import { IWaiter } from '@/types/schematypes';
+import { encryptData } from '@/utils/encryptDataByCrypto';
 
 interface Params {
     waiterId: string;
@@ -42,6 +43,23 @@ export const PUT = withDbConnection(async (req: NextRequest, context: { params: 
         const updatedData = await req.json(); // Get the updated data from the request body
 
         const validatedWaiter = validateSchema(waiterSchema, updatedData, true) as IWaiter
+
+        if (validatedWaiter.bankDetails) {
+
+            const encryptedAccountNumber = encryptData(validatedWaiter.bankDetails.accountNumber);
+            const encryptedIfsc = encryptData(validatedWaiter.bankDetails.ifsc);
+
+            // Placeholder for Razorpay Fund Account ID
+            const razorpayFundAccountId = "PLACEHOLDER_RPFUNDID";
+
+            // Update validated waiter data with Firebase ID and encrypted bank details
+            validatedWaiter.bankDetails = {
+                accountNumber: encryptedAccountNumber,
+                ifsc: encryptedIfsc,
+                accountName: validatedWaiter.name,
+                razorpayFundAccountId,
+            };
+        }
 
         const updatedWaiter = await updateWaiter(waiterId, validatedWaiter);
 

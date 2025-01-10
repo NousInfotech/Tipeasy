@@ -1,16 +1,8 @@
+import { Role, RoleSegment } from '@/types/schematypes';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, HomeIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
 
-type Role = 'superadmin' | 'admin' | 'waiter';
 
-interface RoleSegment {
-  segment: string;
-  title?: string;
-  icon?: React.JSX.Element
-  children?: RoleChild
-}
-
-type RoleChild = RoleSegment[]
 
 export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
   superadmin: [
@@ -21,11 +13,13 @@ export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
     { segment: 'dashboard/superadmin/stats', title: 'Stats', icon: <BarChartIcon /> },
   ],
   admin: [
-    { segment: 'dashboard/admin/waiters', title: 'Waiters Management', icon: <UsersIcon /> },
-    { segment: 'dashboard/admin/qr-menu', title: 'QR Menu Management', icon: <MenuIcon /> },
-    { segment: 'dashboard/admin/orders', title: 'Food Orders', icon: <ReceiptIcon /> },
-    { segment: 'dashboard/admin/stats', title: 'Stats', icon: <BarChartIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}', title: 'Dashboard', icon: <DashboardIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}/waiters', title: 'Waiters Management', icon: <UsersIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}/qr-menu', title: 'QR Menu Management', icon: <MenuIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}/orders', title: 'Food Orders', icon: <ReceiptIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}/stats', title: 'Stats', icon: <BarChartIcon /> },
   ],
+
   waiter: [
     { segment: 'dashboard/waiter', title: 'Home Page', icon: <HomeIcon /> },
     { segment: 'dashboard/waiter/tippings', title: 'Tipping Management', icon: <CoinsIcon /> },
@@ -33,6 +27,14 @@ export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
 
   ],
 };
+
+export function generateNavigation(role: Role, restaurantId?: string): RoleSegment[] {
+  const navigation = NAVIGATION_BY_ROLE[role].map((item) => {
+    const segment = item.segment.replace('{restaurantId}', restaurantId || '');
+    return { ...item, segment }; // Replace placeholder with actual restaurantId
+  });
+  return navigation;
+}
 
 export const ERROR_CODES = {
   VALIDATION_ERROR: "VALIDATION_ERROR",

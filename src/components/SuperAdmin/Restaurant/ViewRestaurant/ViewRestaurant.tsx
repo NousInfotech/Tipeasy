@@ -35,6 +35,7 @@ const ViewRestaurant: React.FC<ViewRestaurantProps> = ({ restaurant }) => {
     };
 
     const handleSave = (data: IRestaurant) => {
+        console.log(data);
         onUpdateRestaurant(restaurant._id as string, data);
         setIsEditing(false);
     };
