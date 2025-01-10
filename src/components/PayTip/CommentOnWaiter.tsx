@@ -23,7 +23,7 @@ const CommentOnWaiter: React.FC<CommentOnWaiterProps> = ({ onNext }) => {
       />
       <button
         onClick={handleNext}
-        className="bg-purple-600 text-white p-3 rounded-md w-64"
+        className="bg-primary text-white p-3 rounded-md w-64"
       >
         Submit Comment
       </button>

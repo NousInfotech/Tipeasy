@@ -46,15 +46,9 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     };
 
     return (
-        <button
-            onClick={handlePayment}
-            disabled={loading}
-            className={`w-full py-3 mt-4 text-lg font-semibold text-white rounded-lg 
-                ${loading ? 'bg-gray-400' : 'bg-primary hover:bg-primary-dark'} 
-                transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary`}>
+        <button onClick={handlePayment} disabled={loading}>
             {loading ? 'Processing...' : 'Pay Tip'}
         </button>
-
     );
 };
 

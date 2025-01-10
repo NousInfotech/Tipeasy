@@ -41,7 +41,7 @@ const RatingAndExperience: React.FC<RatingAndExperienceProps> = ({ onNext }) => 
                     <button
                         key={item.label}
                         onClick={() => setExperience(item.label)}
-                        className={`text-3xl ${experience === item.label ? 'border-2 border-purple-600 p-1 rounded-full' : ''
+                        className={`text-3xl ${experience === item.label ? 'border-2 border-primary p-1 rounded-full' : ''
                             }`}
                     >
                         {item.emoji}
@@ -50,7 +50,7 @@ const RatingAndExperience: React.FC<RatingAndExperienceProps> = ({ onNext }) => 
             </div>
             <button
                 onClick={handleNext}
-                className="bg-purple-600 text-white p-3 rounded-md w-64"
+                className="bg-primary text-white p-3 rounded-md w-64"
             >
                 Submit Review
             </button>
