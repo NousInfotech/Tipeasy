@@ -1,0 +1,7 @@
+{
+    "functions": {
+        "app/dashboard/**/*": {
+            "maxDuration": 30
+        }
+    }
+}
