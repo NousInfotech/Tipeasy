@@ -24,7 +24,7 @@ const WaiterForm = () => {
 
     const { restaurantId } = params;
 
-    const { register, handleSubmit, setValue, trigger, formState: { errors }, watch } = useForm<WaiterFormValues>();
+    const { register, handleSubmit, setValue, trigger, formState: { errors } } = useForm<WaiterFormValues>();
     const [waiterPhone, setWaiterPhone] = useState<Value | undefined>(undefined);
     const router = useRouter();
 

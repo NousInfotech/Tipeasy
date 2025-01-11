@@ -15,6 +15,7 @@ interface FormattedOrder {
     _id: string;
     customerName?: string;
     phone: string;
+    tableNo: number;
     totalAmount: number;
     dateTime: string;
     status: string;
@@ -48,6 +49,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders }) => {
             _id: order._id,
             customerName: order.customerName || 'N/A',
             phone: order.phoneNumber || 'N/A',
+            tableNo: order.tableNo,
             totalAmount: order.totalAmount,
             dateTime: new Date(order.dateTime!).toLocaleString(),
             status: order.status,
@@ -59,6 +61,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders }) => {
     const columns = [
         { key: 'id', header: 'ID' },
         { key: 'customerName', header: 'Customer Name' },
+        { key: 'tableNo', header: 'Table No' },
         { key: 'phone', header: 'Phone' },
         { key: 'totalAmount', header: 'Total Amount (₹)' },
         { key: 'dateTime', header: 'Date & Time' },

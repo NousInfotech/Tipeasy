@@ -9,7 +9,7 @@ import { BarChart3, Pizza, UserPlus } from 'lucide-react'
 import { IOrder, IRestaurant } from '@/types/schematypes'
 import OrderListPage from './Orders/OrderListPage'
 import Cookie from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 interface RestaurantAdminProps {
     orders: IOrder[]
@@ -20,6 +20,8 @@ const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant })
 
     const role = Cookie.get('userRole');
     const router = useRouter();
+    const params = useParams();
+    const { restaurantId } = params
 
     useEffect(() => {
         if (role !== 'admin') {
@@ -38,7 +40,7 @@ const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant })
                 <CTABox
                     buttonText="View Statistics"
                     icon={BarChart3}
-                    ctaLink="stats"
+                    ctaLink={`${restaurantId}/stats`}
                     className="bg-white text-secondary flex-col"
                     buttonClassName="bg-secondary text-white hover:bg-white hover:text-secondary border border-secondary"
                     iconBoxClassName="bg-secondary"
@@ -47,7 +49,7 @@ const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant })
                 <CTABox
                     buttonText="Add Food Item"
                     icon={Pizza}
-                    ctaLink="qr-menu/create"
+                    ctaLink={`${restaurantId}/qr-menu/create`}
                     className="bg-secondary text-white flex-col-reverse"
                     buttonClassName="bg-white text-secondary hover:bg-white hover:text-secondary border border-secondary"
                     iconBoxClassName="bg-white p-3"
@@ -56,7 +58,7 @@ const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant })
                 <CTABox
                     buttonText="Add New Waiter"
                     icon={UserPlus}
-                    ctaLink="waiter/create"
+                    ctaLink={`${restaurantId}/waiter/create`}
                     className="bg-white text-secondary flex-col"
                     buttonClassName="bg-secondary text-white hover:bg-white hover:text-secondary border border-secondary"
                     iconBoxClassName="bg-secondary"

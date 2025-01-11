@@ -8,7 +8,6 @@ import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import LoadingBar from 'react-top-loading-bar';
-import { useRouter } from 'next/navigation';
 import { auth } from '@/config/firebase-client'; // Make sure to import your Firebase config
 import { getIdToken } from 'firebase/auth';
 import { generateNavigation } from '@/utils/constants';
@@ -18,7 +17,6 @@ type Role = 'superadmin' | 'admin' | 'waiter';
 export default function DashboardPagesLayout(props: { children: React.ReactNode }) {
     const role = Cookie.get('userRole');
     const restaurantId = Cookie.get('restaurantId') || '';
-    const router = useRouter();
     const theme = createTheme({
         palette: {
             primary: {
@@ -52,10 +50,8 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
         refreshTokenIfNeeded();
 
         const handleRouteChange = () => {
-            setProgress(40); // Start progress when route change starts
+            setProgress(100); // Start progress when route change starts
         };
-
-        handleRouteChange();
 
         // Detecting pathname changes (use pathname to access current route)
         const currentPath = pathname;
@@ -63,7 +59,7 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
         // Setting progress to complete once pathname change is finished
         const interval = setInterval(() => {
             if (pathname !== currentPath) {
-                setProgress(100); // Complete progress when pathname changes
+                handleRouteChange();
                 clearInterval(interval); // Stop the interval once the pathname change is detected
             }
         }, 100); // Check every 100ms for pathname changes

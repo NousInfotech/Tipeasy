@@ -1,15 +1,18 @@
-import { validateRestaurant } from '@/api/restaurantApi';
-import { getOrdersByRestaurantId } from '@/database/utils/queries';
-import { IOrder } from '@/types/schematypes';
-import React from 'react';
+import { getMenuOrdersByRestaurantId } from '@/api/orderApi';
+import { getRestaurantById, validateRestaurant } from '@/api/restaurantApi';
+import { IOrder, IRestaurant } from '@/types/schematypes';
+import React from 'react'
 import OrderListPage from '@/components/RestaurantAdmin/Orders/OrderListPage';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
+
+
 
 interface Params {
     restaurantId: string;
 }
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
+
     const { restaurantId } = await params;
 
     if (!restaurantId) {
@@ -22,7 +25,9 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         throw new Error('RestaurantId is not in database');
     }
 
-    const orders = (await getOrdersByRestaurantId(restaurantId)) as IOrder[];
+    const restaurant = await getRestaurantById(restaurantId) as IRestaurant
+
+    const orders = await getMenuOrdersByRestaurantId(restaurantId) as IOrder[];
 
     return (
         <>
