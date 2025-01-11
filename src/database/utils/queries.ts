@@ -381,6 +381,20 @@ export const fetchRoleById = async (firebaseId: string): Promise<string> => {
 
     return "";
 }
+/**
+ * Fetch the role by userId.
+ * @param {string} firebaseId - The user ID for which the role is to be fetched.
+ * @returns {Promise<Iuser>} - Returns the role associated with the user.
+ */
+export const fetchUserByFBId = async (firebaseId: string): Promise<IUser> => {
+    try {
+        const user = await User.findOne({ firebaseId });
+        return user;
+    } catch (error) {
+        console.error('Error fetching User by ID:', error);
+        throw new Error('Database query failed');
+    }
+}
 
 /**
  * Get a waiter by their ID.

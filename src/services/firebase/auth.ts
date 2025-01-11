@@ -1,7 +1,7 @@
 // src/services/firebase/auth.ts
 'use server'
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signOut } from 'firebase/auth';
 import { auth } from '@/config/firebase-client';
 import { FirebaseUser, FirebaseResponse } from '@/types';
 
@@ -69,5 +69,15 @@ export async function handleFirebaseResponse(token: string): Promise<FirebaseUse
     }
 
     return fbResponse.users[0]; // Return the first user
+}
+
+export async function logoutUser() {
+    try {
+        await signOut(auth);
+        console.log("User logged out successfully");
+    } catch (error) {
+        console.error("Error logging out:", error);
+        throw error;
+    }
 }
 

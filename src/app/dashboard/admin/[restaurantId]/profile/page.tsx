@@ -1,9 +1,12 @@
+import AdminProfile from '@/components/ProfilePage/AdminProfile';
 import React from 'react'
 
-const page = () => {
+
+const Page = async () => {
+
     return (
-        <div>page</div>
+        <AdminProfile/>
     )
 }
 
-export default page
+export default Page

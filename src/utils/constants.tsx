@@ -1,16 +1,17 @@
 import { Role, RoleSegment } from '@/types/schematypes';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { BarChartIcon, BellIcon, CoinsIcon, CurrencyIcon, HomeIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, UsersIcon } from 'lucide-react';
+import { BarChartIcon, CurrencyIcon, HotelIcon, MenuIcon, QrCodeIcon, ReceiptIcon, User, UsersIcon } from 'lucide-react';
 
 
 
 export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
   superadmin: [
-    { segment: 'dashboard/superadmin/', title: 'Dashboard', icon: <DashboardIcon /> },
+    { segment: 'dashboard/superadmin', title: 'Dashboard', icon: <DashboardIcon /> },
     { segment: 'dashboard/superadmin/restaurants', title: 'Manage Restaurants', icon: <HotelIcon /> },
     { segment: 'dashboard/superadmin/qr-status', title: 'QR-based Status', icon: <QrCodeIcon /> },
     { segment: 'dashboard/superadmin/tippings', title: 'Tipping Management', icon: <CurrencyIcon /> },
     { segment: 'dashboard/superadmin/stats', title: 'Stats', icon: <BarChartIcon /> },
+    { segment: 'dashboard/superadmin/profile', title: 'Profile', icon: <User /> },
   ],
   admin: [
     { segment: 'dashboard/admin/{restaurantId}', title: 'Dashboard', icon: <DashboardIcon /> },
@@ -18,14 +19,16 @@ export const NAVIGATION_BY_ROLE: Record<Role, RoleSegment[]> = {
     { segment: 'dashboard/admin/{restaurantId}/qr-menu', title: 'QR Menu Management', icon: <MenuIcon /> },
     { segment: 'dashboard/admin/{restaurantId}/orders', title: 'Food Orders', icon: <ReceiptIcon /> },
     { segment: 'dashboard/admin/{restaurantId}/stats', title: 'Stats', icon: <BarChartIcon /> },
-  ],
-
-  waiter: [
-    { segment: 'dashboard/waiter', title: 'Home Page', icon: <HomeIcon /> },
-    { segment: 'dashboard/waiter/tippings', title: 'Tipping Management', icon: <CoinsIcon /> },
-    { segment: 'dashboard/waiter/notifications', title: 'Notifications', icon: <BellIcon /> },
+    { segment: 'dashboard/admin/{restaurantId}/profile', title: 'Profile', icon: <User /> },
 
   ],
+
+  // waiter: [
+  //   { segment: 'dashboard/waiter', title: 'Home Page', icon: <HomeIcon /> },
+  //   { segment: 'dashboard/waiter/tippings', title: 'Tipping Management', icon: <CoinsIcon /> },
+  //   { segment: 'dashboard/waiter/notifications', title: 'Notifications', icon: <BellIcon /> },
+
+  // ],
 };
 
 export function generateNavigation(role: Role, restaurantId?: string): RoleSegment[] {

@@ -14,3 +14,9 @@ export const getAdminIdByEmail = async (email: string, options = {}) => {
     const response = await get(url, options) as validateResponse;
     return checkResponse(response);
 }
+
+export const fetchUserByFirebaseId = async (fireabseId: string, options = {}) => {
+    const url = `/api/users/user?firebaseId=${fireabseId}`;
+    const response = await get(url, options) as validateResponse;
+    return checkResponse(response);
+}

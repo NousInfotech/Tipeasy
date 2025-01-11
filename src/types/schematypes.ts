@@ -163,7 +163,7 @@ interface IFormattedRestaurantData {
     phone: string; // Ensure this matches the type of `phoneNumber` in the original data
 }
 
-type Role = 'superadmin' | 'admin' | 'waiter';
+type Role = 'superadmin' | 'admin';
 
 type RoleChild = RoleSegment[]
 
