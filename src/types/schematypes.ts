@@ -95,7 +95,7 @@ interface IWaiter {
     password?: string;
     restaurantId: string; // Using string as restaurantId is typically passed as a string
     ratings: number;
-    firebaseId: string;
+    firebaseId?: string;
     imgSrc?: string;
     bankDetails?: IBankDetails; // Optional, but if provided, it will be required
 }

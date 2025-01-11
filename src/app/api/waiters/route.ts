@@ -4,14 +4,13 @@ import { createWaiter, getWaitersByRestaurantId } from "@/database/utils/queries
 import { NextRequest, NextResponse } from "next/server";
 import { waiterSchema } from "@/utils/validations"; // Assuming waiterSchema is defined
 import { validateSchema } from "@/utils/validationUtils";
-import { registerUser } from "@/services/firebase/auth"; // Firebase user registration function
 import { IWaiter } from "@/types/schematypes";
 import { validateRestaurant } from "@/utils/validationUtils";
 import { encryptData } from "@/utils/encryptDataByCrypto";
 
 /**
  * POST API Route handler to create a new waiter in the database.
- * Validates the request body using Zod schema and generates Firebase ID.
+ * Validates the request body using Zod schema.
  * 
  * @param {Request} request - The incoming HTTP request object containing waiter data in the body.
  * 
@@ -28,34 +27,26 @@ export const GET = withDbConnection(async (request: NextRequest) => {
     // Fetch menus for the restaurant
     const waiters = await getWaitersByRestaurantId(restaurantId as string);
     return NextResponse.json(successResponse('Waiters fetched successfully', waiters));
-})
-
+});
 
 export const POST = withDbConnection(async (request: NextRequest): Promise<NextResponse> => {
     try {
         // Parse the waiter data from the request
         const waiterData = await request.json();
 
-        // Destructure required fields for Firebase registration
-        const { email, password, bankDetails, name, restaurantId } = waiterData;
+        // Destructure required fields
+        const { email, bankDetails, name, restaurantId } = waiterData;
 
-        // Validate email and password presence
-        if (!email || !password) {
-            throw new Error("Email and password are required for Firebase registration.");
+        // Validate email presence
+        if (!email) {
+            throw new Error("Email is required.");
         }
 
         // Validate restaurant ID
         await validateRestaurant(restaurantId);
 
-        const firebaseId = await registerUser(email, password) as string;
-
-        waiterData.firebaseId = firebaseId
-
         // Validate the waiter data using Zod schema before encryption
         const validatedWaiterData = validateSchema(waiterSchema, waiterData) as IWaiter;
-
-
-        // create an fund Account via razorpay route api
 
         // Encrypt bank details after validation
         const encryptedAccountNumber = encryptData(bankDetails.accountNumber);
@@ -64,7 +55,7 @@ export const POST = withDbConnection(async (request: NextRequest): Promise<NextR
         // Placeholder for Razorpay Fund Account ID
         const razorpayFundAccountId = "PLACEHOLDER_RPFUNDID";
 
-        // Update validated waiter data with Firebase ID and encrypted bank details
+        // Update validated waiter data with encrypted bank details
         validatedWaiterData.bankDetails = {
             accountNumber: encryptedAccountNumber,
             ifsc: encryptedIfsc,

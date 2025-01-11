@@ -88,7 +88,7 @@ const waiterSchema = z.object({
   email: z.string().email("Invalid email format"),
   restaurantId: z.string().min(1, "Restaurant ID is required"),
   ratings: z.number().min(0, "Ratings must be a positive number").optional(),
-  firebaseId: z.string().min(1, "Firebase ID is required"),
+  firebaseId: z.string().min(1, "Firebase ID is required").optional(),
   imgSrc: z.string().url("Invalid image URL").optional(),
   bankDetails: z.object({
     accountNumber: z.string().regex(/^\d{9,18}$/, "Invalid account number").optional(),

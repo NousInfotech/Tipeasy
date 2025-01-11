@@ -15,7 +15,7 @@ const waiterSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant", required: true },
   ratings: { type: Number, default: 0 },
-  firebaseId: { type: String, required: true, unique:true },
+  firebaseId: { type: String, unique: true },
   imgSrc: { type: String, required: false },
   bankDetails: bankDetailsSchema,
 }, { timestamps: true });

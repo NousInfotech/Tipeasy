@@ -84,7 +84,7 @@ const WaiterForm = () => {
                         error={errors.waiter?.email}
                     />
                 </div>
-                <div className="grid lg:grid-cols-2 gap-4">
+                {/* <div className="grid lg:grid-cols-2 gap-4">
                     <Input
                         id="waiter-password"
                         label="Password *"
@@ -102,7 +102,7 @@ const WaiterForm = () => {
                         })}
                         error={errors.waiter?.confirmPassword}
                     />
-                </div>
+                </div> */}
                 <Input
                     id="waiter-phone"
                     label="Phone Number *"
