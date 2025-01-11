@@ -1,7 +1,7 @@
 import { successResponse, errorResponse } from "@/utils/response";
 import { withDbConnection } from "@/database/utils/withDbConnection";
-import { createWaiter, getWaitersByRestaurantId } from "@/database/utils/queries";
-import { NextRequest, NextResponse } from "next/server";
+import { createWaiter } from "@/database/utils/queries";
+import { NextResponse } from "next/server";
 import { waiterSchema } from "@/utils/validations";
 import { validateSchema } from "@/utils/validationUtils";
 import { IWaiter } from "@/types/schematypes";
