@@ -9,6 +9,7 @@ import { useWaiter } from '@/app/context/WaiterContext';
 import { updateTipping } from '@/api/tippingsApi'; // Your tipping update API
 import { verifyPayment } from '@/api/tippingsApi';
 import { ITipping, razorpayHandlerResponse } from '@/types/schematypes';
+import { toast } from 'react-toastify';
 
 // Define the Experience enum
 enum Experience {
@@ -33,7 +34,7 @@ const PayTip: React.FC = () => {
     const [experience, setExperience] = useState<Experience | 'no_experience'>('no_experience');
     const [comment, setComment] = useState<string>('no_comment');
 
-    const [countdown, setCountdown] = useState(10); // Countdown state
+    const [countdown, setCountdown] = useState(5); // Countdown state
 
     const handleNextStep = () => setStep((prev) => prev + 1);
 
@@ -65,9 +66,11 @@ const PayTip: React.FC = () => {
             // Send the details to your backend for verification
             const data = await verifyPayment(paymentDetails) as ITipping; // Assuming verifyPayment returns the tipping object with _id
 
-            console.log(data);
+            // console.log(data);
             // Assuming the backend returns the tipping object with a _id
             setTippingId(data._id as string);  // Set the tipping ID after payment verification
+
+            toast.success(`Payment to Waiter is SuccessFull`,{position:'top-center'})
 
             handleNextStep(); // Proceed to next step after successful payment
         } catch (error) {
@@ -139,7 +142,7 @@ const PayTip: React.FC = () => {
         return (
             <div className="flex flex-col items-center justify-center h-screen space-y-5 bg-primary">
                 <h1 className="text-3xl font-bold text-white">Thank You!</h1>
-                <p className='text-white'>Redirecting to Home Page {countdown}...</p> {/* Show countdown */}
+                <p className='text-white'>Redirecting to Home Page in {countdown}...</p> {/* Show countdown */}
             </div>
         );
     }
