@@ -4,11 +4,14 @@ import RestaurantAdmin from '@/components/RestaurantAdmin/RestaurantAdmin'
 import { IOrder, IRestaurant } from '@/types/schematypes';
 import React from 'react'
 
+
+
 interface Params {
     restaurantId: string;
 }
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
+
     const { restaurantId } = await params;
 
     if (!restaurantId) {

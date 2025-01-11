@@ -97,14 +97,14 @@ const WaiterList: React.FC<WaiterListProps> = ({ waiters }) => {
                             View
                         </button>
                     </Link>
-                    <button>
+                    <div>
                         <button
                             onClick={() => handleDeleteWaiter(row)}
                             className='px-2 py-1 bg-white text-red-600 text-[14px] font-bold rounded-lg border-[1px] border-solid border-red-600 hover:bg-red-600 hover:text-white transition-all duration-300 ease-in-out'
                         >
                             Delete
                         </button>
-                    </button>
+                    </div>
                 </div>
             ),
         },

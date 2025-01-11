@@ -4,22 +4,21 @@ import * as React from 'react';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import { generateNavigation } from '@/utils/constants';
 import { createTheme } from '@mui/material';
 import Cookie from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import LoadingBar from 'react-top-loading-bar';
+import { useRouter } from 'next/navigation';
+import { auth } from '@/config/firebase-client'; // Make sure to import your Firebase config
+import { getIdToken } from 'firebase/auth';
+import { generateNavigation } from '@/utils/constants';
 
 type Role = 'superadmin' | 'admin' | 'waiter';
 
-
-
 export default function DashboardPagesLayout(props: { children: React.ReactNode }) {
-
     const role = Cookie.get('userRole');
     const restaurantId = Cookie.get('restaurantId') || '';
-
-
+    const router = useRouter();
     const theme = createTheme({
         palette: {
             primary: {
@@ -31,11 +30,30 @@ export default function DashboardPagesLayout(props: { children: React.ReactNode 
     const [progress, setProgress] = React.useState(0);
     const pathname = usePathname();
 
-    // Detect pathname change
     React.useEffect(() => {
+        const refreshTokenIfNeeded = async () => {
+            const token = Cookie.get('authToken');
+            const refreshToken = Cookie.get('refreshToken');
+
+            if (token && refreshToken) {
+                try {
+                    // Refresh token logic: Force the token refresh from Firebase
+                    const user = auth.currentUser;
+                    if (user) {
+                        const newToken = await getIdToken(user, true); // This forces a refresh
+                        Cookie.set('authToken', newToken, { expires: 1 }); // Update the authToken cookie
+                    }
+                } catch (error) {
+                    console.error("Error refreshing token:", error);
+                }
+            }
+        };
+
+        refreshTokenIfNeeded();
+
         const handleRouteChange = () => {
             setProgress(40); // Start progress when route change starts
-        }
+        };
 
         handleRouteChange();
 

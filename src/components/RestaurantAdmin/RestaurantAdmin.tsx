@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import NumberStatCards from './NumberStatCards'
 import { numberStat } from '@/Mockdata/AdminDashboardMockData'
@@ -6,6 +8,8 @@ import CTABox from './CTABox'
 import { BarChart3, Pizza, UserPlus } from 'lucide-react'
 import { IOrder, IRestaurant } from '@/types/schematypes'
 import OrderListPage from './Orders/OrderListPage'
+import Cookie from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 interface RestaurantAdminProps {
     orders: IOrder[]
@@ -13,6 +17,16 @@ interface RestaurantAdminProps {
 }
 
 const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant }) => {
+
+    const role = Cookie.get('userRole');
+    const router = useRouter();
+
+    useEffect(() => {
+        if (role !== 'admin') {
+            router.push('/login');
+        }
+    }, [role, router]); // Depend on role and router to rerun the effect if they change
+
     return (
         <section className='space-y-4'>
             <div className='w-full flex flex-row justify-between'>
@@ -51,8 +65,7 @@ const RestaurantAdmin: React.FC<RestaurantAdminProps> = ({ orders, restaurant })
             </div>
             <OrderListPage orders={orders} />
         </section>
-
     )
 }
 
-export default RestaurantAdmin
+export default RestaurantAdmin;
