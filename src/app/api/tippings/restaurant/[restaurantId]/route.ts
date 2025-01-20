@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import { successResponse, errorResponse } from '@/utils/response'; // Reuse response functions
 import { withDbConnection } from '@/database/utils/withDbConnection'; // Import the DB connection middleware
-import { ITipping } from '@/types/schematypes'; // Assuming IRestaurant is defined
-import { validateSchema } from '@/utils/validationUtils'; // Utility function to validate using Zod
-import { tippingSchema } from '@/utils/validations';
-import { getTippingsByRestaurantId, updateTipping } from '@/database/utils/queries';
+import { getTippingsByRestaurantId } from '@/database/utils/queries';
 
 interface Params {
     restaurantId: string;
