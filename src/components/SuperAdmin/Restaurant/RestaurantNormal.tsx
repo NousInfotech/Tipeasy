@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect, useMemo } from 'react';
-import CustomTable from '@/components/CustomTable/CustomTable';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import { IFormattedRestaurantData, IRestaurant } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
@@ -8,6 +7,7 @@ import Link from 'next/link';
 import { formatRestaurantDataForTable } from '@/utils/formatData';
 import { useRouter } from 'next/navigation';
 import DeleteDialog from './DeleteDialog';
+import GenericTable from '@/components/CustomTable/GenericTable';
 
 interface RestaurantNormalProps {
     restaurants: IRestaurant[];
@@ -49,15 +49,54 @@ const RestaurantNormal: React.FC<RestaurantNormalProps> = ({ restaurants }) => {
         setDeleteOpen(true); // Open the delete dialog
     };
 
-    const handleView = (row: IFormattedRestaurantData) => {
-        const { id } = row;
+    const handleView = (id: string) => {
         router.push(`restaurants/${id}`);
     };
 
-    const handleAdmin = (row: IFormattedRestaurantData) => {
-        const { id } = row;
+    const handleAdmin = (id: string) => {
         router.push(`restaurants/${id}/admincreate`)
     }
+
+
+    // Columns for GenericTable
+    const columns = [
+        { key: 'id', header: 'ID' },
+        { key: 'title', header: "Title" },
+        { key: 'email', header: "Email" },
+        { key: 'phone', header: "Contact" },
+        {
+            key: 'actions',
+            header: 'Actions',
+            render: (row: Partial<IFormattedRestaurantData>) => (
+                <div className="flex gap-4 items-center justify-end">
+                    <>
+                        <Link href={`restaurants/${row._id}/admincreate`}>
+                            <button
+                                className="px-2 py-1 bg-gray-800 text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-gray-800 hover:bg-white hover:text-gray-800 transition-all duration-300 ease-in-out"
+                            >
+                                Create
+                            </button>
+                        </Link>
+                        <Link href={`restaurants/${row._id}`}>
+                            <button
+                                className="px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out"
+                            >
+                                View
+                            </button>
+                        </Link>
+                        <button
+                            onClick={() => handleDeleteQR(row as IFormattedRestaurantData)}
+                            className="px-2 py-1 bg-red-600 text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-red-600 hover:bg-white hover:text-red-600 transition-all duration-300 ease-in-out"
+                        >
+                            Delete
+                        </button>
+                    </>
+
+                </div>
+            ),
+        },
+    ];
+
 
     return (
         <section>
@@ -77,36 +116,10 @@ const RestaurantNormal: React.FC<RestaurantNormalProps> = ({ restaurants }) => {
                     </Link>
                 </div>
             </div>
-
-            <CustomTable
-                data={filteredRows} // Pass filtered rows to the table
-                buttons={[
-                    {
-                        actionLabel: 'Create',
-                        onClick: handleAdmin,
-                        columnName: 'Admin',
-                        className:
-                            'px-2 py-1 bg-gray-800 text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-gray-800 hover:bg-white hover:text-gray-800 transition-all duration-300 ease-in-out',
-                    },
-                    {
-                        actionLabel: 'View',
-                        onClick: handleView,
-                        columnName: 'View',
-                        className:
-                            'px-2 py-1 bg-primary text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-primary hover:bg-white hover:text-primary transition-all duration-300 ease-in-out',
-                    },
-                    {
-                        actionLabel: 'Delete',
-                        onClick: handleDeleteQR,
-                        columnName: 'Delete',
-                        className:
-                            'px-2 py-1 bg-red-600 text-white text-[14px] font-bold rounded-lg border-[1px] border-solid border-red-600 hover:bg-white hover:text-red-600 transition-all duration-300 ease-in-out',
-                    },
-                ]}
-            />
+            <GenericTable data={filteredRows} columns={columns} />
             {selectedRestaurant && (
                 <DeleteDialog
-                    id={selectedRestaurant.id}
+                    id={selectedRestaurant._id}
                     title={selectedRestaurant.title}
                     deleteOpen={deleteOpen}
                     setDeleteOpen={setDeleteOpen}

@@ -41,7 +41,7 @@ interface IRestaurant {
     address: IAddress;
     profileImage?: string;
     qrStatus: 'none' | 'generated' | 'sent';
-    qrCodeUrl?: string;
+    qrCodeUrl?: string | '';
 }
 
 // Order Interface
@@ -156,8 +156,10 @@ interface TableData {
 }
 
 interface IFormattedRestaurantData {
-    id: string; // Matches `_id` from the original data
+    id: number; // Matches `_id` from the original data
+    _id: string;
     title: string;
+    qrURL: string;
     qrStatus: string; // Ensure this matches the type of `qrStatus` in the original data
     email: string;
     phone: string; // Ensure this matches the type of `phoneNumber` in the original data
