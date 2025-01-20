@@ -31,7 +31,7 @@ export const getTippingByWaiterId = async (waiterId: string, options = {}) => {
 };
 
 export const getTippings = async (options = {}) => {
-    const url = `/api/tippings`;
+    const url = `/api/tippings?alltippings=true`;
     const response = await get(url, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data
 }

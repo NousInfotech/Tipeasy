@@ -15,11 +15,12 @@ export const GET = withDbConnection(async (request: NextRequest): Promise<NextRe
         const { searchParams } = new URL(request.url);
         const restaurantId = searchParams.get("restaurantId");
         const waiterId = searchParams.get("waiterId");
+        const allTippings = searchParams.get("alltippings")
 
         let tippings;
 
         // Fetch tippings based on provided query params
-        if (!restaurantId && !waiterId) {
+        if (allTippings == "true") {
             tippings = await getTippings();
         }
         else if (restaurantId) {
