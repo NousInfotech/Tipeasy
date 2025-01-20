@@ -1,4 +1,4 @@
-import { TableData } from "@/types/schematypes";
+import { ITipping, TableData } from "@/types/schematypes";
 
 const restaurantMockData: TableData[] = [
     { "id": "rest_0", "name": 'Restaurant A', "qrStatus": 'none', "email": "restaurantA@example.com", "phone": "+1234567890" },
@@ -53,4 +53,68 @@ const TippingData: TableData[] = [
     },
 ];
 
-export { restaurantMockData, TippingData }
+const fakeTippings: ITipping[] = [
+    {
+        "_id": "472639",
+        "waiterId": "66",
+        "restaurantId": "1",
+        "tipAmount": 749,
+        "rating": 1,
+        "experience": "very_happy",
+        "razorpayPaymentId": "pay_602481",
+        "razorpayFundId": "fund_671125",
+        "comments": "Comment 9",
+        "dateTime": new Date("2024-10-29 19:46:39")
+    },
+    {
+        "_id": "717118",
+        "waiterId": "15",
+        "restaurantId": "3",
+        "tipAmount": 961,
+        "rating": 1,
+        "experience": "neutral",
+        "razorpayPaymentId": "pay_308513",
+        "razorpayFundId": "fund_846801",
+        "comments": "Comment 84",
+        "dateTime": new Date("2024-12-08 19:46:39")
+    },
+    {
+        "_id": "297985",
+        "waiterId": "17",
+        "restaurantId": "10",
+        "tipAmount": 947,
+        "rating": 3,
+        "experience": "very_happy",
+        "razorpayPaymentId": "pay_655247",
+        "razorpayFundId": "fund_565354",
+        "comments": "Comment 72",
+        "dateTime": new Date("2024-02-20 19:46:39")
+    },
+    {
+        "_id": "386867",
+        "waiterId": "19",
+        "restaurantId": "2",
+        "tipAmount": 486,
+        "rating": 2,
+        "experience": "neutral",
+        "razorpayPaymentId": "pay_654954",
+        "razorpayFundId": "fund_866275",
+        "comments": "Comment 7",
+        "dateTime": new Date("2025-01-09 19:46:39")
+    },
+    {
+        "_id": "482560",
+        "waiterId": "78",
+        "restaurantId": "7",
+        "tipAmount": 516,
+        "rating": 5,
+        "experience": "very_sad",
+        "razorpayPaymentId": "pay_232350",
+        "razorpayFundId": "fund_679891",
+        "comments": "Comment 36",
+        "dateTime": new Date("2024-08-03 19:46:39")
+    }
+];
+
+
+export { restaurantMockData, TippingData,fakeTippings }

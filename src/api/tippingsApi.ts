@@ -3,9 +3,6 @@ import { checkResponse } from "@/utils/checkResponse";
 import { get, put, post } from "@/utils/request";
 import { RazorpayResponse } from "@/types/schematypes";
 
-
-
-
 export const verifyPayment = async (rpResponse: RazorpayResponse, options = {}) => {
     const url = '/api/tippings/verify';
     const response = await post(url, rpResponse, options) as validateResponse;
