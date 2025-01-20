@@ -1,15 +1,28 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { loginUser } from '@/services/firebase/auth';
 import Cookie from 'js-cookie';
 import { getAdminIdByEmail } from '@/api/userApi';
 import { IUser } from '@/types/schematypes';
+import { toast } from 'react-toastify';
 
 
 const LoginPage = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const roleError = searchParams.get('roleerror') || '';
+
+    // State to track if the toast has been shown
+    const [hasShownToast, setHasShownToast] = useState(false);
+
+    useEffect(() => {
+        if (roleError === 'role_mismatch' && !hasShownToast) {
+            toast.error("Role Mismatch");
+            setHasShownToast(true);  // Mark toast as shown
+        }
+    }, [roleError, hasShownToast]);
 
     const [formemail, setFormEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -48,6 +61,7 @@ const LoginPage = () => {
 
         } catch (err) {
             console.error('Login error:', err);
+            toast.error("Authetication Error: " + err)
             setError('An unexpected error occurred. Please try again.');
         }
     };

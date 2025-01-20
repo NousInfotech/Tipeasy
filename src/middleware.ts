@@ -85,7 +85,7 @@ export async function middleware(req: NextRequest) {
       // Check if provided role matches the actual role
       if (actualRole !== role) {
         console.error('Role mismatch:', { actualRole, providedRole: role });
-        return NextResponse.redirect(new URL('/login', req.url));
+        return NextResponse.redirect(new URL(`/login?roleerror=role_mismatch`, req.url));
       }
 
       // Continue with the request if everything is valid
