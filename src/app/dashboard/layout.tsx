@@ -12,7 +12,7 @@ import { auth } from '@/config/firebase-client'; // Make sure to import your Fir
 import { getIdToken } from 'firebase/auth';
 import { generateNavigation } from '@/utils/constants';
 
-type Role = 'superadmin' | 'admin' | 'waiter';
+type Role = 'superadmin' | 'admin';
 
 export default function DashboardPagesLayout(props: { children: React.ReactNode }) {
     const role = Cookie.get('userRole');
