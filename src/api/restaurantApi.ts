@@ -71,11 +71,11 @@ export const createWaiter = async (waiterData: Partial<IWaiter>, options = {}) =
 };
 
 // Create a new waiter
-export const createBulkWaiter = async (waiterData: Partial<IWaiter>, options = {}) => {
-    const url = '/api/waiters/bulk-upload-waiters';
-    const response = await post(url, waiterData, options) as validateResponse;
-    return checkResponse(response); // Check if successful and return data
-};
+// export const createBulkWaiter = async (waiterData: Partial<IWaiter>, options = {}) => {
+//     const url = '/api/waiters/bulk-upload-waiters';
+//     const response = await post(url, waiterData, options) as validateResponse;
+//     return checkResponse(response); // Check if successful and return data
+// };
 
 // Get a Waiter by Id 
 
@@ -125,11 +125,11 @@ export const createMenu = async (menuData: IMenu, options = {}) => {
 
 
 // Create a new menu for a restaurant
-export const createBulk = async (menuData: IMenu[], options = {}) => {
-    const url = '/api/menus/bulk-menu-upload';
-    const response = await post(url, menuData, options) as validateResponse;
-    return checkResponse(response); // Check if successful and return data
-};
+// export const createBulk = async (menuData: IMenu[], options = {}) => {
+//     const url = '/api/menus/bulk-menu-upload';
+//     const response = await post(url, menuData, options) as validateResponse;
+//     return checkResponse(response); // Check if successful and return data
+// };
 
 // Update an existing menu by menuId
 export const updateMenu = async (menuId: string, menuData: Partial<IMenu>, options = {}) => {
