@@ -19,14 +19,14 @@ export const GET = withDbConnection(async (request: NextRequest): Promise<NextRe
         let tippings;
 
         // Fetch tippings based on provided query params
-        if (restaurantId) {
+        if (!restaurantId && !waiterId) {
+            tippings = await getTippings();
+        }
+        else if (restaurantId) {
             await validateRestaurant(restaurantId);
             tippings = await getTippingsByRestaurantId(restaurantId);
         } else if (waiterId) {
             tippings = await getTippingsByWaiterId(waiterId);
-        } else {
-            // No query parameters: Fetch all tippings
-            tippings = await getTippings();
         }
 
         return NextResponse.json(successResponse('Tippings fetched successfully', tippings));
