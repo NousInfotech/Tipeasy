@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loginUser } from '@/services/firebase/auth';
 import Cookie from 'js-cookie';
@@ -8,28 +8,24 @@ import { getAdminIdByEmail } from '@/api/userApi';
 import { IUser } from '@/types/schematypes';
 import { toast } from 'react-toastify';
 
-
-const LoginPage = () => {
+const LoginForm = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const roleError = searchParams.get('roleerror') || '';
 
-    // State to track if the toast has been shown
-    const [hasShownToast, setHasShownToast] = useState(false);
-
     useEffect(() => {
-        if (roleError === 'role_mismatch' && !hasShownToast) {
+        if (roleError === 'role_mismatch') {
             toast.error("Role Mismatch");
-            setHasShownToast(true);  // Mark toast as shown
+            router.push('/login')
         }
-    }, [roleError, hasShownToast]);
+    }, [roleError]);
+
 
     const [formemail, setFormEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState<'admin' | 'superadmin'>('admin');
     const [error, setError] = useState('');
 
-    // In your login logic:
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -38,12 +34,9 @@ const LoginPage = () => {
             const response = await loginUser(formemail, password);
             const { token, uid, email } = response;
 
-            // Set cookies for token, uid, and role
             Cookie.set('authToken', token, { expires: 7, secure: true, sameSite: 'Strict' });
             Cookie.set('userUID', uid, { expires: 7, secure: true, sameSite: 'Strict' });
             Cookie.set('userRole', role, { expires: 7, secure: true, sameSite: 'Strict' });
-
-            // Redirect to the appropriate dashboard based on role
 
             if (role === 'admin') {
                 const admin = await getAdminIdByEmail(email as string) as IUser;
@@ -56,35 +49,27 @@ const LoginPage = () => {
             } else {
                 setError('Unknown role. Contact support.');
             }
-
         } catch (err) {
             console.error('Login error:', err);
-            toast.error("Authetication Error: " + err)
+            toast.error("Authentication Error: " + err);
             setError('An unexpected error occurred. Please try again.');
         }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <form
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-                onSubmit={handleLogin}
-            >
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleLogin}>
                 <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
-                {error && (
-                    <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-                        {error}
-                    </div>
-                )}
+                {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="formemail">
-                        email
+                        Email
                     </label>
                     <input
                         id="formemail"
-                        type="formemail"
+                        type="email"
                         value={formemail}
                         onChange={(e) => setFormEmail(e.target.value)}
                         required
@@ -137,5 +122,12 @@ const LoginPage = () => {
         </div>
     );
 };
+
+// Wrap in Suspense
+const LoginPage = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <LoginForm />
+    </Suspense>
+);
 
 export default LoginPage;
