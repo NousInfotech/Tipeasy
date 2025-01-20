@@ -1,4 +1,4 @@
-import { fetchRoleById, fetchUserByFBId } from "@/database/utils/queries";
+import { fetchUserByFBId } from "@/database/utils/queries";
 import { withDbConnection } from "@/database/utils/withDbConnection";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextResponse } from "next/server";
