@@ -5,7 +5,6 @@ import { IFormattedRestaurantData, IRestaurant } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
 import Link from 'next/link';
 import { formatRestaurantDataForTable } from '@/utils/formatData';
-import { useRouter } from 'next/navigation';
 import DeleteDialog from './DeleteDialog';
 import GenericTable from '@/components/CustomTable/GenericTable';
 
@@ -14,7 +13,6 @@ interface RestaurantNormalProps {
 }
 
 const RestaurantNormal: React.FC<RestaurantNormalProps> = ({ restaurants }) => {
-    const router = useRouter();
 
     // Memoize formatted data to avoid unnecessary recalculations
     const formattedRestaurantData = useMemo(
@@ -48,15 +46,6 @@ const RestaurantNormal: React.FC<RestaurantNormalProps> = ({ restaurants }) => {
         setSelectedRestaurant(row); // Store the selected restaurant
         setDeleteOpen(true); // Open the delete dialog
     };
-
-    const handleView = (id: string) => {
-        router.push(`restaurants/${id}`);
-    };
-
-    const handleAdmin = (id: string) => {
-        router.push(`restaurants/${id}/admincreate`)
-    }
-
 
     // Columns for GenericTable
     const columns = [

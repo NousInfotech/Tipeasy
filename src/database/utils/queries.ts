@@ -340,6 +340,17 @@ export const getRestaurants = async (): Promise<IRestaurant[]> => {
         return handleMongoError(error)
     }
 };
+/**
+ * Fetch all restaurants from the database.
+ * @returns {Promise<Restaurant[]>} - Returns an array of all restaurants.
+ */
+export const getTippings = async (): Promise<ITipping[]> => {
+    try {
+        return await Tipping.find();
+    } catch (error) {
+        return handleMongoError(error)
+    }
+};
 
 /**
  * Delete a specific restaurant by its restaurantId.

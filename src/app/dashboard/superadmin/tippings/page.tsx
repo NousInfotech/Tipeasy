@@ -1,10 +1,15 @@
-import * as React from 'react';
-import TippingNormal from '@/components/SuperAdmin/Tipping/TippingNormal';
+import { getTippings } from '@/api/tippingsApi';
+import TippingNormal from '@/components/SuperAdmin/Tipping/TippingNormal'
+import { ITipping } from '@/types/schematypes';
+import React from 'react'
 
-export default function TippingManagement() {
+const page = async () => {
+
+    const tippings = await getTippings() as ITipping[];
+
     return (
-        <section>
-            <TippingNormal />
-        </section>
-    );
+        <TippingNormal tippingData={tippings} />
+    )
 }
+
+export default page

@@ -164,6 +164,15 @@ interface IFormattedRestaurantData {
     email: string;
     phone: string; // Ensure this matches the type of `phoneNumber` in the original data
 }
+interface IFormattedTippingData {
+    id: number; // Matches `_id` from the original data
+    _id: string;
+    waiterId: string;  // Changed to string
+    restaurantId: string;  // Changed to string
+    tipAmount: number;
+    date:string,
+    time:string,
+}
 
 type Role = 'superadmin' | 'admin';
 
@@ -179,4 +188,4 @@ interface RoleSegment {
 
 
 // Exporting the interfaces for use in models or other files
-export type { Role, RoleChild, RoleSegment, IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
+export type { IFormattedTippingData, Role, RoleChild, RoleSegment, IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };

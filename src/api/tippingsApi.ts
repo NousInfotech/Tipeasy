@@ -30,3 +30,9 @@ export const getTippingByWaiterId = async (waiterId: string, options = {}) => {
     return checkResponse(response); // Check if successful and return data
 };
 
+export const getTippings = async (options = {}) => {
+    const url = `/api/tippings`;
+    const response = await get(url, options) as validateResponse;
+    return checkResponse(response); // Check if successful and return data
+}
+
