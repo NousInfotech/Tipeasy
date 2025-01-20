@@ -342,7 +342,7 @@ export const getRestaurants = async (): Promise<IRestaurant[]> => {
 };
 /**
  * Fetch all restaurants from the database.
- * @returns {Promise<Restaurant[]>} - Returns an array of all restaurants.
+ * @returns {Promise<ITipping[]>} - Returns an array of all tippings.
  */
 export const getTippings = async (): Promise<ITipping[]> => {
     try {

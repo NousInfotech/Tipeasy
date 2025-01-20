@@ -22,9 +22,9 @@ export const getTippingByRestaurantId = async (restaurantId: string, options = {
 };
 
 
-export const getTippings = async () => {
+export const getAllTippings = async (options = {}) => {
     const url = `/api/tippings`;
-    const response = await get(url, {}) as validateResponse;
+    const response = await get(url, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data
 }
 
