@@ -1,4 +1,4 @@
-import { createMenu, validateRestaurant } from "@/api/restaurantApi";
+import { createMenu, validateRestaurantId } from "@/database/utils/queries";
 import { withDbConnection } from "@/database/utils/withDbConnection";
 import { IMenu } from "@/types/schematypes";
 import { errorResponse, successResponse } from "@/utils/response";
@@ -25,7 +25,7 @@ export const POST = withDbConnection(async (request: Request): Promise<NextRespo
         const createdMenus = [];
 
         for (const menuData of menuDataArray) {
-            await validateRestaurant(menuData.restaurantId);
+            await validateRestaurantId(menuData.restaurantId);
             const validatedMenuData = validateSchema(menuSchema, menuData);
             const newMenu = await createMenu(validatedMenuData as IMenu);
             createdMenus.push(newMenu);
