@@ -19,20 +19,15 @@ export const updateTipping = async (tippingId: string, updatedData: object, opti
 }
 
 export const getTippingByRestaurantId = async (restaurantId: string, options = {}) => {
-    const url = `/api/tippings?restaurantId=${restaurantId}`;
+    const url = `/api/tippings/restaurant/${restaurantId}`;
     const response = await get(url, options) as validateResponse;
     return checkResponse(response); // Check if successful and return data
 };
 
-export const getTippingByWaiterId = async (waiterId: string, options = {}) => {
-    const url = `/api/tippings?restaurantId=${waiterId}`;
-    const response = await get(url, options) as validateResponse;
-    return checkResponse(response); // Check if successful and return data
-};
 
-export const getTippings = async (options = {}) => {
-    const url = `/api/tippings?alltippings=true`;
-    const response = await get(url, options) as validateResponse;
+export const getTippings = async () => {
+    const url = `/api/tippings`;
+    const response = await get(url, {}) as validateResponse;
     return checkResponse(response); // Check if successful and return data
 }
 
