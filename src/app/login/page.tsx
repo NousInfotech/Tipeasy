@@ -26,7 +26,7 @@ const LoginPage = () => {
 
     const [formemail, setFormEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState<'admin' | 'superadmin' | 'waiter'>('admin');
+    const [role, setRole] = useState<'admin' | 'superadmin'>('admin');
     const [error, setError] = useState('');
 
     // In your login logic:
@@ -45,9 +45,7 @@ const LoginPage = () => {
 
             // Redirect to the appropriate dashboard based on role
 
-            if (role === 'waiter') {
-                router.push('/dashboard/waiter');
-            } else if (role === 'admin') {
+            if (role === 'admin') {
                 const admin = await getAdminIdByEmail(email as string) as IUser;
                 const { restaurantId } = admin;
 
@@ -111,14 +109,14 @@ const LoginPage = () => {
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
                     <div className="flex space-x-4">
-                        {['admin', 'superadmin', 'waiter'].map((option) => (
+                        {['admin', 'superadmin'].map((option) => (
                             <label key={option} className="flex items-center">
                                 <input
                                     type="radio"
                                     name="role"
                                     value={option}
                                     checked={role === option}
-                                    onChange={() => setRole(option as 'admin' | 'superadmin' | 'waiter')}
+                                    onChange={() => setRole(option as 'admin' | 'superadmin')}
                                     className="mr-2"
                                 />
                                 {option.charAt(0).toUpperCase() + option.slice(1)}
