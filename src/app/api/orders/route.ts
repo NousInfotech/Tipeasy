@@ -1,11 +1,10 @@
 import { successResponse, errorResponse } from "@/utils/response";
 import { withDbConnection } from "@/database/utils/withDbConnection";
-import { getOrdersByRestaurantId, createOrderByMenuIds, getOrderById } from "@/database/utils/queries";
+import { getOrdersByRestaurantId, createOrderByMenuIds, getOrderById, getMenuOrders } from "@/database/utils/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { orderSchema } from "@/utils/validations"; // Assuming orderSchema is defined
 import { validateMenu, validateSchema } from "@/utils/validationUtils";
 import { validateRestaurant } from "@/utils/validationUtils";
-import { getMenuOrders } from "@/api/orderApi";
 
 /**
  * GET API Route handler to fetch orders based on the provided query parameters.
