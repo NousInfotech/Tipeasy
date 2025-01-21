@@ -85,7 +85,7 @@ const EditWaiterForm: React.FC<WaiterFormProps> = ({ waiter }) => {
                     />
                     {isEditing && (
                         <CldUploadWidget
-                            uploadPreset='waiter-profiles'
+                            uploadPreset='tipeasy-frontend'
                             onSuccess={handleImageChange}
                             options={{ folder: 'waiterProfileImages' }}
                         >
