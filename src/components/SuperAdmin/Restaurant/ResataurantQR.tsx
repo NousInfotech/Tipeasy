@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '@/components/SearchBar/SearchBar'; // Import your SearchBar component
 import { IFormattedRestaurantData, IRestaurant } from '@/types/schematypes';
 import HeaderwithBackButton from '@/components/HeaderwithBackButton/HeaderwithBackButton';
@@ -24,12 +24,6 @@ const RestaurantQR: React.FC<RestaurantQRProps> = ({ restaurants }) => {
 
     const router = useRouter();
 
-    // Memoize formatted data to avoid unnecessary recalculations
-    const formattedRestaurantData = useMemo(
-        () => formatRestaurantDataForTable(restaurants),
-        [restaurants]
-    );
-
     const [rows, setRows] = useState<IFormattedRestaurantData[]>([]); // Rows of the table
     const [filteredRows, setFilteredRows] = useState<IFormattedRestaurantData[]>([]); // Filtered rows based on search
     const [qrURL, setQrURL] = useState<string | null>(null);
@@ -37,9 +31,9 @@ const RestaurantQR: React.FC<RestaurantQRProps> = ({ restaurants }) => {
 
     // Initialize rows and filteredRows when formattedRestaurantData changes
     useEffect(() => {
-        setRows(formattedRestaurantData);
-        setFilteredRows(formattedRestaurantData);
-    }, [formattedRestaurantData]);
+        setRows(formatRestaurantDataForTable(restaurants)); // Ensure it updates when new data is available
+        setFilteredRows(formatRestaurantDataForTable(restaurants));
+    }, [restaurants]);
 
     const handleSearch = (query: string) => {
         // Filter rows based on the search term
