@@ -6,7 +6,8 @@ import React from 'react'
 
 const page = async () => {
 
-    const restaurants = await getRestaurants() as IRestaurant[];
+    const restaurants = await getRestaurants({ cache: 'no-store' }) as IRestaurant[];
+
 
     return (
         <ResataurantQR restaurants={restaurants} />
