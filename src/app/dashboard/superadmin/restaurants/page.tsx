@@ -5,12 +5,12 @@ import { getRestaurants } from '@/api/restaurantApi';
 
 const page = async () => {
 
-    const restaurants = await getRestaurants({ cache: 'no-store' }) as IRestaurant[];
+    const restaurants = await getRestaurants() as IRestaurant[];
 
     return (
         <RestaurantNormal restaurants={restaurants} />
     )
 }
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic' 
 export default page
