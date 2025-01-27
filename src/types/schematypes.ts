@@ -170,8 +170,14 @@ interface IFormattedTippingData {
     waiterId: string;  // Changed to string
     restaurantId: string;  // Changed to string
     tipAmount: number;
-    date:string,
-    time:string,
+    date: string,
+    time: string,
+}
+
+interface IFormattedChartData {
+    amount: number;
+    date: string;
+    time: string;
 }
 
 type Role = 'superadmin' | 'admin';
@@ -188,4 +194,4 @@ interface RoleSegment {
 
 
 // Exporting the interfaces for use in models or other files
-export type { IFormattedTippingData, Role, RoleChild, RoleSegment, IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };
+export type { IFormattedChartData, IFormattedTippingData, Role, RoleChild, RoleSegment, IFormattedRestaurantData, TableData, razorpayNotes, IAddress, IDietaryPreference, IMenu, IRestaurant, IOrder, ITipping, IWaiter, IUser, SuccessResponse, ErrorResponse, validateResponse, RazorpayResponse, razorpayHandlerResponse };

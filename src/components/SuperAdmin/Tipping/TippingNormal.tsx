@@ -8,12 +8,10 @@ import { formatTippingDataForTable } from '@/utils/formatData';
 import GenericTable from '@/components/CustomTable/GenericTable';
 import TippingPopup from './TippingPopup';
 import { getAllTippings } from '@/api/tippingsApi';
-import { useRouter } from 'next/navigation';
 
 
 const TippingNormal: React.FC = () => {
 
-    const router = useRouter();
 
     const [rows, setRows] = useState<IFormattedTippingData[]>([]);
     const [filteredRows, setFilteredRows] = useState<IFormattedTippingData[]>([]);
