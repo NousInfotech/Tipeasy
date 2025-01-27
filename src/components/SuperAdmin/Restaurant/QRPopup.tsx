@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import assets from '../../../../public/assets/assets';
 
@@ -11,11 +10,9 @@ interface QRPopupProps {
 
 const QRPopup: React.FC<QRPopupProps> = ({ qrURL, onClose }) => {
 
-    const router = useRouter();
 
     const onClosingPopup = () => {
         onClose();
-        router.refresh();
     }
 
     return (
