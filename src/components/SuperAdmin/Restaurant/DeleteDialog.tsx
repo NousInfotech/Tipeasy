@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { deleteRestaurant } from '@/api/restaurantApi';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 
 interface DeleteDialogProps {
     id: string;
     title: string;
     deleteOpen: boolean;
+    refreshTable: () => void;
     setDeleteOpen: React.Dispatch<React.SetStateAction<boolean>>; // Correct type for state setter
 }
 
-const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, title, deleteOpen, setDeleteOpen }) => {
+const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, title, deleteOpen, setDeleteOpen, refreshTable }) => {
 
     const [confirmationText, setConfirmationText] = useState('');
 
-    const router = useRouter();
 
     const handleConfirm = async () => { // Declare as async
         if (confirmationText === title) {
@@ -22,7 +21,7 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, title, deleteOpen, setD
                 await deleteRestaurant(id); // Wait for the deletion API call
                 toast.success('Restaurant deleted successfully');
                 setDeleteOpen(false); // Close the dialog after success
-                router.refresh()
+                refreshTable();
             } catch (error) {
                 console.error(error);
                 toast.error(`Restaurant cannot be deleted: ${error}`);

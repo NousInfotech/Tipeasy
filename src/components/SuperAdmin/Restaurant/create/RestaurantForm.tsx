@@ -35,11 +35,9 @@ const RestaurantForm = () => {
     const onSubmit: SubmitHandler<RestaurantFormValues> = async (data) => {
         try {
             console.log('Restaurant Form Data:', data);
-
-            // Include the image URL in the API call
             await createRestaurantByForm(data);
-            router.back(); // Redirect to the previous page
             router.refresh();
+            router.back(); // Redirect to the previous page
         } catch (error) {
             console.error('Error submitting restaurant form:', error);
         }
